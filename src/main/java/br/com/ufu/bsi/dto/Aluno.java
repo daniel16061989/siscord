@@ -30,7 +30,7 @@ public class Aluno implements Serializable {
 	@JoinColumn(name = "id_usuario")
 	private Usuario usuario;
 	
-	// Se true o aluno enviou uma simulaçao e esta esperando resposta
+	// Se true o aluno enviou uma simulaçao e esta esperando resposta.
 	@Column(name = "simulacao_ajuste")
 	private Boolean simulacaoAjuste;
 	
