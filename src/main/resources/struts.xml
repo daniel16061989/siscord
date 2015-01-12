@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC 
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.convention.default.parent.package" value="default"/>
+	<package name="default" extends="convention-default, json-default">
+		<result-types>
+			<result-type name="plainText"
+				class="org.apache.struts2.dispatcher.PlainTextResult" />
+			<result-type name="tiles"
+				class="org.apache.struts2.views.tiles.TilesResult" />
+		</result-types>
+		
+		<interceptors>  
+            <interceptor name="alunoValidador" class="br.com.ufu.bsi.listener.AlunoValidadorInterceptor" />  
+            <interceptor-stack name="aluno">  
+                <interceptor-ref name="alunoValidador" />  
+                <interceptor-ref name="defaultStack" />  
+            </interceptor-stack>  
+            <interceptor name="professorValidador" class="br.com.ufu.bsi.listener.ProfessorValidadorInterceptor" />
+            <interceptor-stack name="professor">
+            	<interceptor-ref name="professorValidador" />
+            	<interceptor-ref name="defaultStack" />
+            </interceptor-stack>
+            <interceptor name="coordenacaoValidador" class="br.com.ufu.bsi.listener.CoordenacaoValidadorInterceptor" />
+            <interceptor-stack name="coordenacao">
+            	<interceptor-ref name="coordenacaoValidador"/>
+            	<interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
+            
+        </interceptors>  
+          
+        <default-interceptor-ref name="aluno" />
+          
+        <global-results>  
+            <result name="naoLogado">/login.jsp</result>
+            <result name="inicio">/index.jsp</result>
+        </global-results>
+
+	</package>
+</struts>
