@@ -3,11 +3,8 @@
 <html lang="pt-br">
 <head>
 
-<link rel="shortcut icon"
-	href="<s:url value="/resources/images/favicon.ico"/>"
-	type="image/x-icon">
-<link rel="icon" href="<s:url value="/resources/images/favicon.ico"/>"
-	type="image/x-icon">
+<link rel="shortcut icon" href="<s:url value="/resources/images/favicon.ico"/>" type="image/x-icon">
+<link rel="icon" href="<s:url value="/resources/images/favicon.ico"/>" type="image/x-icon">
 
 <title>Secretaria do Bacharelado em Sistemas de Informação - UFU</title>
 

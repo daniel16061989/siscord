@@ -11,7 +11,6 @@ import org.apache.struts2.convention.annotation.Result;
 
 import br.com.ufu.bsi.dao.excecoes.SiscordGenericException;
 import br.com.ufu.bsi.dto.Mensagem;
-import br.com.ufu.bsi.session.UsuarioLogado;
 
 @ParentPackage("default")
 @InterceptorRef("aluno")

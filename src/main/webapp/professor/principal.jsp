@@ -64,10 +64,12 @@
 
 						<h1>Notícias</h1>
 
-						<div style="background-color: #F5F5F5; width: 100%; margin-bottom: 5px; font-family: 'coda'; font-size: 1em;">
-							<div id="titulo" style="text-align: center;"> Informação importante </div>
-							<div> Coordenação: não haverá aula no dia xx/xx/xxxx. </div>
-						</div>
+						<s:iterator value="mensagensGeraisProfessor" var="user" status="stat">
+							<div style="background-color: #F5F5F5; width: 100%; margin-bottom: 5px; font-family: 'coda'; font-size: 1em;">
+								<div id="titulo" style="text-align: center;"> <s:property value="assunto"/> </div>
+								<div> <s:property value="mensagem"/> </div>
+							</div>
+		                </s:iterator>
 
 					</form>
 

@@ -27,7 +27,7 @@
 $(document).ready(function() {
 	$('#btn-aluno').click(function() {
 		var mensagem = $('#aluno').val();
-		
+
 		$.post("../enviarMensagem/enviarMensagemAluno", {
 			mensagem : mensagem
 		}, function(data) {
