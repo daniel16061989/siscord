@@ -23,9 +23,9 @@ public class UsuariosAction extends GenericAction {
 
 	private static final long serialVersionUID = 1L;
 	
-	private Professor professor;
+	private Professor salvarProfessor;
 	
-	private Aluno aluno;
+	private Aluno salvarAluno;
 	
 	private List<Usuario> usuarios;
 	
@@ -66,26 +66,33 @@ public class UsuariosAction extends GenericAction {
 		return SUCCESS;
 	}
 	
-	@Action(value = "buscarProfessor", results = {@Result(name = "success", location = "/coordenacao/usuarios.jsp")})
+	@Action(value = "buscarProfessor", results = {@Result(name="success", type="json", params = {"root","jsonData"}),
+			  									  @Result(name="error", type="json", params = {"root","jsonData"})})
 	public String buscarProfessor() {
 		String idProfessor = request.getParameter("idProfessor");
 		
+		Gson gson = new Gson();
+		String jsonUsuario = "";
+		
 		try {
-			professor = new Professor();
+			Professor professor = new Professor();
 			professor = professorService.findOne(Integer.parseInt(idProfessor));
+			
+			jsonUsuario = gson.toJson(professor);
 			
 		} catch (SiscordGenericException e) {
 			e.printStackTrace();
 		}
+		jsonData.put("success", jsonUsuario);
 		return SUCCESS;
 	}
 	
-	@Action(value = "excluirUsuario", results = {@Result(name = "success", location = "/coordenacao/usuarios.jsp")})
+	@Action(value = "excluirProfessor", results = {@Result(name = "success", location = "/coordenacao/usuarios.jsp")})
 	public String excluirProfessor() {
 		String idProfessor = request.getParameter("idProfessor");
 		
 		try {
-			professor = new Professor();
+			Professor professor = new Professor();
 			professor = professorService.findOne(Integer.parseInt(idProfessor));
 		
 			professorService.delete(professor);
@@ -96,17 +103,41 @@ public class UsuariosAction extends GenericAction {
 		return SUCCESS;
 	}
 	
-	@Action(value = "buscarAluno", results = {@Result(name = "success", location = "/coordenacao/usuarios.jsp")})
+	@Action(value = "salvarProfessor", results = {@Result(name = "success", location = "/coordenacao/usuarios.jsp")})
+	public String salvarProfessor() {
+		try {
+			if(salvarProfessor.getUsuario() != null) {
+				Usuario u = new Usuario();
+				u = usuarioService.findOne(salvarProfessor.getUsuario().getIdUsuario());
+				salvarProfessor.setUsuario(u);
+				
+				professorService.save(salvarProfessor);
+			
+				index();
+			}
+		} catch (SiscordGenericException e) {
+			e.printStackTrace();
+		}
+		return SUCCESS;
+	}
+	
+	@Action(value = "buscarAluno", results = {@Result(name="success", type="json", params = {"root","jsonData"}),
+											  @Result(name="error", type="json", params = {"root","jsonData"})})
 	public String buscarAluno() {
 		String idAluno = request.getParameter("idAluno");
 		
+		Gson gson = new Gson();
+		String jsonUsuario = "";
+		
 		try {
-			aluno = new Aluno();
+			Aluno aluno = new Aluno();
 			aluno = alunoService.findOne(Integer.parseInt(idAluno));
+			jsonUsuario = gson.toJson(aluno);
 			
 		} catch (SiscordGenericException e) {
 			e.printStackTrace();
 		}
+		jsonData.put("success", jsonUsuario);
 		return SUCCESS;
 	}
 	
@@ -115,7 +146,7 @@ public class UsuariosAction extends GenericAction {
 		String idAluno = request.getParameter("idAluno");
 		
 		try {
-			aluno = new Aluno();
+			Aluno aluno = new Aluno();
 			aluno = alunoService.findOne(Integer.parseInt(idAluno));
 		
 			alunoService.delete(aluno);
@@ -126,33 +157,38 @@ public class UsuariosAction extends GenericAction {
 		return SUCCESS;
 	}
 	
-	@Action(value = "salvarUsuario", results = {@Result(name = "success", location = "/coordenacao/usuarios.jsp")})
-	public String salvarUsuario() {
-		
+	@Action(value = "salvarAluno", results = {@Result(name = "success", location = "/coordenacao/usuarios.jsp")})
+	public String salvarAluno() {
 		try {
-			alunoService.save(aluno);
-		
-			index();
+			if(salvarAluno.getUsuario() != null) {
+				Usuario u = new Usuario();
+				u = usuarioService.findOne(salvarAluno.getUsuario().getIdUsuario());
+				salvarAluno.setUsuario(u);
+				
+				alunoService.save(salvarAluno);
+			
+				index();
+			}
 		} catch (SiscordGenericException e) {
 			e.printStackTrace();
 		}
 		return SUCCESS;
 	}
-	
-	public Professor getProfessor() {
-		return professor;
+
+	public Professor getSalvarProfessor() {
+		return salvarProfessor;
 	}
 
-	public void setProfessor(Professor professor) {
-		this.professor = professor;
+	public void setSalvarProfessor(Professor salvarProfessor) {
+		this.salvarProfessor = salvarProfessor;
 	}
 
-	public Aluno getAluno() {
-		return aluno;
+	public Aluno getSalvarAluno() {
+		return salvarAluno;
 	}
 
-	public void setAluno(Aluno aluno) {
-		this.aluno = aluno;
+	public void setSalvarAluno(Aluno salvarAluno) {
+		this.salvarAluno = salvarAluno;
 	}
 
 	public List<Usuario> getUsuarios() {

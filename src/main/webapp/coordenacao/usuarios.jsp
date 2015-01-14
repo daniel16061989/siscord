@@ -26,39 +26,15 @@
 <script type="text/javascript" >
 $(document).ready(function() {
 
-	
 	$('#formulario-professor').hide();
 	$('#formulario-aluno').hide();
-	/*
-	$('.editar-disciplina').click(function() {
-		var idDisciplina = $(this).val();
-		
-		$.post("../planoDisciplina/buscarDataAula", {
-			idTurma : idTurma
-		}, function(data) {
-			if (data['success']) {
-				var blocoDias = '';
-				var datas = data['success'].split(';');
-				
-				for(var i = 1; i <= datas.length; i++) {
-					blocoDias = blocoDias +
-					'<table class="bloco-plano-aula"> ' +
-					'	<tr> ' +
-					'		<td style="width: 25px;"> '+i+' </td> ' +
-					'		<td style="width: 95px;"> '+datas[i-1]+' </td> ' +
-					'		<td> <textarea maxlength="250" name="descricao-dia" id="descricao-dia" placeholder="Descreva este dia" style="background-color: white; max-width: 380px;"></textarea></td> ' +
-					'	</tr> ' +
-					'</table> ';
-				}
-				
-				$('#blocos').html(blocoDias);
-			}
-		});
-	});*/
 	
 	$('#tipoUsuario').change(function() {
 		$('#lista_alunos').empty();
 		$('#lista_professores').empty();
+		
+		$('#formulario-professor').hide();
+		$('#formulario-aluno').hide();
 		
 		tipoUsuario = $(this).val();
 		
@@ -84,7 +60,7 @@ $(document).ready(function() {
 		               		'</table> ';
 					$('#lista_alunos').append(dados);
 					});
-				} else if(tipoUsuario == 'C') {
+				} else if(tipoUsuario == 'P') {
 					$.each(jsonData, function(key, value) {
 						var dados = '' +
 							'<table style="width:100%;"> ' +
@@ -107,13 +83,20 @@ $(document).ready(function() {
 	});
 		
 	$('#lista_professores').on('click', '.editar-professor', function() {
-	/* $('.editar-professor').click(function() { */
 		var idProfessor = $(this).attr('id');
+		
+		$('#formulario-aluno').hide();
+		$('#formulario-professor').show();
 		
 		$.post("../usuarios/buscarProfessor", {
 				idProfessor : idProfessor
 			}, function(data){
-    			if(data['success']){
+    			if(data['success']) {
+    				var jsonData = jQuery.parseJSON(data['success']);
+    				$('#idProfessor').val(jsonData.idProfessor);
+    				$('#idUsuarioProfessor').val(jsonData.usuario.idUsuario);
+    				$('#nomeProfessor').val(jsonData.nomeProfessor);
+    				$('#loginProfessor').val(jsonData.usuario.login);
 	    		} else { }
     	});
 	});
@@ -121,10 +104,10 @@ $(document).ready(function() {
 	$('.apagar-professor').click(function() {
 		var idProfessor = $(this).attr('id');
 		
-		$.post("../usuarios/excluirUsuario", {
+		$.post("../usuarios/excluirProfessor", {
 				idProfessor : idProfessor
 			}, function(data){
-    			if(data['success']){
+    			if(data['success']) {
 	    		} else { }
     	});
 	});
@@ -132,12 +115,20 @@ $(document).ready(function() {
 	$('#lista_alunos').on('click', '.editar-aluno', function() {
 		var idAluno = $(this).attr('id');
 		
+		$('#formulario-professor').hide();
 		$('#formulario-aluno').show();
 		
 		$.post("../usuarios/buscarAluno", {
 				idAluno : idAluno
 			}, function(data){
     			if(data['success']){
+    				var jsonData = jQuery.parseJSON(data['success']);
+    				$('#idAluno').val(jsonData.idAluno);
+    				$('#idUsuarioAluno').val(jsonData.usuario.idUsuario);
+    				$('#simulacaoAjuste').val(jsonData.simulacaoAjuste);
+    				$('#nomeAluno').val(jsonData.nomeAluno);
+    				$('#matricula').val(jsonData.matricula);
+    				$('#loginAluno').val(jsonData.usuario.login);
 	    		} else { }
     	});
 	});
@@ -235,55 +226,58 @@ $(document).ready(function() {
 					<div class="form-help">
 						<h2>Filtrar dados</h2>
 						<div id="formulario-aluno">
-							<table style="width:100%;">
-								<tr>
-									<td>Matrícula:</td>
-									<td>
-										<input id="matricula" name="matricula" type="text" placeholder="Matríicula" value="${aluno.nomeAluno}" />
-									</td>
-								</tr>
-								<tr>
-									<td>Nome:</td>
-									<td>
-										<input id="nomeUsuario" name="nomeUsuario" type="text" placeholder="Nome do usuário" />
-									</td>
-								</tr>
-								<tr>
-									<td>Login:</td>
-									<td>
-										<input id="login" name="login" type="text" placeholder="Login do usuário" />
-									</td>
-								</tr>
-							</table>
-							<center>
-								<input id="submit" name="submit" type="submit" value="Salvar">
-							</center>
+							<form method="post" action="../usuarios/salvarAluno">
+								<table style="width:100%;">
+									<tr>
+										<td>Matrícula:</td>
+										<td>
+											<input id="idAluno" name="salvarAluno.idAluno" type="hidden" />
+											<input id="idUsuarioAluno" name="salvarAluno.usuario.idUsuario" type="hidden" />
+											<input id="simulacaoAjuste" name="salvarAluno.simulacaoAjuste" type="hidden" />
+											<input id="matricula" name="salvarAluno.matricula" type="text" placeholder="Matríicula" />
+										</td>
+									</tr>
+									<tr>
+										<td>Nome:</td>
+										<td>
+											<input id="nomeAluno" name="salvarAluno.nomeAluno" type="text" placeholder="Nome do Aluno" />
+										</td>
+									</tr>
+									<tr>
+										<td>Login:</td>
+										<td>
+											<input id="loginAluno" name="salvarAluno.usuario.login" type="text" placeholder="Login do Aluno" />
+										</td>
+									</tr>
+								</table>
+								<center>
+									<input id="submitAluno" name="submitAluno" type="submit" value="Salvar">
+								</center>
+							</form>
 						</div>
 						
 						<div id="formulario-professor">
-							<table style="width:100%;">
-								<tr>
-									<td>Matrícula:</td>
-									<td>
-										<input id="matricula" name="matricula" type="text" placeholder="Matríicula" value="" />
-									</td>
-								</tr>
-								<tr>
-									<td>Nome:</td>
-									<td>
-										<input id="nomeUsuario" name="nomeUsuario" type="text" placeholder="Nome do usuário" />
-									</td>
-								</tr>
-								<tr>
-									<td>Login:</td>
-									<td>
-										<input id="login" name="login" type="text" placeholder="Login do usuário" />
-									</td>
-								</tr>
-							</table>
-							<center>
-								<input id="submit" name="submit" type="submit" value="Salvar">
-							</center>
+							<form method="post" action="../usuarios/salvarProfessor">
+								<table style="width:100%;">
+									<tr>
+										<td>Nome:</td>
+										<td>
+											<input id="idProfessor" name="salvarProfessor.idProfessor" type="hidden" />
+											<input id="idUsuarioProfessor" name="salvarProfessor.usuario.idUsuario" type="hidden" />
+											<input id="nomeProfessor" name="salvarProfessor.nomeProfessor" type="text" placeholder="Nome do Professor" />
+										</td>
+									</tr>
+									<tr>
+										<td>Login:</td>
+										<td>
+											<input id="loginProfessor" name="salvarProfessor.usuario.login" type="text" placeholder="Login do Professor" />
+										</td>
+									</tr>
+								</table>
+								<center>
+									<input id="submitProfessor" name="submitProfessor" type="submit" value="Salvar">
+								</center>
+							</form>
 						</div>
 					</div>
 				</div>
