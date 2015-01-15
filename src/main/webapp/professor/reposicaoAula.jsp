@@ -20,6 +20,7 @@
 <link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/normalize.css"/>" />
 <link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/style.css"/>" />
 <link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/jquery-ui.min.css"/>" />
+<link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/mensagem-sistema.css"/>" />
 
 <script type="text/javascript" src='<s:url value="/resources/js/function.js" />'></script>
 <script type="text/javascript" src='<s:url value="/resources/js/jquery-1.9.1.js" />'></script>
@@ -54,13 +55,6 @@ $(document).ready(function() {
 	$('#dataAulaReposicao').datepicker();
 });
 </script>
-
-<style type="text/css">
-.alert-success {
-	width: 100%;
-	background-color: green;
-}
-</style>
 
 </head>
 

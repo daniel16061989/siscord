@@ -19,12 +19,18 @@
 <link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/bebas-neue.css"/>" />
 <link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/normalize.css"/>" />
 <link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/style.css"/>" />
+<link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/jquery-ui.min.css"/>" />
+<link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/dialog.css"/>" />
+<link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/mensagem-sistema.css"/>" />
 
 <script type="text/javascript" src='<s:url value="/resources/js/function.js" />'></script>
 <script type="text/javascript" src='<s:url value="/resources/js/jquery-1.9.1.js" />'></script>
+<script type="text/javascript" src='<s:url value="/resources/js/jquery-ui.min.js" />'></script>
+<script type="text/javascript" src='<s:url value="/resources/js/dialog.js" />'></script>
 
 <script type="text/javascript" >
 $(document).ready(function() {
+	
 	$('#btn-aluno').click(function() {
 		var mensagem = $('#aluno').val();
 
@@ -32,7 +38,7 @@ $(document).ready(function() {
 			mensagem : mensagem
 		}, function(data) {
 			if (data['success']) {
-				alert('Mensagem enviada com sucesso');
+				/*$("#dialog").dialog("open");*/
 			}
 		});
 	});
@@ -44,14 +50,11 @@ $(document).ready(function() {
 			mensagem : mensagem
 		}, function(data) {
 			if (data['success']) {
-				alert('Mensagem enviada com sucesso');
 			}
 		});
 	});
 });
 </script>
-
-<style type="text/css"> </style>
 
 </head>
 
@@ -87,6 +90,22 @@ $(document).ready(function() {
 		</div>
 		<div class="white-grid-layout">
 			<div id="content-box">
+			
+				<s:if test="hasActionErrors()">
+			 		<div class="alert alert-danger">
+			 			<a href="#" class="close" data-dismiss="alert">&times;</a>
+			 			<strong>Erros</strong>
+			 			<s:actionerror/>
+			 		</div>
+			 	</s:if>
+			 	<s:if test="hasActionMessages()">
+			 		<div class="alert alert-success">
+			 			<a href="#" class="close" data-dismiss="alert">&times;</a>
+			 			<strong>Sucesso</strong>
+			 			<s:actionmessage/>
+			 		</div>
+			 	</s:if>
+			
 				<div id="content">
 					<form class="form-left" id="solicitacao" name="solicitacao"
 						action="#" method="POST"
@@ -94,6 +113,13 @@ $(document).ready(function() {
 
 						<h1>Bem Vindo</h1>
 						
+						<!-- <p><a href="#" id="dialog-link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-newwin"></span>Open Dialog</a></p>  -->
+						
+						<!-- ui-dialog -->
+						<div id="dialog" title="Mensagem do Sistema">
+							<p>Mensagem enviada com sucesso!</p>
+						</div>
+
 						<label>Mensagem Aluno</label>
 						<textarea maxlength="250" name="aluno" id="aluno" placeholder="Escreva uma mensagem para os alunos"></textarea>
 						
