@@ -10,4 +10,6 @@ import br.com.ufu.bsi.dto.ProgramaPlanoDisciplina;
 public interface ProgramaPlanoDisciplinaDAO extends JpaRepository<ProgramaPlanoDisciplina, Integer> {
 
 	List<ProgramaPlanoDisciplina> findByDisciplina(Disciplina disciplina);
+	
+	List<ProgramaPlanoDisciplina> findByPlanoDisciplinaStatus(Character status);
 }

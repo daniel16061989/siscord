@@ -3,10 +3,12 @@
 	width: 100%;
 	background-color:#DDFFDD;
 	border:1px solid #009900;
+	height: 100px;
 }
 
 .alert-danger {
 	width: 100%;
 	background-color:#FFCCCC;
 	border:1px solid #CC0000;
+	height: 100px;
 }

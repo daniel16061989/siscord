@@ -12,6 +12,7 @@ import org.apache.struts2.convention.annotation.Result;
 
 import br.com.ufu.bsi.dao.excecoes.SiscordGenericException;
 import br.com.ufu.bsi.dto.InformacaoLogin;
+import br.com.ufu.bsi.dto.Professor;
 import br.com.ufu.bsi.dto.Usuario;
 import br.com.ufu.bsi.util.EncryptionUtils;
 
@@ -68,9 +69,16 @@ public class LoginAction extends GenericAction {
 					}
 				}
 				
+				if(TIPO_USUARIO.equals(Usuario.TIPO_USUARIO_PROFESSOR)) {
+					Professor p = new Professor();
+					p = professorService.findByUsuario(usuarioValidado);
+					
+					this.usuarioLogado.setObject(p);
+				}
+				
 				HttpSession session = request.getSession();
 				sessionConcierge.adicionarUsuarioLogado(usuario.getLogin(), session);
-
+				
 				this.usuarioLogado.setAutenticado(Boolean.TRUE);
 				this.usuarioLogado.setUsuario(usuarioValidado);
 

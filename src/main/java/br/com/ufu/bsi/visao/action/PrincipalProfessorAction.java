@@ -27,6 +27,7 @@ public class PrincipalProfessorAction extends GenericAction {
 	
 	@Action(value = "index", results = {@Result(name = "success", location = "/professor/principal.jsp")})
 	public String index() {
+//		Professor p = (Professor) usuarioLogado.getObject();
 		mensagensGeraisProfessor = new ArrayList<Mensagem>();
 		try {
 			mensagensGeraisProfessor = mensagemService.findByStatus(Mensagem.STATUS_PROFESSOR);

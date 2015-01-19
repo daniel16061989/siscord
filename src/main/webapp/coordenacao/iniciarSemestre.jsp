@@ -20,6 +20,7 @@
 <link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/normalize.css"/>" />
 <link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/style.css"/>" />
 <link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/jquery-ui.min.css"/>" />
+<link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/mensagem-sistema.css"/>" />
 
 <script type="text/javascript" src='<s:url value="/resources/js/function.js" />'></script>
 <script type="text/javascript" src='<s:url value="/resources/js/jquery-1.9.1.js" />'></script>
@@ -28,6 +29,8 @@
 <script type="text/javascript" >
 
 $(document).ready(function() {
+	$('.alert').hide();
+	
 	$.datepicker.regional['pt-BR'] = {
 			closeText: 'Fechar',
 			prevText: '&#x3c;Anterior',
@@ -56,14 +59,17 @@ $(document).ready(function() {
 	$('#btn-salvar-data').click(function() {
 		var ano = $('#ano').val();
 		var semestre = $('#semestre').val();
-		var dataInico = $('#data-inicio').val();
+		var dataInicio = $('#data-inicio').val();
 		var dataFim = $('#data-fim').val();
 		
+		$('#mensagem').html('Semestre salvo com sucesso.');
+		$('.alert').show();
+		
 		$.post("../iniciarSemestre/salvarDados", {
-			ano : ano, semestre : semestre, dataInico : dataInico, dataFim : dataFim
+			ano : ano, semestre : semestre, dataInicio : dataInicio, dataFim : dataFim
 		}, function(data) {
 			if (data['success']) {
-				alert('Dados salvos com sucesso');
+				
 			}
 		});
 	});
@@ -107,10 +113,14 @@ $(document).ready(function() {
 		</div>
 		<div class="white-grid-layout">
 			<div id="content-box">
+				<div class="alert alert-success">
+		 			<a href="#" class="close" data-dismiss="alert">&times;</a>
+		 			<strong>Sucesso</strong>
+		 			<div id="mensagem"> </div> 
+		 		</div>
+			
 				<div id="content">
-					<form class="form-left" id="solicitacao" name="solicitacao"
-						action="../controller/cSubmeterSolicitacao.php" method="POST"
-						enctype="multipart/form-data" novalidate="novalidate">
+					<form class="form-left" novalidate="novalidate">
 
 						<h1>Bem Vindo</h1>
 

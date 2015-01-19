@@ -18,6 +18,8 @@ public class UsuarioLogado implements Serializable {
 
 	private Usuario usuario;
 
+	private Object object;
+	
 	private Boolean autenticado = Boolean.FALSE;
 	
 	private InformacaoLogin informacaoLogin;
@@ -34,6 +36,14 @@ public class UsuarioLogado implements Serializable {
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+	
+	public Object getObject() {
+		return object;
+	}
+
+	public void setObject(Object object) {
+		this.object = object;
 	}
 
 	public Boolean getAutenticado() {

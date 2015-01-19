@@ -26,7 +26,7 @@ public class MensagemServiceImpl extends GenericServiceImpl<Mensagem> implements
 
 	public List<Mensagem> findByStatus(String status) throws SiscordGenericException {
 		try {
-			return mensagemDAO.findByStatus(status);
+			return mensagemDAO.findByStatusOrderByDataMensagemDesc(status);
 		} catch (Exception e) {
 			throw new SiscordGenericException(e.getMessage(), e);
 		}

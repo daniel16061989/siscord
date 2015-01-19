@@ -16,7 +16,6 @@ import org.apache.struts2.convention.annotation.Result;
 import br.com.ufu.bsi.dao.excecoes.SiscordGenericException;
 import br.com.ufu.bsi.dto.Disciplina;
 import br.com.ufu.bsi.dto.Professor;
-import br.com.ufu.bsi.dto.ProfessorTurma;
 import br.com.ufu.bsi.dto.ReposicaoAula;
 
 @ParentPackage("default")

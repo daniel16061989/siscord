@@ -9,4 +9,6 @@ import br.com.ufu.bsi.dto.ProgramaPlanoDisciplina;
 public interface ProgramaPlanoDisciplinaService extends GenericService<ProgramaPlanoDisciplina> {
 
 	List<ProgramaPlanoDisciplina> findByDisciplina(Disciplina disciplina) throws SiscordGenericException;
+	
+	List<ProgramaPlanoDisciplina> findByPlanoDisciplinaStatus(Character status) throws SiscordGenericException;
 }

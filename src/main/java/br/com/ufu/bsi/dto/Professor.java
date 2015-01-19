@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "professores")
@@ -26,6 +27,16 @@ public class Professor implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "id_usuario")
 	private Usuario usuario;
+	
+	@Column(name = "tipo_professor")
+	private Character tipoProfessor;
+	
+	@Transient
+	public static final Character TIPO_PROFESSOR_COORDENADOR = 'C';
+	@Transient
+	public static final Character TIPO_PROFESSOR_NORMAL = 'N';
+	@Transient
+	public static final Character TIPO_PROFESSOR_COLEGIADO = 'B';
 	
 	public Integer getIdProfessor() {
 		return idProfessor;
@@ -51,4 +62,12 @@ public class Professor implements Serializable {
 		this.usuario = usuario;
 	}
 
+	public Character getTipoProfessor() {
+		return tipoProfessor;
+	}
+
+	public void setTipoProfessor(Character tipoProfessor) {
+		this.tipoProfessor = tipoProfessor;
+	}
+	
 }

@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "planos_disciplinas")
@@ -41,7 +42,23 @@ public class PlanoDisciplina implements Serializable {
 	
 	@Column(name = "bibliografia")
 	private String bibliografia;
+	
+	@Column(name = "status")
+	private Character status;
 
+	@Transient
+	public static final Character STATUS_ABERTO = 'A';
+	@Transient
+	public static final Character STATUS_COORDENADOR = 'C';
+	@Transient
+	public static final Character STATUS_VOLTAR_COORDENADOR = 'D';
+	@Transient
+	public static final Character STATUS_COLEGIADO = 'B';
+	@Transient
+	public static final Character STATUS_VOLTAR_COLEGIADO = 'E';
+	@Transient
+	public static final Character STATUS_FINAL = 'F';
+	
 	public Integer getIdPlanoDisciplina() {
 		return idPlanoDisciplina;
 	}
@@ -104,6 +121,14 @@ public class PlanoDisciplina implements Serializable {
 
 	public void setBibliografia(String bibliografia) {
 		this.bibliografia = bibliografia;
+	}
+
+	public Character getStatus() {
+		return status;
+	}
+
+	public void setStatus(Character status) {
+		this.status = status;
 	}
 
 }

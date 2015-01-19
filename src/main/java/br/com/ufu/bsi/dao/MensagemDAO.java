@@ -11,7 +11,8 @@ import br.com.ufu.bsi.dto.Usuario;
 
 public interface MensagemDAO extends JpaRepository<Mensagem, Integer> {
 
-	List<Mensagem> findByStatus(String status);
+	// SELECT * FROM `mensagens` order by data_mensagem desc
+	List<Mensagem> findByStatusOrderByDataMensagemDesc(String status);
 
 	List<Mensagem> findByUsuario(Usuario usuario);
 	
