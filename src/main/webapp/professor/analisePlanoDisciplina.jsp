@@ -1,3 +1,5 @@
+<%@page import="br.com.ufu.bsi.session.UsuarioLogado"%>
+<%@page import="br.com.ufu.bsi.dto.Professor"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -92,12 +94,17 @@ $(document).ready(function() {
 		<div class="grid-layout">
 			<nav id="navigation">
 				<ul id="main-menu">
-					<li><a href="<s:url value="/principalCoordenacao"/>"><i class="fa fa-home fa"></i>Home</a></li>
-					<li><a href="<s:url value="/iniciarSemestre"/>"><i class="fa-file fa"></i>Iniciar Semestre</a></li>
-					<li><a href="<s:url value="/enviarMensagem"/>"><i class="fa-user fa"></i>Mensagens</a></li>
-					<li><a href="<s:url value="/disciplinas"/>"><i class="fa-star fa"></i>Disciplinas</a></li>
-					<li><a href="<s:url value="/usuarios"/>"><i class="fa-info-circle fa"></i> Usuários</a></li>
-					<li><a href="<s:url value="/visualizarSimulacaoAjusteMatricula"/>"><i class="fa-file fa"></i>Grades Horarias</a></li>
+					<li><a href="<s:url value="/principalProfessor"/>"><i class="fa fa-home fa"></i> Home </a></li>
+					<li><a href="<s:url value="/reposicaoAula"/>"><i class="fa-file fa"></i>Reposição de Aula </a></li>
+					<li><a href="<s:url value="/planoDisciplina"/>"><i class="fa-user fa"></i>Plano de Disciplina </a></li>
+					<% UsuarioLogado u = (UsuarioLogado) request.getAttribute("usuarioLogado");
+					   Professor p = (Professor) u.getObject();
+					   if(!(p.getTipoProfessor().equals(Professor.TIPO_PROFESSOR_NORMAL))) {
+					%>
+						<li><a href="<s:url value="/analisePlanoDisciplina"/>"><i class="fa-user fa"></i>Analisar Planos Disciplina </a></li>
+					<% } %>
+					<li><a href=""><i class="fa-star fa"></i> Links Úteis</a></li>
+					<li><a href=""><i class="fa-info-circle fa"></i> Sobre</a></li>
 				</ul>
 			</nav>
 		</div>
