@@ -115,8 +115,41 @@ $(document).ready(function() {
 						action="../controller/cSubmeterSolicitacao.php" method="POST"
 						enctype="multipart/form-data" novalidate="novalidate">
 
-						<h1>Bem Vindo</h1>
+						<h1>Plano da Disciplina</h1>
+						
+						<div>
+							<div style="float: left; min-width: 30%; color: white;">a</div>
+							<div style="float: left;">
+								<input id="aprovar" name="aprovar" type="submit" value="Aprovar">
+							</div>
+							<div style="float: left;">
+								<input id="reprovar" name="reprovar" type="submit" value="Reprovar">
+							</div>
+						</div>
+						
+						<input type="hidden" name="idProgramaPlanoDisciplina" id="idProgramaPlanoDisciplina" />
+						
+						<textarea disabled maxlength="250" name="ementa" id="ementa" placeholder="Descreva a ementa"></textarea>
 
+						<label>Metodologia</label>
+						<textarea disabled maxlength="250" name="metodologia" id="metodologia" placeholder="Descreva a metodologia"></textarea>
+						
+						<label>Avaliação</label>
+						<textarea disabled maxlength="250" name="avaliacao" id="avaliacao" placeholder="Descreva as avaliações"></textarea>
+						
+						<label>Atendimento</label>
+						<textarea disabled maxlength="250" name="atendimento" id="atendimento" placeholder="Digite os dias e horários de atendimento"></textarea>
+						
+						<label>Recuperação</label>
+						<textarea disabled maxlength="250" name="recuperacao" id="recuperacao" placeholder="Descreva os meios de recuperacao"></textarea>
+						
+						<label>Bibliografia</label>
+						<textarea disabled maxlength="250" name="bibliografia" id="bibliografia" placeholder="Descreva a bibliografia"></textarea>
+					</form>
+
+					<div class="form-help">
+						<h2>Adicionar ou Atualizar Disciplina</h2>
+						<form method="post" action="../disciplinas/salvarDisciplina">
 						<table style="width:100%;">
 							<tr>
 								<th>Discplina</th>
@@ -133,85 +166,6 @@ $(document).ready(function() {
 			               		</tr>
 				            </s:iterator>
 						</table>
-					</form>
-
-					<div class="form-help">
-						<h2>Adicionar ou Atualizar Disciplina</h2>
-						<form method="post" action="../disciplinas/salvarDisciplina">
-						<table style="width:100%;">
-							<tr>
-								<td>Codigo:</td>
-								<td>
-									<input id="codigoDisciplina" name="codigoDisciplina" type="text" placeholder="Sigla da Disciplina" />
-								</td>
-							</tr>
-							<tr>
-								<td>Nome:</td>
-								<td>
-									<input id="nomeDisciplina" name="nomeDisciplina" type="text" placeholder="Nome da Disciplina" />
-								</td>
-							</tr>
-							<tr>
-								<td>Carga Horaria:</td>
-								<td>
-									<input id="cargaHoraria" name="cargaHoraria" type="text" placeholder="Carga Horaria da Disciplina" />
-								</td>
-							</tr>
-							<tr>
-								<td>Periodo:</td>
-								<td>
-									<div class="dropdown">
-										<select name="periodoDisciplina" id="periodoDisciplina" class="dropdown-select" required="">
-											<option value="" disabled="" selected="" style="display: none;">Selecione o periodo...</option>
-				                			<option value="1"> 1° Periodo </option>
-				                			<option value="2"> 2° Periodo </option>
-				                			<option value="3"> 3° Periodo </option>
-				                			<option value="4"> 4° Periodo </option>
-				                			<option value="5"> 5° Periodo </option>
-				                			<option value="6"> 6° Periodo </option>
-				                			<option value="7"> 7° Periodo </option>
-				                			<option value="8"> 8° Periodo </option>
-				                			<option value="9"> Outro </option>
-										</select>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td>Professor:</td>
-								<td>
-									<div class="dropdown">
-										<select name="idProfessor" id="idProfessor" class="dropdown-select" required="">
-											<option value="" disabled="" selected="" style="display: none;">Selecione o Professor...</option>
-											<s:iterator value="professorDisciplinas" var="user" status="stat">
-				                				<option value="<s:property value="idProfessor"/>"> <s:property value="nomeProfessor"/> </option>
-				                			</s:iterator>
-										</select>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td>Turma:</td>
-								<td>
-									<div class="dropdown">
-										<select name="idTurma" id="idTurma" class="dropdown-select" required="">
-											<option value="" disabled="" selected="" style="display: none;">Selecione a Turma...</option>
-											<s:iterator value="turmaDisciplinas" var="user" status="stat">
-				                				<option value="<s:property value="idTurma"/>"> <s:property value="codigoTurma"/> </option>
-				                			</s:iterator>
-										</select>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td>Horarios:</td>
-								<td>
-									<input id="horariosAula" name="horariosAula" type="text" placeholder="Horarios da aula" />
-								</td>
-							</tr>
-						</table>
-						<center>
-							<input id="submit" name="submit" type="submit" value="Salvar">
-						</center>
 					</div>
 				</div>
 			</div>
@@ -231,7 +185,6 @@ $(document).ready(function() {
 			</div>
 		</footer>
 	</div>
-
 
 	<iframe src="about:blank"
 		style="height: 0px; width: 0px; visibility: hidden; border: none;">This
