@@ -14,6 +14,8 @@ import br.com.ufu.bsi.dto.PlanoDisciplina;
 import br.com.ufu.bsi.dto.Professor;
 import br.com.ufu.bsi.dto.ProgramaPlanoDisciplina;
 
+import com.google.gson.Gson;
+
 @ParentPackage("default")
 @InterceptorRef("professor")
 @Namespace(value="/analisePlanoDisciplina")
@@ -39,6 +41,27 @@ public class AnalisePlanoDisciplinaAction extends GenericAction {
 			e.printStackTrace();
 		}
 		
+		return SUCCESS;
+	}
+	
+	@Action(value = "buscarPlanoDisciplina", results = {@Result(name="success", type="json", params = {"root","jsonData"}),
+			   											@Result(name="error", type="json", params = {"root","jsonData"})})
+	public String buscarPlanoDisciplina() {
+		String idProgramaPlanoDisciplina = request.getParameter("idProgramaPlanoDisciplina");
+		Gson gson = new Gson();
+		String jsonProgramaPlanoDisciplina = "";
+	
+		try {
+			ProgramaPlanoDisciplina ppd = new ProgramaPlanoDisciplina();
+			ppd = programaPlanoDisciplinaService.findOne(Integer.parseInt(idProgramaPlanoDisciplina));
+			
+			jsonProgramaPlanoDisciplina = gson.toJson(ppd);
+		
+		} catch (SiscordGenericException e) {
+			e.printStackTrace();
+		}
+	
+		jsonData.put("success", jsonProgramaPlanoDisciplina);
 		return SUCCESS;
 	}
 

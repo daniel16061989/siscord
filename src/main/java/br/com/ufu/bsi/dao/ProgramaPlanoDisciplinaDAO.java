@@ -12,4 +12,6 @@ public interface ProgramaPlanoDisciplinaDAO extends JpaRepository<ProgramaPlanoD
 	List<ProgramaPlanoDisciplina> findByDisciplina(Disciplina disciplina);
 	
 	List<ProgramaPlanoDisciplina> findByPlanoDisciplinaStatus(Character status);
+	
+	List<ProgramaPlanoDisciplina> findByDisciplinaAndPlanoDisciplinaStatus(Disciplina disciplina, Character status);
 }

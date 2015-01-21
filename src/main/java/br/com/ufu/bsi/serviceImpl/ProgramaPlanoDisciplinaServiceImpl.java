@@ -39,6 +39,14 @@ public class ProgramaPlanoDisciplinaServiceImpl extends GenericServiceImpl<Progr
 		}
 	}
 	
+	public List<ProgramaPlanoDisciplina> findByDisciplinaAndPlanoDisciplinaStatus(Disciplina disciplina, Character status) throws SiscordGenericException {
+		try {
+			return programaPlanoDisciplinaDAO.findByDisciplinaAndPlanoDisciplinaStatus(disciplina, status);
+		} catch (Exception e) {
+			throw new SiscordGenericException(e.getMessage(), e);
+		}
+	}
+	
 	public void setProgramaPlanoDisciplinaDAO(ProgramaPlanoDisciplinaDAO programaPlanoDisciplinaDAO) {
 		this.programaPlanoDisciplinaDAO = programaPlanoDisciplinaDAO;
 	}

@@ -85,6 +85,7 @@ public class PlanoDisciplinaAction extends GenericAction {
 			planoDisciplina.setEmenta(ementa);
 			planoDisciplina.setMetodologia(metodologia);
 			planoDisciplina.setRecuperacao(recuperacao);
+			planoDisciplina.setStatus(PlanoDisciplina.STATUS_COLEGIADO);
 
 			planoDisciplina = planoDisciplinaService.save(planoDisciplina);
 			

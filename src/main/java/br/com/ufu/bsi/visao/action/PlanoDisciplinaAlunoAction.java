@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 
 import br.com.ufu.bsi.dao.excecoes.SiscordGenericException;
 import br.com.ufu.bsi.dto.Disciplina;
+import br.com.ufu.bsi.dto.PlanoDisciplina;
 import br.com.ufu.bsi.dto.ProgramaDisciplina;
 import br.com.ufu.bsi.dto.ProgramaPlanoDisciplina;
 
@@ -49,7 +50,12 @@ public class PlanoDisciplinaAlunoAction extends GenericAction {
 		String jsonPlanoDisciplina = "";
 		try {
 			disciplina = disciplinaService.findOne(Integer.valueOf(idDisciplina));
-			programaPlanoDisciplinas = programaPlanoDisciplinaService.findByDisciplina(disciplina);
+			programaPlanoDisciplinas = programaPlanoDisciplinaService.findByDisciplinaAndPlanoDisciplinaStatus(disciplina, PlanoDisciplina.STATUS_FINAL);
+			
+			if(programaPlanoDisciplinas == null) {
+				jsonData.put("error", "error");
+				return ERROR;
+			}
 			
 			jsonPlanoDisciplina = gson.toJson(programaPlanoDisciplinas);
 			
@@ -78,7 +84,7 @@ public class PlanoDisciplinaAlunoAction extends GenericAction {
 		String jsonProgramaDisciplina = "";
 		try {
 			disciplina = disciplinaService.findOne(Integer.valueOf(idDisciplina));
-			programaPlanoDisciplinas = programaPlanoDisciplinaService.findByDisciplina(disciplina);
+			programaPlanoDisciplinas = programaPlanoDisciplinaService.findByDisciplinaAndPlanoDisciplinaStatus(disciplina, PlanoDisciplina.STATUS_FINAL);
 			
 			programaDisciplinas = programaDisciplinaService.findByPlanoDisciplina(programaPlanoDisciplinas.get(0).getPlanoDisciplina());
 			

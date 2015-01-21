@@ -25,33 +25,24 @@
 <script type="text/javascript" >
 $(document).ready(function() {
 
-	$('.editar-disciplina').click(function() {
-		var idDisciplina = $(this).attr('id');
+	$('.selecionar-plano-disciplina').click(function() {
+		var idProgramaPlanoDisciplina = $(this).attr('id');
 		
-		$.post("../disciplinas/buscarDisciplina", {
-			idDisciplina : idDisciplina
+		$.post("../analisePlanoDisciplina/buscarPlanoDisciplina", {
+			idProgramaPlanoDisciplina : idProgramaPlanoDisciplina
 		}, function(data) {
 			if (data['success']) {
 				var jsonData = jQuery.parseJSON(data['success']);
-				$('#codigoDisciplina').val(jsonData.codigoDisciplina);
-				$('#nomeDisciplina').val(jsonData.nomeDisciplina);
-				$('#cargaHoraria').val(jsonData.cargaHoraria);
-				$('#periodoDisciplina').val(jsonData.periodo);
-				$('#idProfessor').val(jsonData.professor.idProfessor);
-				$('#idTurma').val(jsonData.turma.idTurma);
-				$('#horariosAula').val(jsonData.horariosAula);
-			}
-		});
-	});
-	
-	$('.apagar-disciplina').click(function() {
-		var idDisciplina = $(this).attr('id');
-		
-		$.post("../disciplinas/excluirDisciplina", {
-			idDisciplina : idDisciplina
-		}, function(data) {
-			if (data['success']) {
-				alert("Disciplina removida com sucesso!");
+
+				$.each(jsonData, function(key, value) {
+					$('#idProgramaPlanoDisciplina').val(value.idProgramaPlanoDisciplina);
+					$('#ementa').val(value.planoDisciplina.ementa);
+					$('#metodologia').val(value.planoDisciplina.metodologia);
+					$('#avaliacao').val(value.planoDisciplina.avaliacao);
+					$('#atendimento').val(value.planoDisciplina.atendimento);
+					$('#recuperacao').val(value.planoDisciplina.recuperacao);
+					$('#bibliografia').val(value.planoDisciplina.bibliografia);
+				});
 			}
 		});
 	});
@@ -62,13 +53,10 @@ $(document).ready(function() {
 
 <style type="text/css">
 
-.editar-disciplina {
+.selecionar-plano-disciplina {
 	cursor:pointer;
 }
 
-.apagar-disciplina {
-	cursor:pointer;
-}
  </style>
 
 </head>
@@ -129,6 +117,9 @@ $(document).ready(function() {
 						
 						<input type="hidden" name="idProgramaPlanoDisciplina" id="idProgramaPlanoDisciplina" />
 						
+						<textarea disabled maxlength="250" name="disciplina" id="disciplina"></textarea>
+						
+						<label>Ementa</label>
 						<textarea disabled maxlength="250" name="ementa" id="ementa" placeholder="Descreva a ementa"></textarea>
 
 						<label>Metodologia</label>
@@ -162,7 +153,7 @@ $(document).ready(function() {
 				                    <td> <s:property value="disciplina.codigoDisciplina"/> </td>
 				           	        <td> <s:property value="disciplina.turma.codigoTurma"/> </td>
 				           	        <td> <s:property value="planoDisciplina.professor.nomeProfessor"/> </td>
-				           	        <td id="<s:property value="idProgramaPlanoDisciplina"/>" class="editar-disciplina"> <i class="fa fa-book fa-fw"></i> </td>
+				           	        <td id="<s:property value="idProgramaPlanoDisciplina"/>" class="selecionar-plano-disciplina"> <i class="fa fa-book fa-fw"></i> </td>
 			               		</tr>
 				            </s:iterator>
 						</table>
