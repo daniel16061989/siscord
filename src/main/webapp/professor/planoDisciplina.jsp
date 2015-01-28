@@ -77,7 +77,7 @@ $(document).ready(function() {
 		}, function(data) {
 			if (data['success']) {
 				alert("Plano disciplina salvo com sucesso");
-			}
+			} 
 		});
 	});
 	

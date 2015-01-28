@@ -51,7 +51,7 @@ public class AnalisePlanoDisciplinaAction extends GenericAction {
 //		Gson gson = new Gson();
 		String jsonProgramaPlanoDisciplina = "";
 	
-		try {
+		try { 
 			ProgramaPlanoDisciplina ppd = new ProgramaPlanoDisciplina();
 			ppd = programaPlanoDisciplinaService.findOne(Integer.parseInt(idProgramaPlanoDisciplina));
 			

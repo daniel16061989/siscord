@@ -58,7 +58,7 @@ public class PlanoDisciplinaAlunoAction extends GenericAction {
 			}
 			
 			jsonPlanoDisciplina = gson.toJson(programaPlanoDisciplinas);
-			
+			 
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 		} catch (SiscordGenericException e) {

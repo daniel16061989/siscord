@@ -42,7 +42,7 @@ $(document).ready(function() {
 					$('#atendimento').val(aux[5]);
 					$('#recuperacao').val(aux[6]);
 					$('#bibliografia').val(aux[7]);
-				}
+				} 
 			}
 		});
 	});

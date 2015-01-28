@@ -67,7 +67,7 @@ public class PlanoDisciplinaAction extends GenericAction {
 		
 			Disciplina disciplina = new Disciplina();
 			disciplina = disciplinaService.findOne(Integer.valueOf(idDisciplina));
-			
+			 
 			List<Semestre> semestre = new ArrayList<Semestre>();
 			semestre = semestreService.findAll();
 
