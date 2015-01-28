@@ -48,20 +48,82 @@ public class AnalisePlanoDisciplinaAction extends GenericAction {
 			   											@Result(name="error", type="json", params = {"root","jsonData"})})
 	public String buscarPlanoDisciplina() {
 		String idProgramaPlanoDisciplina = request.getParameter("idProgramaPlanoDisciplina");
-		Gson gson = new Gson();
+//		Gson gson = new Gson();
 		String jsonProgramaPlanoDisciplina = "";
 	
 		try {
 			ProgramaPlanoDisciplina ppd = new ProgramaPlanoDisciplina();
 			ppd = programaPlanoDisciplinaService.findOne(Integer.parseInt(idProgramaPlanoDisciplina));
 			
-			jsonProgramaPlanoDisciplina = gson.toJson(ppd);
+//			jsonProgramaPlanoDisciplina = gson.toJson(ppd);
+			jsonProgramaPlanoDisciplina = ppd.getIdProgramaPlanoDisciplina()+"&"+ppd.getDisciplina().getCodigoDisciplina()+"&"+ppd.getPlanoDisciplina().getEmenta()+"&"+
+					ppd.getPlanoDisciplina().getMetodologia()+"&"+ppd.getPlanoDisciplina().getAvaliacao()+"&"+ppd.getPlanoDisciplina().getAtendimento()+"&"+
+					ppd.getPlanoDisciplina().getRecuperacao()+"&"+ppd.getPlanoDisciplina().getBibliografia();
 		
 		} catch (SiscordGenericException e) {
 			e.printStackTrace();
 		}
 	
 		jsonData.put("success", jsonProgramaPlanoDisciplina);
+		return SUCCESS;
+	}
+	
+	@Action(value = "aprovarPlanoDisciplina", results = {@Result(name="success", type="json", params = {"root","jsonData"}),
+														 @Result(name="error", type="json", params = {"root","jsonData"})})
+	public String aprovarPlanoDisciplina() {
+		String idProgramaPlanoDisciplina = request.getParameter("idProgramaPlanoDisciplina");
+		
+		try {
+			ProgramaPlanoDisciplina ppd = new ProgramaPlanoDisciplina();
+			ppd = programaPlanoDisciplinaService.findOne(Integer.parseInt(idProgramaPlanoDisciplina));
+			
+			PlanoDisciplina p = new PlanoDisciplina();
+			p = ppd.getPlanoDisciplina();
+		
+			if(p.getStatus().equals(PlanoDisciplina.STATUS_COLEGIADO)) {
+				p.setStatus(PlanoDisciplina.STATUS_COORDENADOR);
+				planoDisciplinaService.save(p);
+				
+			} else if(p.getStatus().equals(PlanoDisciplina.STATUS_COORDENADOR)) {
+				p.setStatus(PlanoDisciplina.STATUS_FINAL);
+				planoDisciplinaService.save(p);
+			}
+			
+		} catch (SiscordGenericException e) {
+			e.printStackTrace();
+		}
+		
+		jsonData.put("success", "success");
+		return SUCCESS;
+	}
+	
+	@Action(value = "reprovarPlanoDisciplina", results = {@Result(name="success", type="json", params = {"root","jsonData"}),
+			 											  @Result(name="error", type="json", params = {"root","jsonData"})})
+	public String reprovarPlanoDisciplina() {
+		String idProgramaPlanoDisciplina = request.getParameter("idProgramaPlanoDisciplina");
+
+		try {
+			ProgramaPlanoDisciplina ppd = new ProgramaPlanoDisciplina();
+			ppd = programaPlanoDisciplinaService.findOne(Integer.parseInt(idProgramaPlanoDisciplina));
+			
+			PlanoDisciplina p = new PlanoDisciplina();
+			p = ppd.getPlanoDisciplina();
+			
+			if(p.getStatus().equals(PlanoDisciplina.STATUS_COLEGIADO)) {
+				p.setStatus(PlanoDisciplina.STATUS_VOLTAR_COLEGIADO);
+				planoDisciplinaService.save(p);
+				
+			} else if(p.getStatus().equals(PlanoDisciplina.STATUS_COORDENADOR)) {
+				p.setStatus(PlanoDisciplina.STATUS_VOLTAR_COORDENADOR);
+				planoDisciplinaService.save(p);
+				
+			}
+	
+		} catch (SiscordGenericException e) {
+			e.printStackTrace();
+		}
+	
+		jsonData.put("success", "success");
 		return SUCCESS;
 	}
 

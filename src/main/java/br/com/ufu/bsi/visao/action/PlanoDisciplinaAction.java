@@ -57,6 +57,7 @@ public class PlanoDisciplinaAction extends GenericAction {
 		String recuperacao = request.getParameter("recuperacao");
 		String bibliografia = request.getParameter("bibliografia");
 		String descricaoDia = request.getParameter("descricaoDia");
+		String idPlanoDisciplina = request.getParameter("idPlanoDisciplina");
 		
 		String conteudoAula[] = descricaoDia.split(";");  
 		
@@ -78,6 +79,24 @@ public class PlanoDisciplinaAction extends GenericAction {
 			// plano de disciplina
 			PlanoDisciplina planoDisciplina = new PlanoDisciplina();
 			
+			if(idPlanoDisciplina != null) {
+				if(!(idDisciplina.trim().equals(""))) {
+//					planoDisciplina.setIdPlanoDisciplina(Integer.parseInt(idPlanoDisciplina));
+					
+					planoDisciplina = planoDisciplinaService.findOne(Integer.parseInt(idPlanoDisciplina));
+					
+					if(planoDisciplina.getStatus().equals(PlanoDisciplina.STATUS_VOLTAR_COLEGIADO)) {
+						planoDisciplina.setStatus(PlanoDisciplina.STATUS_COLEGIADO);
+					} else {
+						planoDisciplina.setStatus(PlanoDisciplina.STATUS_COORDENADOR);
+					}
+				} else {
+					planoDisciplina.setStatus(PlanoDisciplina.STATUS_COLEGIADO);
+				}
+			} else {
+				planoDisciplina.setStatus(PlanoDisciplina.STATUS_COLEGIADO);
+			}
+			
 			planoDisciplina.setProfessor(professor);
 			planoDisciplina.setAtendimento(atendimento);
 			planoDisciplina.setAvaliacao(avaliacao);
@@ -85,7 +104,6 @@ public class PlanoDisciplinaAction extends GenericAction {
 			planoDisciplina.setEmenta(ementa);
 			planoDisciplina.setMetodologia(metodologia);
 			planoDisciplina.setRecuperacao(recuperacao);
-			planoDisciplina.setStatus(PlanoDisciplina.STATUS_COLEGIADO);
 
 			planoDisciplina = planoDisciplinaService.save(planoDisciplina);
 			

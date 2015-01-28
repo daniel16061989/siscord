@@ -52,7 +52,7 @@ public class PlanoDisciplinaAlunoAction extends GenericAction {
 			disciplina = disciplinaService.findOne(Integer.valueOf(idDisciplina));
 			programaPlanoDisciplinas = programaPlanoDisciplinaService.findByDisciplinaAndPlanoDisciplinaStatus(disciplina, PlanoDisciplina.STATUS_FINAL);
 			
-			if(programaPlanoDisciplinas == null) {
+			if(programaPlanoDisciplinas.size() == 0) {
 				jsonData.put("error", "error");
 				return ERROR;
 			}

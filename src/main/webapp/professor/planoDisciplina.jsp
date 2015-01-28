@@ -58,6 +58,7 @@ $(document).ready(function() {
 	
 	$('#salvar').click(function() {
 		var disciplina = idDisciplina;
+		var idPlanoDisciplina = $('#idPlanoDisciplina');
 		var ementa = $('#ementa').val();
 		var metodologia = $('#metodologia').val();
 		var avaliacao = $('#avaliacao').val();
@@ -71,7 +72,8 @@ $(document).ready(function() {
 		}
 		
 		$.post("../planoDisciplina/salvarPlanoDisciplina", {
-			disciplina : disciplina, ementa : ementa, metodologia : metodologia, avaliacao : avaliacao, atendimento : atendimento, recuperacao : recuperacao, bibliografia : bibliografia, descricaoDia : descricaoDia
+			disciplina : disciplina, ementa : ementa, metodologia : metodologia, avaliacao : avaliacao, atendimento : atendimento, 
+			recuperacao : recuperacao, bibliografia : bibliografia, descricaoDia : descricaoDia, idPlanoDisciplina : idPlanoDisciplina
 		}, function(data) {
 			if (data['success']) {
 				alert("Plano disciplina salvo com sucesso");
@@ -152,6 +154,8 @@ $(document).ready(function() {
 							</div>
 							</div-1>
 						</div>
+
+						<input type="hidden" name="idPlanoDisciplina" id="idPlanoDisciplina" />
 
 						<label>Ementa</label>
 						<textarea maxlength="250" name="ementa" id="ementa" placeholder="Descreva a ementa"></textarea>

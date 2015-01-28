@@ -19,7 +19,7 @@
 <link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/normalize.css"/>" />
 <link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/style.css"/>" />
 
-<script type="text/javascript" src='<s:url value="/resources/js/function.js" />'></script>
+<!-- <script type="text/javascript" src='<s:url value="/resources/js/function.js" />'></script> -->
 <script type="text/javascript" src='<s:url value="/resources/js/jquery-1.9.1.js" />'></script>
 
 <script type="text/javascript" >
@@ -32,17 +32,41 @@ $(document).ready(function() {
 			idProgramaPlanoDisciplina : idProgramaPlanoDisciplina
 		}, function(data) {
 			if (data['success']) {
-				var jsonData = jQuery.parseJSON(data['success']);
-
-				$.each(jsonData, function(key, value) {
-					$('#idProgramaPlanoDisciplina').val(value.idProgramaPlanoDisciplina);
-					$('#ementa').val(value.planoDisciplina.ementa);
-					$('#metodologia').val(value.planoDisciplina.metodologia);
-					$('#avaliacao').val(value.planoDisciplina.avaliacao);
-					$('#atendimento').val(value.planoDisciplina.atendimento);
-					$('#recuperacao').val(value.planoDisciplina.recuperacao);
-					$('#bibliografia').val(value.planoDisciplina.bibliografia);
-				});
+				var aux = data['success'].split('&');
+				for(var i = 0; i < aux.length; i++) {
+					$('#idProgramaPlanoDisciplina').val(aux[0]);
+					$('#disciplina').val(aux[1]);
+					$('#ementa').val(aux[2]);
+					$('#metodologia').val(aux[3]);
+					$('#avaliacao').val(aux[4]);
+					$('#atendimento').val(aux[5]);
+					$('#recuperacao').val(aux[6]);
+					$('#bibliografia').val(aux[7]);
+				}
+			}
+		});
+	});
+	
+	$('#aprovar').click(function() {
+		var idProgramaPlanoDisciplina = $(this).val();
+		
+		$.post("../analisePlanoDisciplina/aprovarPlanoDisciplina", {
+			idProgramaPlanoDisciplina : idProgramaPlanoDisciplina
+		}, function(data) {
+			if (data['success']) {
+				alert("Aprovado com sucesso");
+			}
+		});
+	});
+	
+	$('#reprovar').click(function() {
+		var idProgramaPlanoDisciplina = $(this).val();
+		
+		$.post("../analisePlanoDisciplina/reprovarPlanoDisciplina", {
+			idProgramaPlanoDisciplina : idProgramaPlanoDisciplina
+		}, function(data) {
+			if (data['success']) {
+				alert("Re-Provado com sucesso");
 			}
 		});
 	});
@@ -99,9 +123,7 @@ $(document).ready(function() {
 		<div class="white-grid-layout">
 			<div id="content-box">
 				<div id="content">
-					<form class="form-left" id="solicitacao" name="solicitacao"
-						action="../controller/cSubmeterSolicitacao.php" method="POST"
-						enctype="multipart/form-data" novalidate="novalidate">
+					<form class="form-left" action="#" method="POST" >
 
 						<h1>Plano da Disciplina</h1>
 						
@@ -140,23 +162,24 @@ $(document).ready(function() {
 
 					<div class="form-help">
 						<h2>Adicionar ou Atualizar Disciplina</h2>
-						<form method="post" action="../disciplinas/salvarDisciplina">
-						<table style="width:100%;">
-							<tr>
-								<th>Discplina</th>
-								<th>Turma</th>
-								<th>Professor</th>
-								<th> </th>
-							</tr>
-							<s:iterator value="programaPlanoDisciplinas" var="user" status="stat">
+						<form method="post" action="#">
+							<table style="width:100%;">
 								<tr>
-				                    <td> <s:property value="disciplina.codigoDisciplina"/> </td>
-				           	        <td> <s:property value="disciplina.turma.codigoTurma"/> </td>
-				           	        <td> <s:property value="planoDisciplina.professor.nomeProfessor"/> </td>
-				           	        <td id="<s:property value="idProgramaPlanoDisciplina"/>" class="selecionar-plano-disciplina"> <i class="fa fa-book fa-fw"></i> </td>
-			               		</tr>
-				            </s:iterator>
-						</table>
+									<th>Discplina</th>
+									<th>Turma</th>
+									<th>Professor</th>
+									<th> </th>
+								</tr>
+								<s:iterator value="programaPlanoDisciplinas" var="user" status="stat">
+									<tr>
+					                    <td> <s:property value="disciplina.codigoDisciplina"/> </td>
+					           	        <td> <s:property value="disciplina.turma.codigoTurma"/> </td>
+					           	        <td> <s:property value="planoDisciplina.professor.nomeProfessor"/> </td>
+					           	        <td id="<s:property value="idProgramaPlanoDisciplina"/>" class="selecionar-plano-disciplina"> <i class="fa fa-book fa-fw"></i> </td>
+				               		</tr>
+					            </s:iterator>
+							</table>
+						</form>
 					</div>
 				</div>
 			</div>
