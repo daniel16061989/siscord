@@ -28,6 +28,7 @@
 <script type="text/javascript" >
 
 $(document).ready(function() {
+	
 	$.datepicker.regional['pt-BR'] = {
 			closeText: 'Fechar',
 			prevText: '&#x3c;Anterior',
@@ -43,17 +44,22 @@ $(document).ready(function() {
 			weekHeader: 'Sm',
 			dateFormat: 'dd/mm/yy',
 			firstDay: 0,
-			isRTL: false,
-			showMonthAfterYear: false,
+			isRTL: true,
+			showMonthAfterYear: true,
 			yearSuffix: ''};
 	
 	$.datepicker.setDefaults($.datepicker.regional['pt-BR']);
 	
 	$('#dataAula').datepicker();
-	
 	$('#dataAulaReposicao').datepicker();
 });
 </script>
+
+<style type="text/css">
+.ui-widget-content {
+    z-index: 9999 !important;
+}
+</style>
 
 </head>
 
