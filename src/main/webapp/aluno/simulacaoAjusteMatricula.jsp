@@ -349,7 +349,7 @@ table#t01 th	{
 			<div class="grid-layout">
 					<text>Faculdade de Computação</text>
 					<text>Universidade Federal de Uberlândia</text>
-					<text>Copyright © 2014 - Todos os direitos reservados</text>
+					<text>Copyright © 2015 - Todos os direitos reservados</text>
 			</div>
 		</footer>
 	</div>

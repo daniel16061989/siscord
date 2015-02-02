@@ -2,6 +2,7 @@ package br.com.ufu.bsi.serviceImpl;
 
 import java.math.BigInteger;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -35,6 +36,14 @@ public class PlanoDisciplinaServiceImpl extends GenericServiceImpl<PlanoDiscipli
 		try {
 			BigInteger bi = planoDisciplinaDAO.findByDiferencaEntreDatas(data1, data2);
 			return bi.intValue();
+		} catch (Exception e) {
+			throw new SiscordGenericException(e.getMessage(), e);
+		}
+	}
+	
+	public List<PlanoDisciplina> findByStatus(Character status) throws SiscordGenericException {
+		try {
+			return planoDisciplinaDAO.findByStatus(status);
 		} catch (Exception e) {
 			throw new SiscordGenericException(e.getMessage(), e);
 		}

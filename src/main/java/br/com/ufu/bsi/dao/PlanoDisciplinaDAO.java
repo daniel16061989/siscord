@@ -1,6 +1,7 @@
 package br.com.ufu.bsi.dao;
 
 import java.math.BigInteger;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,4 +15,6 @@ public interface PlanoDisciplinaDAO extends JpaRepository<PlanoDisciplina, Integ
 	
 	@Query(value = "SELECT DATEDIFF(?1, ?2) ", nativeQuery = true)
 	BigInteger findByDiferencaEntreDatas(String data1, String data2);
+	
+	List<PlanoDisciplina> findByStatus(Character status);
 }

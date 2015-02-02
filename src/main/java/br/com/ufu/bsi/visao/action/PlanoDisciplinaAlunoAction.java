@@ -30,7 +30,11 @@ public class PlanoDisciplinaAlunoAction extends GenericAction {
 	public String index() {
 		disciplinas = new ArrayList<Disciplina>();
 		try {
-			disciplinas = disciplinaService.findAll();
+			List<ProgramaPlanoDisciplina> ppds = new ArrayList<ProgramaPlanoDisciplina>();
+			ppds = programaPlanoDisciplinaService.findByPlanoDisciplinaStatus(PlanoDisciplina.STATUS_FINAL);
+			for(ProgramaPlanoDisciplina ppd : ppds) {
+				disciplinas.add(ppd.getDisciplina());
+			}
 		} catch (SiscordGenericException e) {
 			e.printStackTrace();
 		}

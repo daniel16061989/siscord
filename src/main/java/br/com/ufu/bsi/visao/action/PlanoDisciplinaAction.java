@@ -124,7 +124,6 @@ public class PlanoDisciplinaAction extends GenericAction {
 			
 			programaPlanoDisciplina.setPlanoDisciplina(planoDisciplina);
 			programaPlanoDisciplina.setDisciplina(disciplina);
-			programaPlanoDisciplina.setStatus(ProgramaPlanoDisciplina.STATUS_PROGRAMA_DISCIPLINA_ESPERA);
 			
 			programaPlanoDisciplinaService.save(programaPlanoDisciplina);
 			

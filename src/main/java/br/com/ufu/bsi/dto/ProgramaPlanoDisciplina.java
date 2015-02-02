@@ -30,16 +30,6 @@ public class ProgramaPlanoDisciplina implements Serializable {
 	@JoinColumn(name = "id_plano_disciplina")
 	private PlanoDisciplina planoDisciplina;
 	
-	@Column(name = "status")
-	private String status;
-	
-	@Transient
-	public static final String STATUS_PROGRAMA_DISCIPLINA_ACEITO = "A";
-	@Transient
-	public static final String STATUS_PROGRAMA_DISCIPLINA_RECUSADO = "R";
-	@Transient
-	public static final String STATUS_PROGRAMA_DISCIPLINA_ESPERA = "E";
-	
 	public Integer getIdProgramaPlanoDisciplina() {
 		return idProgramaPlanoDisciplina;
 	}
@@ -62,14 +52,6 @@ public class ProgramaPlanoDisciplina implements Serializable {
 
 	public void setPlanoDisciplina(PlanoDisciplina planoDisciplina) {
 		this.planoDisciplina = planoDisciplina;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
 	}
 
 }

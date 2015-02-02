@@ -187,15 +187,9 @@ $(document).ready(function() {
 
 		<footer>
 			<div class="grid-layout">
-				<div class="grid-footer-left">
-					<text>Desenvolvido pelo PET-SI</text>
 					<text>Faculdade de Computação</text>
 					<text>Universidade Federal de Uberlândia</text>
-					<text>Copyright © 2013 - Todos os direitos reservados</text>
-				</div>
-				<div class="grid-footer-right">
-					<a href="http://www.petsi.facom.ufu.br/" target="_blank"><img src='<s:url value="/resources/images/petsi.png" />' ></a>
-				</div>
+					<text>Copyright © 2015 - Todos os direitos reservados</text>
 			</div>
 		</footer>
 	</div>
