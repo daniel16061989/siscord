@@ -56,7 +56,7 @@
 				</form>
 			</div>
 			<div id="login-div2">
-				<a href="vIndex.php"><i class="fa-envelope-o fa"></i> Recuperar senha via email</a>
+				<a a href="<s:url value="/cadastrarAluno"/>"><i class="fa-envelope-o fa"></i> cadastrar-se</a>
 			</div>
 		</div>
 	</div>

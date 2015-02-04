@@ -24,8 +24,26 @@
 <script type="text/javascript" src='<s:url value="/resources/js/jquery-1.9.1.js" />'></script>
 
 <script type="text/javascript" >
-$(document).ready(function() {
+var horarios = [];
 
+function overlay() {
+	horarios = [];
+	el = document.getElementById("overlay");
+	el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
+}
+
+function overlayHide() {
+	for(var i = 0; i < horarios.length; i++) {
+		elementos = document.getElementById(horarios[i]);
+		elementos.style.backgroundColor = "white";
+	}
+	horarios = [];
+	el = document.getElementById("overlay");
+	el.style.visibility = "hidden";
+}
+
+$(document).ready(function() {
+	
 	$('.editar-disciplina').click(function() {
 		var idDisciplina = $(this).attr('id');
 		
@@ -56,6 +74,36 @@ $(document).ready(function() {
 			}
 		});
 	});
+	
+	$('#salvar-horarios').click(function() {
+		var aux = "";
+		for(var i = 0; i < horarios.length; i++) {
+			aux = aux + horarios[i];
+			if(i != horarios.length-1) {
+				aux = aux + '-';
+			}
+		}
+		$('#horariosAula').val(aux);
+		horarios = [];
+	});
+	
+	$('#limpar-horarios').click(function() {
+		$('.horarios').css('background-color','white');
+		horarios = [];
+	});
+	
+	$('.horarios').click(function() {
+		var id = $(this).attr('id');
+		var aux = horarios.indexOf(id);
+		if(aux > -1) {
+			horarios.splice(aux, 1);
+			$('#'+id).css('background-color', 'white');
+		} else {
+			horarios.push(id);
+			$('#'+id).css('background-color', 'black');
+		}
+		
+	});
 
 });
 	
@@ -70,7 +118,32 @@ $(document).ready(function() {
 .apagar-disciplina {
 	cursor:pointer;
 }
- </style>
+
+#overlay {
+     visibility: hidden;
+     position: absolute;
+     left: 0px;
+     top: 0px;
+     width:100%;
+     height:100%;
+     text-align:center;
+     z-index: 1000;
+}
+
+#overlay div {
+     width:300px;
+     margin: 100px auto;
+     background-color: #fff;
+     border:1px solid #000;
+     padding:15px;
+     text-align:center;
+}
+
+.horarios {
+	width: 35px;
+}
+
+</style>
 
 </head>
 
@@ -104,6 +177,65 @@ $(document).ready(function() {
 				</ul>
 			</nav>
 		</div>
+		
+		<div id="overlay">
+		     <div>
+		     	<table border="1">
+		     		<tr>
+		     			<th> </th>
+						<th>Seg</th>
+						<th>Ter</th>
+						<th>Qua</th>
+						<th>Qui</th>
+						<th>Sex</th>
+						<th>Sab</th>
+					</tr>
+					<tr>
+                    	<td>19:00-19:50</td>
+                    	<td class="horarios" id="d1-13"> </td>
+                    	<td class="horarios" id="d2-13"> </td>
+                    	<td class="horarios" id="d3-13"> </td>
+                    	<td class="horarios" id="d4-13"> </td>
+                    	<td class="horarios" id="d5-13"> </td>
+                    	<td class="horarios" id="d6-13"> </td>
+                    </tr>
+                    <tr>
+                    	<td>19:50-20:40</td>
+                    	<td class="horarios" id="d1-14"> </td>
+                    	<td class="horarios" id="d2-14"> </td>
+                    	<td class="horarios" id="d3-14"> </td>
+                    	<td class="horarios" id="d4-14"> </td>
+                    	<td class="horarios" id="d5-14"> </td>
+                    	<td class="horarios" id="d6-14"> </td>
+                    </tr>
+                    <tr>
+                    	<td>20:50-21:40</td>
+                    	<td class="horarios" id="d1-15"> </td>
+                    	<td class="horarios" id="d2-15"> </td>
+                    	<td class="horarios" id="d3-15"> </td>
+                    	<td class="horarios" id="d4-15"> </td>
+                    	<td class="horarios" id="d5-15"> </td>
+                    	<td class="horarios" id="d6-15"> </td>
+                    </tr>
+                    <tr>
+                    	<td>21:40-22:30</td>
+                    	<td class="horarios" id="d1-16"> </td>
+                    	<td class="horarios" id="d2-16"> </td>
+                    	<td class="horarios" id="d3-16"> </td>
+                    	<td class="horarios" id="d4-16"> </td>
+                    	<td class="horarios" id="d5-16"> </td>
+                    	<td class="horarios" id="d6-16"> </td>
+                    </tr>
+		     	</table>
+		     	
+		     	<center style="margin-top: 5px;">
+					<button type="button" id="salvar-horarios">Salvar</button>
+					<button type="button" id="limpar-horarios">Limpar</button>
+					<button type="button" id="cancelar-horarios" onclick='overlayHide()'>Cancelar</button>
+				</center>
+		     </div>
+		</div>
+		
 		<div class="white-grid-layout">
 			<div id="content-box">
 				<div id="content">
@@ -205,7 +337,7 @@ $(document).ready(function() {
 							<tr>
 								<td>Horarios:</td>
 								<td>
-									<input id="horariosAula" name="horariosAula" type="text" placeholder="Horarios da aula" />
+									<input onclick='overlay()' id="horariosAula" name="horariosAula" type="text" placeholder="Horarios da aula" />
 								</td>
 							</tr>
 						</table>

@@ -23,6 +23,7 @@ public class AlunoValidadorInterceptor extends AbstractInterceptor {
 	@Override
 	public String intercept(ActionInvocation invocation) throws Exception {
 		if (invocation.getProxy().getActionName().equals("fazerLogin")
+				|| invocation.getProxy().getNamespace().equals("/cadastrarAluno")
 				|| invocation.getProxy().getNamespace().equals("/registrar")) {
 			return invocation.invoke();
 		}
