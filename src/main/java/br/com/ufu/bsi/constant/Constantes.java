@@ -25,6 +25,8 @@ public class Constantes {
 	
 	public static final Integer TIPO_ARQUIVO_IMAGEM_PRODUTO = 500;
 	
+	public static final String SENHA_PADRAO_DO_SISTEMA = "102030";
+	
 	/**
 	 * 7:10 - 1
 	 * 8:00 - 2

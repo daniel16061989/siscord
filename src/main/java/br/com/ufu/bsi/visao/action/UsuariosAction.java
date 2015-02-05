@@ -1,6 +1,7 @@
 package br.com.ufu.bsi.visao.action;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.struts2.convention.annotation.Action;
@@ -9,6 +10,7 @@ import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 
+import br.com.ufu.bsi.constant.Constantes;
 import br.com.ufu.bsi.dao.excecoes.SiscordGenericException;
 import br.com.ufu.bsi.dto.Aluno;
 import br.com.ufu.bsi.dto.Professor;
@@ -23,6 +25,8 @@ public class UsuariosAction extends GenericAction {
 
 	private static final long serialVersionUID = 1L;
 	
+	private Professor novoProfessor;
+	
 	private Professor salvarProfessor;
 	
 	private Aluno salvarAluno;
@@ -35,6 +39,8 @@ public class UsuariosAction extends GenericAction {
 	
 	@Action(value = "index", results = {@Result(name = "success", location = "/coordenacao/usuarios.jsp")})
 	public String index() {
+		novoProfessor = new Professor();
+		
 		return SUCCESS;
 	}
 	
@@ -115,6 +121,31 @@ public class UsuariosAction extends GenericAction {
 			
 				index();
 			}
+		} catch (SiscordGenericException e) {
+			e.printStackTrace();
+		}
+		return SUCCESS;
+	}
+	
+	@Action(value = "salvarNovoProfessor", results = {@Result(name = "success", location = "/coordenacao/usuarios.jsp")})
+	public String salvarNovoProfessor() {
+		try {
+				Usuario u = new Usuario();
+				u.setDtCadastro(new Date());
+				u.setLogin(novoProfessor.getCodigo());
+				u.setSenha(Constantes.SENHA_PADRAO_DO_SISTEMA);
+				u.setStatus(Usuario.STATUS_ATIVO);
+				u.setTipoUsuario(Usuario.TIPO_USUARIO_PROFESSOR);
+				
+				u = usuarioService.save(u);
+				
+				novoProfessor.setUsuario(u);
+				
+				professorService.save(novoProfessor);
+			
+				addActionMessage("Professor salvo com sucesso.");
+				
+				index();
 		} catch (SiscordGenericException e) {
 			e.printStackTrace();
 		}
@@ -213,6 +244,14 @@ public class UsuariosAction extends GenericAction {
 
 	public void setAlunoUsuarios(List<Aluno> alunoUsuarios) {
 		this.alunoUsuarios = alunoUsuarios;
+	}
+
+	public Professor getNovoProfessor() {
+		return novoProfessor;
+	}
+
+	public void setNovoProfessor(Professor novoProfessor) {
+		this.novoProfessor = novoProfessor;
 	}
 
 }

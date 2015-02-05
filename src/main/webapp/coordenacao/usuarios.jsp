@@ -19,6 +19,7 @@
 <link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/bebas-neue.css"/>" />
 <link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/normalize.css"/>" />
 <link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/style.css"/>" />
+<link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/mensagem-sistema.css"/>" />
 
 <script type="text/javascript" src='<s:url value="/resources/js/function.js" />'></script>
 <script type="text/javascript" src='<s:url value="/resources/js/jquery-1.9.1.js" />'></script>
@@ -28,6 +29,7 @@ $(document).ready(function() {
 
 	$('#formulario-professor').hide();
 	$('#formulario-aluno').hide();
+	$('#formulario-novo-professor').hide();
 	
 	$('#tipoUsuario').change(function() {
 		$('#lista_alunos').empty();
@@ -44,39 +46,42 @@ $(document).ready(function() {
 			if (data['success']) {
 				var jsonData = jQuery.parseJSON(data['success']);
 				if(tipoUsuario == 'A') {
+					var dados = '' +
+					'<table style="width:100%;"> ' +
+					'	<tr> ' +
+					'		<th>Nome</th> ' +
+					'		<th> </th> ' +
+					'		<th> </th> ' +
+					'	</tr> ';
 					$.each(jsonData, function(key, value) {
-						var dados = '' +
-							'<table style="width:100%;"> ' +
-							'	<tr> ' +
-							'		<th>Nome</th> ' +
-							'		<th> </th> ' +
-							'		<th> </th> ' +
-							'	</tr> ' +
+						dados = dados +
 							'	<tr> ' +
 				            '       <td> '+value.nomeAluno+'</td> ' +
 				            '       <td id="'+value.idAluno+'" class="editar-aluno"> <i class="fa fa-book fa-fw"></i> </td> ' +
 				           	'       <td id="'+value.idAluno+'" class="apagar-aluno"> <i class="fa fa-times fa-fw"></i> </td> ' +
-			                '	</tr> ' +
-		               		'</table> ';
-					$('#lista_alunos').append(dados);
+			                '	</tr> ';
 					});
+					dados = dados + '</table> ';
+					$('#lista_alunos').append(dados);
+					
 				} else if(tipoUsuario == 'P') {
+					var dados = '' +
+					'<table style="width:100%;"> ' +
+					'	<tr> ' +
+					'		<th>Nome</th> ' +
+					'		<th> </th> ' +
+					'		<th> </th> ' +
+					'	</tr> ';
 					$.each(jsonData, function(key, value) {
-						var dados = '' +
-							'<table style="width:100%;"> ' +
-							'	<tr> ' +
-							'		<th>Nome</th> ' +
-							'		<th> </th> ' +
-							'		<th> </th> ' +
-							'	</tr> ' +
+						dados = dados +
 							'	<tr> ' +
 				            '       <td> '+value.nomeProfessor+'</td> ' +
 				            '       <td id="'+value.idProfessor+'" class="editar-professor"> <i class="fa fa-book fa-fw"></i> </td> ' +
 				           	'       <td id="'+value.idProfessor+'" class="apagar-professor"> <i class="fa fa-times fa-fw"></i> </td> ' +
-			                '	</tr> ' +
-		               		'</table> ';
-					$('#lista_professores').append(dados);
+			                '	</tr> ';
 					});
+					dados = dados + '</table> ';
+					$('#lista_professores').append(dados);
 				}
 			}
 		});
@@ -144,6 +149,11 @@ $(document).ready(function() {
     	});
 	});
 	
+	$('#abrir-formulario-professor').click(function() {
+		$('#formulario-novo-professor').show();
+		$('#abrir-formulario-professor').hide();
+	});
+	
 });
 </script>
 
@@ -199,6 +209,22 @@ $(document).ready(function() {
 		</div>
 		<div class="white-grid-layout">
 			<div id="content-box">
+				
+				<s:if test="hasActionErrors()">
+			 		<div class="alert alert-danger">
+			 			<a href="#" class="close" data-dismiss="alert">&times;</a>
+			 			<strong>Erros</strong>
+			 			<s:actionerror/>
+			 		</div>
+			 	</s:if>
+			 	<s:if test="hasActionMessages()">
+			 		<div class="alert alert-success">
+			 			<a href="#" class="close" data-dismiss="alert">&times;</a>
+			 			<strong>Sucesso</strong>
+			 			<s:actionmessage/>
+			 		</div>
+			 	</s:if>
+			
 				<div id="content">
 					<form class="form-left" id="solicitacao" name="solicitacao"
 						action="../controller/cSubmeterSolicitacao.php" method="POST"
@@ -225,6 +251,38 @@ $(document).ready(function() {
 
 					<div class="form-help">
 						<h2>Filtrar dados</h2>
+						<center>
+							<input id="abrir-formulario-professor" type="submit" value="Novo Professor">
+						</center>
+						
+						<div id="formulario-novo-professor">
+							<form method="post" action="../usuarios/salvarNovoProfessor">
+								<table style="width:100%;">
+									<tr>
+										<td>Codigo:</td>
+										<td> <input id="codigoA" name="novoProfessor.codigo" type="text" placeholder="Código" /> </td>
+									</tr>
+									<tr>
+										<td>Nome completo:</td>
+										<td> <input id="nomeProfessorA" name="novoProfessor.nomeProfessor" type="text" placeholder="Nome completo do professor" /> </td>
+									</tr>
+									<tr>
+										<td> Tipo do Professor: </td>
+										<td>
+											<select name="novoProfessor.tipoProfessor" id="tipoProfessorA" class="dropdown-select" required="">
+												<option value="N"> Normal </option>
+												<option value="B"> Colegiado </option>
+												<option value="C"> Coordenador </option>
+											</select> 
+										</td>
+									</tr>
+								</table>
+								<center>
+									<input id="salvarProfessor" type="submit" value="Salvar">
+								</center>
+							</form>
+						</div>
+						
 						<div id="formulario-aluno">
 							<form method="post" action="../usuarios/salvarAluno">
 								<table style="width:100%;">

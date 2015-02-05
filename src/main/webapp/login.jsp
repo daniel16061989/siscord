@@ -27,7 +27,22 @@
 
 <body class="homepage">
 	<div id="wrapper">
-
+	
+		<s:if test="hasActionErrors()">
+	 		<div class="alert alert-danger">
+	 			<a href="#" class="close" data-dismiss="alert">&times;</a>
+	 			<strong>Erros</strong>
+	 			<s:actionerror/>
+	 		</div>
+	 	</s:if>
+	 	<s:if test="hasActionMessages()">
+	 		<div class="alert alert-success">
+	 			<a href="#" class="close" data-dismiss="alert">&times;</a>
+	 			<strong>Sucesso</strong>
+	 			<s:actionmessage/>
+	 		</div>
+	 	</s:if>
+	
 		<header id="header">
 			<div class="top-bar">
 				<div class="grid-layout">

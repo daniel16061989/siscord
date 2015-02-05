@@ -24,6 +24,9 @@ public class Professor implements Serializable {
 	@Column(name = "nome_professor")
 	private String nomeProfessor;
 	
+	@Column(name = "codigo")
+	private String codigo;
+	
 	@ManyToOne
 	@JoinColumn(name = "id_usuario")
 	private Usuario usuario;
@@ -68,6 +71,14 @@ public class Professor implements Serializable {
 
 	public void setTipoProfessor(Character tipoProfessor) {
 		this.tipoProfessor = tipoProfessor;
+	}
+
+	public String getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
 	}
 	
 }

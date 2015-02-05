@@ -29,13 +29,22 @@ public class CadastrarAluno extends GenericAction {
 	@Action(value = "salvarNovoAluno", results = {@Result(name = "success", location = "/login.jsp")})
 	public String salvarNovoAluno() {
 		try {
+			Usuario u = new Usuario();
+			
 			aluno.setSimulacaoAjuste(Boolean.FALSE);
 			aluno.getUsuario().setDtCadastro(new Date());
 			aluno.getUsuario().setLogin(aluno.getMatricula());
 			aluno.getUsuario().setStatus(Usuario.STATUS_ATIVO);
 			aluno.getUsuario().setTipoUsuario(Usuario.TIPO_USUARIO_ALUNO);
 
+			u = usuarioService.save(aluno.getUsuario());
+			
+			aluno.setUsuario(u);
+			
 			alunoService.save(aluno);
+			
+			addActionMessage("Usuário salvo com sucesso.");
+			
 		} catch (SiscordGenericException e) {
 			e.printStackTrace();
 		}
