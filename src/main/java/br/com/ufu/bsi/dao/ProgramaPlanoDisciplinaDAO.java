@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import br.com.ufu.bsi.dto.Disciplina;
+import br.com.ufu.bsi.dto.Professor;
 import br.com.ufu.bsi.dto.ProgramaPlanoDisciplina;
 
 public interface ProgramaPlanoDisciplinaDAO extends JpaRepository<ProgramaPlanoDisciplina, Integer> {
@@ -14,4 +15,6 @@ public interface ProgramaPlanoDisciplinaDAO extends JpaRepository<ProgramaPlanoD
 	List<ProgramaPlanoDisciplina> findByPlanoDisciplinaStatus(Character status);
 	
 	List<ProgramaPlanoDisciplina> findByDisciplinaAndPlanoDisciplinaStatus(Disciplina disciplina, Character status);
+	
+	List<ProgramaPlanoDisciplina> findByDisciplinaProfessorAndPlanoDisciplina(Professor professor, Character status);
 }

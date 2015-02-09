@@ -59,6 +59,8 @@ $(document).ready(function() {
 				$('#idProfessor').val(jsonData.professor.idProfessor);
 				$('#idTurma').val(jsonData.turma.idTurma);
 				$('#horariosAula').val(jsonData.horariosAula);
+				$('#ementa').val(jsonData.ementa);
+				$('#bibliografia').val(jsonData.bibliografia);
 			}
 		});
 	});
@@ -287,6 +289,18 @@ $(document).ready(function() {
 								<td>Carga Horaria:</td>
 								<td>
 									<input id="cargaHoraria" name="cargaHoraria" type="text" placeholder="Carga Horaria da Disciplina" />
+								</td>
+							</tr>
+							<tr>
+								<td>Ementa:</td>
+								<td>
+									<input id="ementa" name="ementa" type="text" placeholder="Ementa da Disciplina" />
+								</td>
+							</tr>
+							<tr>
+								<td>Bibliografia:</td>
+								<td>
+									<input id="bibliografia" name="bibliografia" type="text" placeholder="Bibliografia da Disciplina" />
 								</td>
 							</tr>
 							<tr>

@@ -14,8 +14,6 @@ import br.com.ufu.bsi.dto.PlanoDisciplina;
 import br.com.ufu.bsi.dto.Professor;
 import br.com.ufu.bsi.dto.ProgramaPlanoDisciplina;
 
-import com.google.gson.Gson;
-
 @ParentPackage("default")
 @InterceptorRef("professor")
 @Namespace(value="/analisePlanoDisciplina")
@@ -23,7 +21,7 @@ public class AnalisePlanoDisciplinaAction extends GenericAction {
 
 	private static final long serialVersionUID = 1L;
 
-	private List<ProgramaPlanoDisciplina> programaPlanoDisciplinas; 
+	private List<ProgramaPlanoDisciplina> programaPlanoDisciplinas;
 	
 	@Action(value = "index", results = {@Result(name = "success", location = "/professor/analisePlanoDisciplina.jsp")})
 	public String index() {
@@ -56,9 +54,9 @@ public class AnalisePlanoDisciplinaAction extends GenericAction {
 			ppd = programaPlanoDisciplinaService.findOne(Integer.parseInt(idProgramaPlanoDisciplina));
 			
 //			jsonProgramaPlanoDisciplina = gson.toJson(ppd);
-			jsonProgramaPlanoDisciplina = ppd.getIdProgramaPlanoDisciplina()+"&"+ppd.getDisciplina().getCodigoDisciplina()+"&"+ppd.getPlanoDisciplina().getEmenta()+"&"+
+			jsonProgramaPlanoDisciplina = ppd.getIdProgramaPlanoDisciplina()+"&"+ppd.getDisciplina().getCodigoDisciplina()+"&"+ppd.getDisciplina().getEmenta()+"&"+
 					ppd.getPlanoDisciplina().getMetodologia()+"&"+ppd.getPlanoDisciplina().getAvaliacao()+"&"+ppd.getPlanoDisciplina().getAtendimento()+"&"+
-					ppd.getPlanoDisciplina().getRecuperacao()+"&"+ppd.getPlanoDisciplina().getBibliografia();
+					ppd.getPlanoDisciplina().getRecuperacao()+"&"+ppd.getDisciplina().getBibliografia();
 		
 		} catch (SiscordGenericException e) {
 			e.printStackTrace();

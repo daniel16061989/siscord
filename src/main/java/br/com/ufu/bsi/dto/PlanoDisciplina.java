@@ -25,9 +25,6 @@ public class PlanoDisciplina implements Serializable {
 	@JoinColumn(name = "id_professor")
 	private Professor professor;
 	
-	@Column(name = "ementa")
-	private String ementa;
-	
 	@Column(name = "metodologia")
 	private String metodologia;
 	
@@ -39,9 +36,6 @@ public class PlanoDisciplina implements Serializable {
 	
 	@Column(name = "recuperacao")
 	private String recuperacao;
-	
-	@Column(name = "bibliografia")
-	private String bibliografia;
 	
 	@Column(name = "status")
 	private Character status;
@@ -75,14 +69,6 @@ public class PlanoDisciplina implements Serializable {
 		this.professor = professor;
 	}
 
-	public String getEmenta() {
-		return ementa;
-	}
-
-	public void setEmenta(String ementa) {
-		this.ementa = ementa;
-	}
-
 	public String getMetodologia() {
 		return metodologia;
 	}
@@ -113,14 +99,6 @@ public class PlanoDisciplina implements Serializable {
 
 	public void setRecuperacao(String recuperacao) {
 		this.recuperacao = recuperacao;
-	}
-
-	public String getBibliografia() {
-		return bibliografia;
-	}
-
-	public void setBibliografia(String bibliografia) {
-		this.bibliografia = bibliografia;
 	}
 
 	public Character getStatus() {

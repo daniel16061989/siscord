@@ -55,18 +55,22 @@ $(document).ready(function() {
 	$('#data-inicio').datepicker();
 	$('#data-fim').datepicker();
 	$('#data-recesso').datepicker();
+	$('#inicio-reajuste').datepicker();
+	$('#fim-reajuste').datepicker();
 	
 	$('#btn-salvar-data').click(function() {
 		var ano = $('#ano').val();
 		var semestre = $('#semestre').val();
 		var dataInicio = $('#data-inicio').val();
 		var dataFim = $('#data-fim').val();
+		var iReajuste = $('#inicio-reajuste');
+		var fReajuste = $('#fim-reajuste');
 		
 		$('#mensagem').html('Semestre salvo com sucesso.');
 		$('.alert').show();
 		
 		$.post("../iniciarSemestre/salvarDados", {
-			ano : ano, semestre : semestre, dataInicio : dataInicio, dataFim : dataFim
+			ano : ano, semestre : semestre, dataInicio : dataInicio, dataFim : dataFim, iReajuste : iReajuste, fReajuste : fReajuste
 		}, function(data) {
 			if (data['success']) {
 				
@@ -126,14 +130,8 @@ $(document).ready(function() {
 
 						<table style="width:100%;">
 							<tr>
-								<td style="width:10%;">
-									<label>Ano:</label>
-								</td>
 								<td style="width:30%;">
 									<input type="text" name="ano" id="ano" placeholder="Ano. Ex. 2014" style="width:85%;"/>
-								</td>
-								<td style="width:10%;">
-									<label>Semestre:</label>
 								</td>
 								<td style="width:30%;">
 									<input type="text" name="semestre" id="semestre" placeholder="Semestre. Ex. 2"/>
@@ -141,16 +139,18 @@ $(document).ready(function() {
 							</tr>
 							<tr>
 								<td>
-									<label>Inicio Semestre:</label>
-								</td>
-								<td>
 									<input type="text" name="data-inicio" id="data-inicio" placeholder="Data inicio do semestre" style="width:85%;"/>
 								</td>
 								<td>
-									<label>Fim do Semestre:</label>
+									<input type="text" name="data-fim" id="data-fim" placeholder="Data final do semestre"/>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<input type="text" name="inicio-reajuste" id="inicio-reajuste" placeholder="inicio Reajuste Matrícula" style="width:85%;"/>
 								</td>
 								<td>
-									<input type="text" name="data-fim" id="data-fim" placeholder="Data final do semestre"/>
+									<input type="text" name="fim-reajuste" id="fim-reajuste" placeholder="Fim Reajuste Matrícula"/>
 								</td>
 							</tr>
 						</table>
@@ -159,6 +159,7 @@ $(document).ready(function() {
 							<input id="btn-salvar-data" name="btn-salvar-data" type="submit" value="Salvar">
 						</center>
 						
+						<!-- 
 						<table style="width:100%;">
 							<tr>
 								<td>
@@ -171,7 +172,7 @@ $(document).ready(function() {
 						</table>
 						<center>
 							<input id="btn-salvar-data-recesso" name="btn-salvar-data-recesso" type="submit" value="Salvar Recesso">
-						</center>
+						</center>  -->
 					</form>
 
 					<div class="form-help">

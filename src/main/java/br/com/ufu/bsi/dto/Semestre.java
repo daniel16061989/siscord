@@ -33,6 +33,10 @@ public class Semestre implements Serializable {
 	
 	private Date dataFim;
 	
+	private Date dataReajusteMatriculaInicio;
+	
+	private Date dataReajusteMatriculaFim;
+	
 	@Transient
 	private String DataInicioFormatada;
 
@@ -81,6 +85,22 @@ public class Semestre implements Serializable {
 		this.dataFim = dataFim;
 	}
 	
+	public Date getDataReajusteMatriculaInicio() {
+		return dataReajusteMatriculaInicio;
+	}
+
+	public void setDataReajusteMatriculaInicio(Date dataReajusteMatriculaInicio) {
+		this.dataReajusteMatriculaInicio = dataReajusteMatriculaInicio;
+	}
+
+	public Date getDataReajusteMatriculaFim() {
+		return dataReajusteMatriculaFim;
+	}
+
+	public void setDataReajusteMatriculaFim(Date dataReajusteMatriculaFim) {
+		this.dataReajusteMatriculaFim = dataReajusteMatriculaFim;
+	}
+
 	public String getDataInicioFormatada() {
 		SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
 		String novoFormato = formatador.format(dataInicio);  

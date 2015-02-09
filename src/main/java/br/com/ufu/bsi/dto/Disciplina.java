@@ -46,6 +46,12 @@ public class Disciplina implements Serializable {
 	@Column(name = "horarios_aula")
 	private String horariosAula;
 	
+	@Column(name = "ementa")
+	private String ementa;
+	
+	@Column(name = "bibliografia")
+	private String bibliografia;
+	
 	public Integer getIdDisciplina() {
 		return idDisciplina;
 	}
@@ -116,6 +122,22 @@ public class Disciplina implements Serializable {
 
 	public void setHorariosAula(String horariosAula) {
 		this.horariosAula = horariosAula;
+	}
+
+	public String getEmenta() {
+		return ementa;
+	}
+
+	public void setEmenta(String ementa) {
+		this.ementa = ementa;
+	}
+
+	public String getBibliografia() {
+		return bibliografia;
+	}
+
+	public void setBibliografia(String bibliografia) {
+		this.bibliografia = bibliografia;
 	}
 
 }

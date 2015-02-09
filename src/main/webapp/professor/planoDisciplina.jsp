@@ -59,12 +59,12 @@ $(document).ready(function() {
 	$('#salvar').click(function() {
 		var disciplina = idDisciplina;
 		var idPlanoDisciplina = $('#idPlanoDisciplina');
-		var ementa = $('#ementa').val();
+		/*var ementa = $('#ementa').val();
+		var bibliografia = $('#bibliografia').val();*/
 		var metodologia = $('#metodologia').val();
 		var avaliacao = $('#avaliacao').val();
 		var atendimento = $('#atendimento').val();
 		var recuperacao = $('#recuperacao').val();
-		var bibliografia = $('#bibliografia').val();
 		var descricaoDia = '';
 		
 		for(var i = 1; i <= quantDias; i++) {
@@ -72,13 +72,33 @@ $(document).ready(function() {
 		}
 		
 		$.post("../planoDisciplina/salvarPlanoDisciplina", {
-			disciplina : disciplina, ementa : ementa, metodologia : metodologia, avaliacao : avaliacao, atendimento : atendimento, 
-			recuperacao : recuperacao, bibliografia : bibliografia, descricaoDia : descricaoDia, idPlanoDisciplina : idPlanoDisciplina
+			disciplina : disciplina, metodologia : metodologia, avaliacao : avaliacao, atendimento : atendimento, 
+			recuperacao : recuperacao, descricaoDia : descricaoDia, idPlanoDisciplina : idPlanoDisciplina
 		}, function(data) {
 			if (data['success']) {
 				alert("Plano disciplina salvo com sucesso");
 			} 
 		});
+	});
+	
+	$('.selecionar-plano-disciplina').click(function() {
+		var idProgramaPlanoDisciplina = $(this).attr('id');
+		
+		$.post("../planoDisciplina/buscarPlanoDisciplinaProfessor", {
+			idProgramaPlanoDisciplina : idProgramaPlanoDisciplina
+		}, function(data) {
+			if (data['success']) {
+				var jsonData = jQuery.parseJSON(data['success']);
+				$('#idPlanoDisciplina').val(jsonData.planoDisciplina.idPlanoDisciplina);
+				$('#ementa').val(jsonData.disciplina.ementa);
+				$('#bibliografia').val(jsonData.disciplina.bibliografia);
+				$('#metodologia').val(jsonData.planoDisciplina.metodologia);
+				$('#avaliacao').val(jsonData.planoDisciplina.avaliacao);
+				$('#atendimento').val(jsonData.planoDisciplina.atendimento);
+				$('#recuperacao').val(jsonData.planoDisciplina.recuperacao);
+			} 
+		});
+		
 	});
 	
 });
@@ -138,6 +158,25 @@ $(document).ready(function() {
 		<div class="white-grid-layout">
 			<div id="content-box">
 				<div id="content">
+					<form class="form-left" action="#" method="POST">
+						<h1>Minhas Disciplinas</h1>
+						<table style="width:100%;">
+							<tr>
+								<th>Discplina</th>
+								<th>Turma</th>
+								<th>Professor</th>
+								<th> </th>
+							</tr>
+							<s:iterator value="programaPlanoDisciplinasProfessor" var="user" status="stat">
+								<tr>
+				                    <td> <s:property value="disciplina.codigoDisciplina"/> </td>
+				           	        <td> <s:property value="disciplina.turma.codigoTurma"/> </td>
+				           	        <td> <s:property value="planoDisciplina.professor.nomeProfessor"/> </td>
+				           	        <td id="<s:property value="idProgramaPlanoDisciplina"/>" class="selecionar-plano-disciplina"> <i class="fa fa-book fa-fw"></i> </td>
+			               		</tr>
+				            </s:iterator>
+						</table>
+					</form>
 					<form class="form-left" id="solicitacao" name="solicitacao" action="#" method="POST">
 
 						<h1>Plano da Disciplina</h1>

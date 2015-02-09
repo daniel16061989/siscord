@@ -14,6 +14,8 @@ import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 
+import com.google.gson.Gson;
+
 import br.com.ufu.bsi.dao.excecoes.SiscordGenericException;
 import br.com.ufu.bsi.dto.Disciplina;
 import br.com.ufu.bsi.dto.PlanoDisciplina;
@@ -31,31 +33,55 @@ public class PlanoDisciplinaAction extends GenericAction {
 
 	private List<Disciplina> professorDisciplinas;
 	
+	private List<ProgramaPlanoDisciplina> programaPlanoDisciplinasProfessor;
+
 	@Action(value = "index", results = {@Result(name = "success", location = "/professor/planoDisciplina.jsp")})
 	public String index() {
 		Professor professor = new Professor();
 		professorDisciplinas = new ArrayList<Disciplina>();
-		
+		programaPlanoDisciplinasProfessor = new ArrayList<ProgramaPlanoDisciplina>();
+
 		try {
 			professor = professorService.findByUsuario(usuarioLogado.getUsuario());
 			professorDisciplinas = disciplinaService.findByProfessor(professor);
+			programaPlanoDisciplinasProfessor = programaPlanoDisciplinaService.findByDisciplinaProfessorAndPlanoDisciplina(professor, PlanoDisciplina.STATUS_FINAL);
+		} catch (SiscordGenericException e) {
+			e.printStackTrace();
+		}
+
+		return SUCCESS;
+	}
+	
+	@Action(value = "buscarPlanoDisciplinaProfessor", results = {@Result(name="success", type="json", params = {"root","jsonData"}),
+														@Result(name="error", type="json", params = {"root","jsonData"})})
+	public String buscarPlanoDisciplinaProfessor() {
+		String idProgramaPlanoDisciplina = request.getParameter("idProgramaPlanoDisciplina");
+		Gson gson = new Gson();
+		String jsonProgramaPlanoDisciplina = "";
+		
+		ProgramaPlanoDisciplina ppd = new ProgramaPlanoDisciplina();
+		try {
+			ppd = programaPlanoDisciplinaService.findOne(Integer.valueOf(idProgramaPlanoDisciplina));
+			jsonProgramaPlanoDisciplina = gson.toJson(ppd);
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
 		} catch (SiscordGenericException e) {
 			e.printStackTrace();
 		}
 		
+		jsonData.put("success", jsonProgramaPlanoDisciplina);
 		return SUCCESS;
 	}
+	
 
 	@Action(value = "salvarPlanoDisciplina", results = {@Result(name="success", type="json", params = {"root","jsonData"}),
 					 						 			@Result(name="error", type="json", params = {"root","jsonData"})})
 	public String salvarPlanoDisciplina() {
 		String idDisciplina = request.getParameter("disciplina");
-		String ementa = request.getParameter("ementa");
 		String metodologia = request.getParameter("metodologia");
 		String avaliacao = request.getParameter("avaliacao");
 		String atendimento = request.getParameter("atendimento");
 		String recuperacao = request.getParameter("recuperacao");
-		String bibliografia = request.getParameter("bibliografia");
 		String descricaoDia = request.getParameter("descricaoDia");
 		String idPlanoDisciplina = request.getParameter("idPlanoDisciplina");
 		
@@ -100,8 +126,6 @@ public class PlanoDisciplinaAction extends GenericAction {
 			planoDisciplina.setProfessor(professor);
 			planoDisciplina.setAtendimento(atendimento);
 			planoDisciplina.setAvaliacao(avaliacao);
-			planoDisciplina.setBibliografia(bibliografia);
-			planoDisciplina.setEmenta(ementa);
 			planoDisciplina.setMetodologia(metodologia);
 			planoDisciplina.setRecuperacao(recuperacao);
 
@@ -241,6 +265,14 @@ public class PlanoDisciplinaAction extends GenericAction {
 
 	public void setProfessorDisciplinas(List<Disciplina> professorDisciplinas) {
 		this.professorDisciplinas = professorDisciplinas;
+	}
+
+	public List<ProgramaPlanoDisciplina> getProgramaPlanoDisciplinasProfessor() {
+		return programaPlanoDisciplinasProfessor;
+	}
+
+	public void setProgramaPlanoDisciplinasProfessor(List<ProgramaPlanoDisciplina> programaPlanoDisciplinasProfessor) {
+		this.programaPlanoDisciplinasProfessor = programaPlanoDisciplinasProfessor;
 	}
 
 }
