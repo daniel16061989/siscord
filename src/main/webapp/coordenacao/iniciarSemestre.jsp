@@ -63,14 +63,26 @@ $(document).ready(function() {
 		var semestre = $('#semestre').val();
 		var dataInicio = $('#data-inicio').val();
 		var dataFim = $('#data-fim').val();
-		var iReajuste = $('#inicio-reajuste');
-		var fReajuste = $('#fim-reajuste');
+		var iReajuste = $('#inicio-reajuste').val();
+		var fReajuste = $('#fim-reajuste').val();
 		
+		/*
 		$('#mensagem').html('Semestre salvo com sucesso.');
 		$('.alert').show();
-		
+		*/
 		$.post("../iniciarSemestre/salvarDados", {
-			ano : ano, semestre : semestre, dataInicio : dataInicio, dataFim : dataFim, iReajuste : iReajuste, fReajuste : fReajuste
+			fReajuste : fReajuste, iReajuste : iReajuste, ano : ano, semestre : semestre, dataInicio : dataInicio, dataFim : dataFim
+		}, function(data) {
+			if (data['success']) {
+				
+			}
+		});
+	});
+	
+	$('#btn-salvar-data-recesso').click(function() {
+		var dataRecesso = $('#data-recesso').val();
+		$.post("../iniciarSemestre/salvarRecesso", {
+			dataRecesso : dataRecesso
 		}, function(data) {
 			if (data['success']) {
 				
@@ -117,11 +129,13 @@ $(document).ready(function() {
 		</div>
 		<div class="white-grid-layout">
 			<div id="content-box">
+			<!-- 
 				<div class="alert alert-success">
 		 			<a href="#" class="close" data-dismiss="alert">&times;</a>
 		 			<strong>Sucesso</strong>
 		 			<div id="mensagem"> </div> 
 		 		</div>
+		 	 -->
 			
 				<div id="content">
 					<form class="form-left" novalidate="novalidate">
@@ -159,12 +173,8 @@ $(document).ready(function() {
 							<input id="btn-salvar-data" name="btn-salvar-data" type="submit" value="Salvar">
 						</center>
 						
-						<!-- 
 						<table style="width:100%;">
 							<tr>
-								<td>
-									<label>Recessos:</label>
-								</td>
 								<td>
 									<input type="text" name="data-recesso" id="data-recesso" placeholder="Data de recesso durante o semstre" style="max-width:100%;" />
 								</td>
@@ -172,7 +182,7 @@ $(document).ready(function() {
 						</table>
 						<center>
 							<input id="btn-salvar-data-recesso" name="btn-salvar-data-recesso" type="submit" value="Salvar Recesso">
-						</center>  -->
+						</center>
 					</form>
 
 					<div class="form-help">

@@ -3,7 +3,9 @@ package br.com.ufu.bsi.visao.action;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.InterceptorRef;
@@ -12,6 +14,7 @@ import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 
 import br.com.ufu.bsi.dao.excecoes.SiscordGenericException;
+import br.com.ufu.bsi.dto.RecessoSemestre;
 import br.com.ufu.bsi.dto.Semestre;
 
 @ParentPackage("default")
@@ -69,6 +72,36 @@ public class IniciarSemestreAction extends GenericAction {
 			e.printStackTrace();
 		} catch (ParseException e1) {
 			e1.printStackTrace();
+		}
+		
+		jsonData.put("success", "success");
+		return SUCCESS;
+	}
+	
+	// TODO verificar se a data do recesso esta dentro do intervalo de tempo do semestre
+	@Action(value = "salvarRecesso", results = {@Result(name="success", type="json", params = {"root","jsonData"}),
+			  									@Result(name="error", type="json", params = {"root","jsonData"})})
+	public String salvarRecesso() {
+		String dataRecesso = request.getParameter("dataRecesso");
+		
+		try {
+			DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy"); 
+			Date dataR = (Date) formatter.parse(dataRecesso);
+			
+			List<Semestre> s = new ArrayList<Semestre>();
+			s = semestreService.findByData();
+			
+			RecessoSemestre r = new RecessoSemestre();
+			
+			r.setDataRecesso(dataR);
+			r.setSemestre(s.get(0));
+			
+			recessoSemestreService.save(r);
+			
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		} catch (SiscordGenericException e) {
+			e.printStackTrace();
 		}
 		
 		jsonData.put("success", "success");
