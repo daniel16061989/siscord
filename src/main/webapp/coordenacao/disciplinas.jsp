@@ -52,15 +52,15 @@ $(document).ready(function() {
 		}, function(data) {
 			if (data['success']) {
 				var jsonData = jQuery.parseJSON(data['success']);
+				$('#idTurma').val(jsonData.turma.idTurma);
+				$('#ementa').val(jsonData.ementa);
+				$('#bibliografia').val(jsonData.bibliografia);
 				$('#codigoDisciplina').val(jsonData.codigoDisciplina);
 				$('#nomeDisciplina').val(jsonData.nomeDisciplina);
 				$('#cargaHoraria').val(jsonData.cargaHoraria);
 				$('#periodoDisciplina').val(jsonData.periodo);
 				$('#idProfessor').val(jsonData.professor.idProfessor);
-				$('#idTurma').val(jsonData.turma.idTurma);
 				$('#horariosAula').val(jsonData.horariosAula);
-				$('#ementa').val(jsonData.ementa);
-				$('#bibliografia').val(jsonData.bibliografia);
 			}
 		});
 	});
@@ -143,6 +143,19 @@ $(document).ready(function() {
 
 .horarios {
 	width: 35px;
+}
+
+table#t01 tr:nth-child(even) {
+    background-color: #eee;
+}
+
+table#t01 tr:nth-child(odd) {
+   background-color:#fff;
+}
+
+table#t01 th	{
+    background-color: black;
+    color: white;
 }
 
 </style>
@@ -247,7 +260,7 @@ $(document).ready(function() {
 
 						<h1>Bem Vindo</h1>
 
-						<table style="width:100%;">
+						<table style="width:100%;" id="t01">
 							<tr>
 								<th>Sigla</th>
 								<th>Nome</th>

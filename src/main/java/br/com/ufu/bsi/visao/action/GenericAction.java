@@ -22,6 +22,7 @@ import br.com.ufu.bsi.service.ProfessorService;
 import br.com.ufu.bsi.service.ProfessorTurmaService;
 import br.com.ufu.bsi.service.ProgramaDisciplinaService;
 import br.com.ufu.bsi.service.ProgramaPlanoDisciplinaService;
+import br.com.ufu.bsi.service.RecessoSemestreService;
 import br.com.ufu.bsi.service.ReposicaoAulaService;
 import br.com.ufu.bsi.service.SemestreService;
 import br.com.ufu.bsi.service.TurmaService;
@@ -61,6 +62,8 @@ public abstract class GenericAction extends ActionSupport implements Serializabl
 	protected transient ProgramaDisciplinaService programaDisciplinaService;
 	
 	protected transient ProgramaPlanoDisciplinaService programaPlanoDisciplinaService;
+	
+	protected transient RecessoSemestreService recessoSemestreService;
 	
 	protected transient ReposicaoAulaService reposicaoAulaService;
 	
@@ -130,6 +133,10 @@ public abstract class GenericAction extends ActionSupport implements Serializabl
 
 	public void setGradeHorariaService(GradeHorariaService gradeHorariaService) {
 		this.gradeHorariaService = gradeHorariaService;
+	}
+	
+	public void setRecessoSemestreService(RecessoSemestreService recessoSemestreService) {
+		this.recessoSemestreService = recessoSemestreService;
 	}
 
 	public void setReposicaoAulaService(ReposicaoAulaService reposicaoAulaService) {

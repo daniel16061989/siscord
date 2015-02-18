@@ -184,7 +184,7 @@
 <style type="text/css">
 .bloco-disciplina {
 	background-color: #eee;
-	width: 100%;
+	width: 110%;
 	height: 45px;
 	border-radius: 10px;
 	border-style: solid;
