@@ -1,3 +1,4 @@
+<%@page import="br.com.ufu.bsi.dto.Semestre"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -187,10 +188,21 @@ $(document).ready(function() {
 
 					<div class="form-help">
 						<h2>Semestre Atual</h2>
+						<%
+						Semestre s = new Semestre();
+						s = (Semestre) request.getAttribute("semestreAtual");
+						if(s.getIdSemestre() != null) { %>
 						<text>
 						<p> Semestre: ${semestreAtual.anoSemestre} - ${semestreAtual.nrSemestre}</p>
 						<p> Início Semestre: ${semestreAtual.dataInicioFormatada} - Fim Semestre: ${semestreAtual.dataFimFormatada}</p>
+						
+						<p> Recessos:
+						<s:iterator value="recessosSemestre" var="user" status="stat">
+		                	<s:property value="dataRecessoFormatada"/>; 
+		                </s:iterator>
+		                </p>
 						</text>
+						<%} %>
 					</div>
 				</div>
 			</div>

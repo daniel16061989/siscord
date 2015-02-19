@@ -25,11 +25,29 @@ public class IniciarSemestreAction extends GenericAction {
 	private static final long serialVersionUID = 1L;
 
 	private Semestre semestreAtual;
+	private List<RecessoSemestre> recessosSemestre;
 	
-	@Action(value = "index", results = {@Result(name = "success", location = "/coordenacao/iniciarSemestre.jsp")})
+	@Action(value = "index", results = {@Result(name = "success", location = "/coordenacao/iniciarSemestre.jsp"),
+										@Result(name = "e", location = "/coordenacao/iniciarSemestre.jsp")})
 	public String index() {
 		try {
-			semestreAtual = semestreService.findOne(1);
+			List<Semestre> ss = new ArrayList<Semestre>();
+			semestreAtual = new Semestre();
+			recessosSemestre = new ArrayList<RecessoSemestre>();
+			
+			ss = semestreService.findByData();
+			
+			if(ss.size() > 0) {
+				semestreAtual = ss.get(0);
+				request.setAttribute("semestreAtual", semestreAtual);
+			} else {
+				request.setAttribute("semestreAtual", null);
+				return "e";
+			}
+			if(semestreAtual != null)
+				if(semestreAtual.getIdSemestre() != null)
+					recessosSemestre = recessoSemestreService.findBySemestre(semestreAtual);
+
 		} catch (SiscordGenericException e) {
 			e.printStackTrace();
 		}
@@ -114,6 +132,14 @@ public class IniciarSemestreAction extends GenericAction {
 
 	public void setSemestreAtual(Semestre semestreAtual) {
 		this.semestreAtual = semestreAtual;
+	}
+
+	public List<RecessoSemestre> getRecessosSemestre() {
+		return recessosSemestre;
+	}
+
+	public void setRecessosSemestre(List<RecessoSemestre> recessosSemestre) {
+		this.recessosSemestre = recessosSemestre;
 	}
 	
 }

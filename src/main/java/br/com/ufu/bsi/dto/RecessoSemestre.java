@@ -1,6 +1,7 @@
 package br.com.ufu.bsi.dto;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -10,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "recesso_semestre")
@@ -28,6 +30,9 @@ public class RecessoSemestre implements Serializable {
 	@Column(name = "data_recesso")
 	private Date dataRecesso;
 
+	@Transient
+	private String DataRecessoFormatada;
+	
 	public Integer getIdRecessoSemestre() {
 		return idRecessoSemestre;
 	}
@@ -52,4 +57,11 @@ public class RecessoSemestre implements Serializable {
 		this.dataRecesso = dataRecesso;
 	}
 	
+	public String getDataRecessoFormatada() {
+		SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
+		String novoFormato = formatador.format(dataRecesso);  
+		
+		return novoFormato;
+	}
+
 }
