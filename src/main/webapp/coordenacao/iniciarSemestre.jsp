@@ -94,7 +94,11 @@ $(document).ready(function() {
 });
 </script>
 
-<style type="text/css"> </style>
+<style type="text/css">
+#ui-datepicker-div {
+	z-index: 999 !important;
+}
+</style>
 
 </head>
 

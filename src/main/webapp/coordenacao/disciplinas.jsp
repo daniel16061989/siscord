@@ -52,17 +52,43 @@ $(document).ready(function() {
 		}, function(data) {
 			if (data['success']) {
 				var jsonData = jQuery.parseJSON(data['success']);
-				$('#idTurma').val(jsonData.turma.idTurma);
-				$('#ementa').val(jsonData.ementa);
-				$('#bibliografia').val(jsonData.bibliografia);
+				$('#idDisciplina').val(jsonData.idDisciplina);
 				$('#codigoDisciplina').val(jsonData.codigoDisciplina);
 				$('#nomeDisciplina').val(jsonData.nomeDisciplina);
 				$('#cargaHoraria').val(jsonData.cargaHoraria);
 				$('#periodoDisciplina').val(jsonData.periodo);
 				$('#idProfessor').val(jsonData.professor.idProfessor);
+				$('#idTurma').val(jsonData.turma.idTurma);
 				$('#horariosAula').val(jsonData.horariosAula);
+				$('#ementa').val(jsonData.ementa);
+				$('#bibliografia').val(jsonData.bibliografia);
 			}
 		});
+	});
+	
+	$('#salvarDisciplina').click(function() {
+		var idDisciplina = $('#idDisciplina').val();
+		var codigoDisciplina = $('#codigoDisciplina').val();
+		var nomeDisciplina = $('#nomeDisciplina').val();
+		var cargaHoraria = $('#cargaHoraria').val();
+		var periodoDisciplina = $('#periodoDisciplina').val();
+		var idProfessor = $('#idProfessor').val();
+		var idTurma = $('#idTurma').val();
+		var horariosAula = $('#horariosAula').val();
+		var ementa = $('#ementa').val();
+		var bibliografia = $('#bibliografia').val("");
+		
+		$.post("../disciplinas/salvarDisciplina", {
+			idDisciplina : idDisciplina, codigoDisciplina : codigoDisciplina, nomeDisciplina : nomeDisciplina, cargaHoraria : cargaHoraria, 
+			periodoDisciplina : periodoDisciplina, idProfessor : idProfessor, idTurma : idTurma, horariosAula : horariosAula, ementa : ementa,
+			bibliografia : bibliografia
+			}, function(data){
+    			if(data['success']){
+    				alert("Aluno salvo com sucesso!");
+	    		} else {
+	    			
+	    		}
+    	});
 	});
 	
 	$('.apagar-disciplina').click(function() {
@@ -75,6 +101,19 @@ $(document).ready(function() {
 				alert("Disciplina removida com sucesso!");
 			}
 		});
+	});
+	
+	$('#limparDisciplina').click(function() {
+		$('#idDisciplina').val("");
+		$('#codigoDisciplina').val("");
+		$('#nomeDisciplina').val("");
+		$('#cargaHoraria').val("");
+		$('#periodoDisciplina').val("");
+		$('#idProfessor').val("");
+		$('#idTurma').val("");
+		$('#horariosAula').val("");
+		$('#ementa').val("");
+		$('#bibliografia').val("");
 	});
 	
 	$('#salvar-horarios').click(function() {
@@ -284,7 +323,6 @@ table#t01 th	{
 
 					<div class="form-help">
 						<h2>Adicionar ou Atualizar Disciplina</h2>
-						<form method="post" action="../disciplinas/salvarDisciplina">
 						<table style="width:100%;">
 							<tr>
 								<td>Codigo:</td>
@@ -367,10 +405,11 @@ table#t01 th	{
 									<input onclick='overlay()' id="horariosAula" name="horariosAula" type="text" placeholder="Horarios da aula" />
 								</td>
 							</tr>
+							<tr>
+								<td><input id="limparDisciplina" name="limparDisciplina" type="submit" value="Novo"></td>
+								<td><input id="salvarDisciplina" name="salvarDisciplina" type="submit" value="Salvar"></td>
+							</tr>
 						</table>
-						<center>
-							<input id="submit" name="submit" type="submit" value="Salvar">
-						</center>
 					</div>
 				</div>
 			</div>

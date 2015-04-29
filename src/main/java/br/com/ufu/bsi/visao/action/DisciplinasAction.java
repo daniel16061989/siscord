@@ -29,33 +29,6 @@ public class DisciplinasAction extends GenericAction {
 	
 	private List<Professor> professorDisciplinas;
 	
-	private String cargaHoraria;
-	
-	private String codigoDisciplina;
-	
-	private String descricaoDisciplina;
-	
-	private String nomeDisciplina;
-	
-	private String periodoDisciplina;
-	
-	private String idTurma;
-	
-	private String idProfessor;
-	
-	private String horariosAula;
-	
-//	private void popularDados(String cargaHoraria, String codigoDisciplina, String descricaoDisciplina, String nomeDisciplina, String periodoDisciplina, String idTurma, String idProfessor, String horariosAula) {
-//		this.cargaHoraria = cargaHoraria;
-//		this.codigoDisciplina = codigoDisciplina;
-//		this.descricaoDisciplina = descricaoDisciplina;
-//		this.nomeDisciplina = nomeDisciplina;
-//		this.periodoDisciplina = periodoDisciplina;
-//		this.idTurma = idTurma;
-//		this.idProfessor = idProfessor;
-//		this.horariosAula = horariosAula;
-//	}
-
 	@Action(value = "index", results = {@Result(name = "success", location = "/coordenacao/disciplinas.jsp")})
 	public String index() {
 		
@@ -75,6 +48,16 @@ public class DisciplinasAction extends GenericAction {
 	
 	@Action(value = "salvarDisciplina", results = {@Result(name = "success", location = "/coordenacao/disciplinas.jsp")})
 	public String salvarDisciplina() {
+		String idDisciplina = request.getParameter("idDisciplina");
+		String codigoDisciplina = request.getParameter("codigoDisciplina");
+		String nomeDisciplina = request.getParameter("nomeDisciplina");
+		String cargaHoraria = request.getParameter("cargaHoraria");
+		String periodoDisciplina = request.getParameter("periodoDisciplina");
+		String idProfessor = request.getParameter("idProfessor");
+		String idTurma = request.getParameter("idTurma");
+		String horariosAula = request.getParameter("horariosAula");
+		String ementa = request.getParameter("ementa");
+		String bibliografia = request.getParameter("bibliografia");
 		
 		try {
 			Disciplina d = new Disciplina();
@@ -85,14 +68,19 @@ public class DisciplinasAction extends GenericAction {
 			Turma t = new Turma();
 			t = turmaService.findOne(Integer.parseInt(idTurma));
 			
+			if(idDisciplina != null && !"".equals(idDisciplina.trim())) {
+				d = disciplinaService.findOne(Integer.parseInt(idDisciplina));
+			}
+			
 			d.setCargaHoraria(Integer.parseInt(cargaHoraria));
 			d.setCodigoDisciplina(codigoDisciplina);
-			d.setDescricaoDisciplina(descricaoDisciplina);
 			d.setHorariosAula(horariosAula);
 			d.setNomeDisciplina(nomeDisciplina);
 			d.setPeriodo(Integer.parseInt(periodoDisciplina));
 			d.setProfessor(p);
 			d.setTurma(t);
+			d.setEmenta(ementa);
+			d.setBibliografia(bibliografia);
 			
 			disciplinaService.save(d);
 		
@@ -165,70 +153,6 @@ public class DisciplinasAction extends GenericAction {
 
 	public void setProfessorDisciplinas(List<Professor> professorDisciplinas) {
 		this.professorDisciplinas = professorDisciplinas;
-	}
-
-	public String getCargaHoraria() {
-		return cargaHoraria;
-	}
-
-	public void setCargaHoraria(String cargaHoraria) {
-		this.cargaHoraria = cargaHoraria;
-	}
-
-	public String getCodigoDisciplina() {
-		return codigoDisciplina;
-	}
-
-	public void setCodigoDisciplina(String codigoDisciplina) {
-		this.codigoDisciplina = codigoDisciplina;
-	}
-
-	public String getDescricaoDisciplina() {
-		return descricaoDisciplina;
-	}
-
-	public void setDescricaoDisciplina(String descricaoDisciplina) {
-		this.descricaoDisciplina = descricaoDisciplina;
-	}
-
-	public String getNomeDisciplina() {
-		return nomeDisciplina;
-	}
-
-	public void setNomeDisciplina(String nomeDisciplina) {
-		this.nomeDisciplina = nomeDisciplina;
-	}
-
-	public String getPeriodoDisciplina() {
-		return periodoDisciplina;
-	}
-
-	public void setPeriodoDisciplina(String periodoDisciplina) {
-		this.periodoDisciplina = periodoDisciplina;
-	}
-
-	public String getIdTurma() {
-		return idTurma;
-	}
-
-	public void setIdTurma(String idTurma) {
-		this.idTurma = idTurma;
-	}
-
-	public String getIdProfessor() {
-		return idProfessor;
-	}
-
-	public void setIdProfessor(String idProfessor) {
-		this.idProfessor = idProfessor;
-	}
-
-	public String getHorariosAula() {
-		return horariosAula;
-	}
-
-	public void setHorariosAula(String horariosAula) {
-		this.horariosAula = horariosAula;
 	}
 
 }

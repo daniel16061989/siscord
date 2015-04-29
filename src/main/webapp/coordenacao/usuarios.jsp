@@ -19,24 +19,19 @@
 <link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/bebas-neue.css"/>" />
 <link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/normalize.css"/>" />
 <link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/style.css"/>" />
-<link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/mensagem-sistema.css"/>" />
 
 <script type="text/javascript" src='<s:url value="/resources/js/function.js" />'></script>
 <script type="text/javascript" src='<s:url value="/resources/js/jquery-1.9.1.js" />'></script>
 
 <script type="text/javascript" >
 $(document).ready(function() {
-
+	
 	$('#formulario-professor').hide();
 	$('#formulario-aluno').hide();
-	$('#formulario-novo-professor').hide();
 	
 	$('#tipoUsuario').change(function() {
 		$('#lista_alunos').empty();
 		$('#lista_professores').empty();
-		
-		$('#formulario-professor').hide();
-		$('#formulario-aluno').hide();
 		
 		tipoUsuario = $(this).val();
 		
@@ -46,13 +41,16 @@ $(document).ready(function() {
 			if (data['success']) {
 				var jsonData = jQuery.parseJSON(data['success']);
 				if(tipoUsuario == 'A') {
+					$('#formulario-aluno').show();
+					$('#formulario-professor').hide();
+					
 					var dados = '' +
-					'<table style="width:100%;"> ' +
-					'	<tr> ' +
-					'		<th>Nome</th> ' +
-					'		<th> </th> ' +
-					'		<th> </th> ' +
-					'	</tr> ';
+							'<table style="width:100%;"> ' +
+							'	<tr> ' +
+							'		<th>Nome</th> ' +
+							'		<th> </th> ' +
+							'		<th> </th> ' +
+							'	</tr> ';
 					$.each(jsonData, function(key, value) {
 						dados = dados +
 							'	<tr> ' +
@@ -61,17 +59,19 @@ $(document).ready(function() {
 				           	'       <td id="'+value.idAluno+'" class="apagar-aluno"> <i class="fa fa-times fa-fw"></i> </td> ' +
 			                '	</tr> ';
 					});
-					dados = dados + '</table> ';
+					dados = dados + ' </table> ';
 					$('#lista_alunos').append(dados);
-					
 				} else if(tipoUsuario == 'P') {
+					$('#formulario-aluno').hide();
+					$('#formulario-professor').show();
+					
 					var dados = '' +
-					'<table style="width:100%;"> ' +
-					'	<tr> ' +
-					'		<th>Nome</th> ' +
-					'		<th> </th> ' +
-					'		<th> </th> ' +
-					'	</tr> ';
+							'<table style="width:100%;"> ' +
+							'	<tr> ' +
+							'		<th>Nome</th> ' +
+							'		<th> </th> ' +
+							'		<th> </th> ' +
+							'	</tr> ';
 					$.each(jsonData, function(key, value) {
 						dados = dados +
 							'	<tr> ' +
@@ -80,7 +80,7 @@ $(document).ready(function() {
 				           	'       <td id="'+value.idProfessor+'" class="apagar-professor"> <i class="fa fa-times fa-fw"></i> </td> ' +
 			                '	</tr> ';
 					});
-					dados = dados + '</table> ';
+					dados = dados + ' </table> ';
 					$('#lista_professores').append(dados);
 				}
 			}
@@ -90,18 +90,15 @@ $(document).ready(function() {
 	$('#lista_professores').on('click', '.editar-professor', function() {
 		var idProfessor = $(this).attr('id');
 		
-		$('#formulario-aluno').hide();
-		$('#formulario-professor').show();
-		
 		$.post("../usuarios/buscarProfessor", {
 				idProfessor : idProfessor
 			}, function(data){
-    			if(data['success']) {
+    			if(data['success']){
     				var jsonData = jQuery.parseJSON(data['success']);
     				$('#idProfessor').val(jsonData.idProfessor);
-    				$('#idUsuarioProfessor').val(jsonData.usuario.idUsuario);
-    				$('#nomeProfessor').val(jsonData.nomeProfessor);
-    				$('#loginProfessor').val(jsonData.usuario.login);
+					$('#matriculaProfessor').val(jsonData.codigo);
+					$('#nomeUsuarioProfessor').val(jsonData.nomeProfessor);
+					$('#loginProfessor').val(jsonData.usuario.login);
 	    		} else { }
     	});
 	});
@@ -112,16 +109,36 @@ $(document).ready(function() {
 		$.post("../usuarios/excluirProfessor", {
 				idProfessor : idProfessor
 			}, function(data){
-    			if(data['success']) {
+    			if(data['success']){
+	    		} else { 
+	    		}
+    		});
+	});
+	
+	$('#salvarProfessor').click(function() {
+		var idProfessor = $('#idProfessor').val();
+		var matriculaProfessor = $('#matriculaProfessor').val();
+		var nomeUsuarioProfessor = $('#nomeUsuarioProfessor').val();
+		var loginProfessor = $('#loginProfessor').val();
+		
+		$.post("../usuarios/salvarProfessor", {
+				idProfessor : idProfessor, matriculaProfessor : matriculaProfessor, nomeUsuarioProfessor : nomeUsuarioProfessor, loginProfessor : loginProfessor
+			}, function(data){
+    			if(data['success']){
+    				alert("Professor salvo com sucesso!");
 	    		} else { }
     	});
 	});
 	
+	$('#limparProfessor').click(function() {
+		$('#idProfessor').val("");
+		$('#matriculaProfessor').val("");
+		$('#nomeUsuarioProfessor').val("");
+		$('#loginProfessor').val("");
+	});
+	
 	$('#lista_alunos').on('click', '.editar-aluno', function() {
 		var idAluno = $(this).attr('id');
-		
-		$('#formulario-professor').hide();
-		$('#formulario-aluno').show();
 		
 		$.post("../usuarios/buscarAluno", {
 				idAluno : idAluno
@@ -129,11 +146,9 @@ $(document).ready(function() {
     			if(data['success']){
     				var jsonData = jQuery.parseJSON(data['success']);
     				$('#idAluno').val(jsonData.idAluno);
-    				$('#idUsuarioAluno').val(jsonData.usuario.idUsuario);
-    				$('#simulacaoAjuste').val(jsonData.simulacaoAjuste);
-    				$('#nomeAluno').val(jsonData.nomeAluno);
-    				$('#matricula').val(jsonData.matricula);
-    				$('#loginAluno').val(jsonData.usuario.login);
+					$('#matriculaAluno').val(jsonData.matricula);
+					$('#nomeUsuarioAluno').val(jsonData.nomeAluno);
+					$('#loginAluno').val(jsonData.usuario.login);
 	    		} else { }
     	});
 	});
@@ -149,11 +164,27 @@ $(document).ready(function() {
     	});
 	});
 	
-	$('#abrir-formulario-professor').click(function() {
-		$('#formulario-novo-professor').show();
-		$('#abrir-formulario-professor').hide();
+	$('#salvarAluno').click(function() {
+		var idAluno = $('#idAluno').val();
+		var matriculaAluno = $('#matriculaAluno').val();
+		var nomeAluno = $('#nomeUsuarioAluno').val();
+		var loginAluno = $('#loginAluno').val();
+		
+		$.post("../usuarios/salvarAluno", {
+				idAluno : idAluno, matriculaAluno : matriculaAluno, nomeAluno : nomeAluno, loginAluno : loginAluno
+			}, function(data){
+    			if(data['success']){
+    				alert("Aluno salvo com sucesso!");
+	    		} else { }
+    	});
 	});
 	
+	$('#limparAluno').click(function() {
+		$('#idAluno').val("");
+		$('#matriculaAluno').val("");
+		$('#nomeUsuarioAluno').val("");
+		$('#loginAluno').val("");
+	});
 });
 </script>
 
@@ -209,22 +240,6 @@ $(document).ready(function() {
 		</div>
 		<div class="white-grid-layout">
 			<div id="content-box">
-				
-				<s:if test="hasActionErrors()">
-			 		<div class="alert alert-danger">
-			 			<a href="#" class="close" data-dismiss="alert">&times;</a>
-			 			<strong>Erros</strong>
-			 			<s:actionerror/>
-			 		</div>
-			 	</s:if>
-			 	<s:if test="hasActionMessages()">
-			 		<div class="alert alert-success">
-			 			<a href="#" class="close" data-dismiss="alert">&times;</a>
-			 			<strong>Sucesso</strong>
-			 			<s:actionmessage/>
-			 		</div>
-			 	</s:if>
-			
 				<div id="content">
 					<form class="form-left" id="solicitacao" name="solicitacao"
 						action="../controller/cSubmeterSolicitacao.php" method="POST"
@@ -251,91 +266,60 @@ $(document).ready(function() {
 
 					<div class="form-help">
 						<h2>Filtrar dados</h2>
-						<center>
-							<input id="abrir-formulario-professor" type="submit" value="Novo Professor">
-						</center>
-						
-						<div id="formulario-novo-professor">
-							<form method="post" action="../usuarios/salvarNovoProfessor">
-								<table style="width:100%;">
-									<tr>
-										<td>Codigo:</td>
-										<td> <input id="codigoA" name="novoProfessor.codigo" type="text" placeholder="Código" /> </td>
-									</tr>
-									<tr>
-										<td>Nome completo:</td>
-										<td> <input id="nomeProfessorA" name="novoProfessor.nomeProfessor" type="text" placeholder="Nome completo do professor" /> </td>
-									</tr>
-									<tr>
-										<td> Tipo do Professor: </td>
-										<td>
-											<select name="novoProfessor.tipoProfessor" id="tipoProfessorA" class="dropdown-select" required="">
-												<option value="N"> Normal </option>
-												<option value="B"> Colegiado </option>
-												<option value="C"> Coordenador </option>
-											</select> 
-										</td>
-									</tr>
-								</table>
-								<center>
-									<input id="salvarProfessor" type="submit" value="Salvar">
-								</center>
-							</form>
-						</div>
-						
 						<div id="formulario-aluno">
-							<form method="post" action="../usuarios/salvarAluno">
-								<table style="width:100%;">
-									<tr>
-										<td>Matrícula:</td>
-										<td>
-											<input id="idAluno" name="salvarAluno.idAluno" type="hidden" />
-											<input id="idUsuarioAluno" name="salvarAluno.usuario.idUsuario" type="hidden" />
-											<input id="simulacaoAjuste" name="salvarAluno.simulacaoAjuste" type="hidden" />
-											<input id="matricula" name="salvarAluno.matricula" type="text" placeholder="Matríicula" />
-										</td>
-									</tr>
-									<tr>
-										<td>Nome:</td>
-										<td>
-											<input id="nomeAluno" name="salvarAluno.nomeAluno" type="text" placeholder="Nome do Aluno" />
-										</td>
-									</tr>
-									<tr>
-										<td>Login:</td>
-										<td>
-											<input id="loginAluno" name="salvarAluno.usuario.login" type="text" placeholder="Login do Aluno" />
-										</td>
-									</tr>
-								</table>
-								<center>
-									<input id="submitAluno" name="submitAluno" type="submit" value="Salvar">
-								</center>
-							</form>
+							<table style="width:100%;">
+								<tr>
+									<td>Matrícula:</td>
+									<td>
+										<input id="idAluno" name="idAluno" type="hidden" />
+										<input id="matriculaAluno" name="matriculaAluno" type="text" placeholder="Matríicula" />
+									</td>
+								</tr>
+								<tr>
+									<td>Nome:</td>
+									<td>
+										<input id="nomeUsuarioAluno" name="nomeUsuarioAluno" type="text" placeholder="Nome do usuário" />
+									</td>
+								</tr>
+								<tr>
+									<td>Login:</td>
+									<td>
+										<input id="loginAluno" name="loginAluno" type="text" placeholder="Login do usuário" />
+									</td>
+								</tr>
+								<tr>
+									<td><input id="limparAluno" name="limparAluno" type="submit" value="Novo"></td>
+									<td><input id="salvarAluno" name="salvarAluno" type="submit" value="Salvar"></td>
+								</tr>
+							</table>
 						</div>
 						
 						<div id="formulario-professor">
-							<form method="post" action="../usuarios/salvarProfessor">
-								<table style="width:100%;">
-									<tr>
-										<td>Nome:</td>
-										<td>
-											<input id="idProfessor" name="salvarProfessor.idProfessor" type="hidden" />
-											<input id="idUsuarioProfessor" name="salvarProfessor.usuario.idUsuario" type="hidden" />
-											<input id="nomeProfessor" name="salvarProfessor.nomeProfessor" type="text" placeholder="Nome do Professor" />
-										</td>
-									</tr>
-									<tr>
-										<td>Login:</td>
-										<td>
-											<input id="loginProfessor" name="salvarProfessor.usuario.login" type="text" placeholder="Login do Professor" />
-										</td>
-									</tr>
-								</table>
-								<center>
-									<input id="submitProfessor" name="submitProfessor" type="submit" value="Salvar">
-								</center>
-							</form>
+							<table style="width:100%;">
+								<tr>
+									<td>Matrícula:</td>
+									<td>
+										<input id="idProfessor" name="idProfessor" type="hidden" />
+										<input id="matriculaProfessor" name="matriculaProfessor" type="text" placeholder="Matríicula" value="" />
+									</td>
+								</tr>
+								<tr>
+									<td>Nome:</td>
+									<td>
+										<input id="nomeUsuarioProfessor" name="nomeUsuarioProfessor" type="text" placeholder="Nome do usuário" />
+									</td>
+								</tr>
+								<tr>
+									<td>Login:</td>
+									<td>
+										<input id="loginProfessor" name="loginProfessor" type="text" placeholder="Login do usuário" />
+									</td>
+								</tr>
+								<tr>
+									<td><input id="limparProfessor" name="limparProfessor" type="submit" value="Novo"></td>
+									<td><input id="salvarProfessor" name="salvarProfessor" type="submit" value="Salvar"></td>
+								</tr>
+							</table>
 						</div>
 					</div>
 				</div>
@@ -344,9 +328,15 @@ $(document).ready(function() {
 
 		<footer>
 			<div class="grid-layout">
+				<div class="grid-footer-left">
+					<text>Desenvolvido pelo PET-SI</text>
 					<text>Faculdade de Computação</text>
 					<text>Universidade Federal de Uberlândia</text>
-					<text>Copyright © 2015 - Todos os direitos reservados</text>
+					<text>Copyright © 2013 - Todos os direitos reservados</text>
+				</div>
+				<div class="grid-footer-right">
+					<a href="http://www.petsi.facom.ufu.br/" target="_blank"><img src='<s:url value="/resources/images/petsi.png" />' ></a>
+				</div>
 			</div>
 		</footer>
 	</div>
