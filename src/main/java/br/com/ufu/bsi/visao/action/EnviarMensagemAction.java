@@ -8,6 +8,8 @@ import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 
+import com.google.gson.Gson;
+
 import br.com.ufu.bsi.dao.excecoes.SiscordGenericException;
 import br.com.ufu.bsi.dto.Mensagem;
 
@@ -28,6 +30,9 @@ public class EnviarMensagemAction extends GenericAction {
 	public String enviarMensagemAluno() {
 		String mensagem = request.getParameter("mensagem");
 		
+		Gson gson = new Gson();
+		String jsonMensagem = "";
+		
 		Mensagem m = new Mensagem();
 		
 		m.setAssunto("Mensagem Geral");
@@ -38,12 +43,12 @@ public class EnviarMensagemAction extends GenericAction {
 		
 		try {
 			mensagemService.save(m);
-			index();
+			jsonMensagem = gson.toJson(m);
 		} catch (SiscordGenericException e) {
 			e.printStackTrace();
 		}
 		
-		jsonData.put("success", "success");
+		jsonData.put("success", jsonMensagem);
 		return SUCCESS;
 	}
 	

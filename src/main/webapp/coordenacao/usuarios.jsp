@@ -3,11 +3,8 @@
 <html lang="pt-br">
 <head>
 
-<link rel="shortcut icon"
-	href="<s:url value="/resources/images/favicon.ico"/>"
-	type="image/x-icon">
-<link rel="icon" href="<s:url value="/resources/images/favicon.ico"/>"
-	type="image/x-icon">
+<link rel="shortcut icon" href="<s:url value="/resources/images/favicon.ico"/>" type="image/x-icon">
+<link rel="icon" href="<s:url value="/resources/images/favicon.ico"/>" type="image/x-icon">
 
 <title>Secretaria do Bacharelado em Sistemas de Informação - UFU</title>
 
@@ -186,7 +183,7 @@ $(document).ready(function() {
 	function mensagem(mensagem) {
 		$('#mensagem-sucesso').empty();
 		$('#mensagem-sucesso').show();
-		$('#mensagem-sucesso').append(mensagem)
+		$('#mensagem-sucesso').append(mensagem);
 		//window.location.replace("http://localhost:8080/siscord/usuarios/");
 		setInterval(fecharMensagem, 4000);
 	}

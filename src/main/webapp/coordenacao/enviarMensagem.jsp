@@ -16,60 +16,96 @@
 <link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/bebas-neue.css"/>" />
 <link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/normalize.css"/>" />
 <link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/style.css"/>" />
-<link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/jquery-ui.min.css"/>" />
-<link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/dialog.css"/>" />
-<link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/mensagem-sistema.css"/>" />
 
 <script type="text/javascript" src='<s:url value="/resources/js/function.js" />'></script>
 <script type="text/javascript" src='<s:url value="/resources/js/jquery-1.9.1.js" />'></script>
-<script type="text/javascript" src='<s:url value="/resources/js/jquery-ui.min.js" />'></script>
-<script type="text/javascript" src='<s:url value="/resources/js/dialog.js" />'></script>
 
 <script type="text/javascript" >
 $(document).ready(function() {
 	
 	$('#mensagem-sucesso').hide();
+	$('#mensagem-erro').hide();
 	
 	$('#btn-aluno').click(function() {
 		var mensagem = $('#aluno').val();
-
-		$.post("../enviarMensagem/enviarMensagemAluno", {
-			mensagem : mensagem
-		}, function(data) {
-			console.log(data);
-			if (data['error']) {
-			} else {
-				$('#mensagem-sucesso').empty();
-    			$('#mensagem-sucesso').show();
-				$('#mensagem-sucesso').append("Mensagem enviada para todos os Alunos")
-				setInterval(fecharMensagem, 4000);
-			}
-		});
+		
+		if(mensagem.trim() == "") {
+			mensagemErro("A mensagem não pode ser vazia.");
+		} else {
+			$.post("../enviarMensagem/enviarMensagemAluno", {
+					mensagem : mensagem
+				}, function(data){
+	    			if(data['error']){
+		    		} else {
+		    			$('#mensagem-sucesso').empty();
+		    			$('#mensagem-sucesso').show();
+		    			$('#mensagem-sucesso').append("Mensagem enviada para todos os Alunos");
+		    			setInterval(fecharMensagem, 4000);
+		    		}
+	    	});
+		}
 	});
 	
 	$('#btn-professor').click(function() {
 		var mensagem = $('#professor').val();
 		
-		$.post("../enviarMensagem/enviarMensagemProfessor", {
-			mensagem : mensagem
-		}, function(data) {
-			console.log(data);
-			if (data['error']) {
-			} else {
-				$('#mensagem-sucesso').empty();
-    			$('#mensagem-sucesso').show();
-				$('#mensagem-sucesso').append("Mensagem enviada para todos os Professores")
-				setInterval(fecharMensagem, 4000);
-			}
-		});
+		if(mensagem.trim() == "") {
+			mensagemErro("A mensagem não pode ser vazia.");
+		} else {
+			$.post("../enviarMensagem/enviarMensagemProfessor", {
+				mensagem : mensagem
+			}, function(data) {
+				if (data['error']) {
+				} else {
+					$('#mensagem-sucesso').empty();
+	    			$('#mensagem-sucesso').show();
+	    			$('#mensagem-sucesso').append("Mensagem enviada para todos os Professores");
+	    			setInterval(fecharMensagem, 4000);
+				}
+			});
+		}
 	});
 	
 	function fecharMensagem() {
 		$('#mensagem-sucesso').hide();
 	}
+	
+	function fecharMensagemErro() {
+		$('#mensagem-erro').hide();
+	}
+	
+	function mensagem(mensagem) {
+		$('#mensagem-sucesso').empty();
+		$('#mensagem-sucesso').show();
+		$('#mensagem-sucesso').append(mensagem);
+		setInterval(fecharMensagem, 4000);
+	}
+	
+	function mensagemErro(mensagem) {
+		$('#mensagem-erro').empty();
+		$('#mensagem-erro').show();
+		$('#mensagem-erro').append(mensagem);
+		setInterval(fecharMensagemErro, 4000);
+	}
 
 });
 </script>
+
+<style type="text/css">
+
+.bloco-left {
+	padding-left: 5%;
+	padding-right: 5%;
+	margin-top: 10px;
+	margin-bottom: 15px;
+	font-size: 0.9em;
+	text-align: left;
+	float: left;
+	width: 50%;
+	margin: 0;
+}
+
+</style>
 
 </head>
 
@@ -107,21 +143,13 @@ $(document).ready(function() {
 			<div id="content-box">
 			
 				<div id="mensagem-sucesso" style="width: 100%; height:50px; background-color: #AFEEEE;"> </div>
+			 	<div id="mensagem-erro" style="width: 100%; height:50px; background-color: #FF0000; color: #FFFFFF;"> </div>
 			
 				<div id="content">
-					<form class="form-left" id="solicitacao" name="solicitacao"
-						action="#" method="POST"
-						enctype="multipart/form-data" novalidate="novalidate">
+					<div class="bloco-left">
 
 						<h1>Bem Vindo</h1>
 						
-						<!-- <p><a href="#" id="dialog-link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-newwin"></span>Open Dialog</a></p>  -->
-						
-						<!-- ui-dialog -->
-						<div id="dialog" title="Mensagem do Sistema">
-							<p>Mensagem enviada com sucesso!</p>
-						</div>
-
 						<label>Mensagem Aluno</label>
 						<textarea maxlength="250" name="aluno" id="aluno" placeholder="Escreva uma mensagem para os alunos"></textarea>
 						
@@ -135,7 +163,7 @@ $(document).ready(function() {
 						<center>
 							<input id="btn-professor" name="btn-professor" type="submit" value="Enviar">
 						</center>
-					</form>
+					</div>
 
 					<div class="form-help">
 						<h2>Instruções</h2>

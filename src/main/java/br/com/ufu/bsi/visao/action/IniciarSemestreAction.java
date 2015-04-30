@@ -13,6 +13,8 @@ import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 
+import com.google.gson.Gson;
+
 import br.com.ufu.bsi.dao.excecoes.SiscordGenericException;
 import br.com.ufu.bsi.dto.RecessoSemestre;
 import br.com.ufu.bsi.dto.Semestre;
@@ -56,7 +58,7 @@ public class IniciarSemestreAction extends GenericAction {
 	}
 	
 	@Action(value = "salvarDados", results = {@Result(name="success", type="json", params = {"root","jsonData"}),
-			  								  @Result(name="error", type="json", params = {"root","jsonData"})})
+				 							  @Result(name="error", type="json", params = {"root","jsonData"})})
 	public String salvarDados() {
 		String ano = request.getParameter("ano");
 		String semestre = request.getParameter("semestre");
@@ -92,7 +94,7 @@ public class IniciarSemestreAction extends GenericAction {
 			e1.printStackTrace();
 		}
 		
-		jsonData.put("success", "success");
+		jsonData.put("success", "s");
 		return SUCCESS;
 	}
 	
@@ -102,6 +104,8 @@ public class IniciarSemestreAction extends GenericAction {
 	public String salvarRecesso() {
 		String dataRecesso = request.getParameter("dataRecesso");
 		
+		Gson gson = new Gson();
+		String jsonRecesso = "";
 		try {
 			DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy"); 
 			Date dataR = (Date) formatter.parse(dataRecesso);
@@ -116,13 +120,14 @@ public class IniciarSemestreAction extends GenericAction {
 			
 			recessoSemestreService.save(r);
 			
+			jsonRecesso = gson.toJson(r);
 		} catch (ParseException e1) {
 			e1.printStackTrace();
 		} catch (SiscordGenericException e) {
 			e.printStackTrace();
 		}
 		
-		jsonData.put("success", "success");
+		jsonData.put("success", jsonRecesso);
 		return SUCCESS;
 	}
 

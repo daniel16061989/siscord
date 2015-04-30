@@ -4,11 +4,8 @@
 <html lang="pt-br">
 <head>
 
-<link rel="shortcut icon"
-	href="<s:url value="/resources/images/favicon.ico"/>"
-	type="image/x-icon">
-<link rel="icon" href="<s:url value="/resources/images/favicon.ico"/>"
-	type="image/x-icon">
+<link rel="shortcut icon" href="<s:url value="/resources/images/favicon.ico"/>" type="image/x-icon">
+<link rel="icon" href="<s:url value="/resources/images/favicon.ico"/>" type="image/x-icon">
 
 <title>Secretaria do Bacharelado em Sistemas de Informação - UFU</title>
 
@@ -21,7 +18,6 @@
 <link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/normalize.css"/>" />
 <link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/style.css"/>" />
 <link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/jquery-ui.min.css"/>" />
-<link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/mensagem-sistema.css"/>" />
 
 <script type="text/javascript" src='<s:url value="/resources/js/function.js" />'></script>
 <script type="text/javascript" src='<s:url value="/resources/js/jquery-1.9.1.js" />'></script>
@@ -30,7 +26,8 @@
 <script type="text/javascript" >
 
 $(document).ready(function() {
-	$('.alert').hide();
+	$('#mensagem-sucesso').hide();
+	$('#mensagem-erro').hide();
 	
 	$.datepicker.regional['pt-BR'] = {
 			closeText: 'Fechar',
@@ -67,15 +64,14 @@ $(document).ready(function() {
 		var iReajuste = $('#inicio-reajuste').val();
 		var fReajuste = $('#fim-reajuste').val();
 		
-		/*
-		$('#mensagem').html('Semestre salvo com sucesso.');
-		$('.alert').show();
-		*/
 		$.post("../iniciarSemestre/salvarDados", {
 			fReajuste : fReajuste, iReajuste : iReajuste, ano : ano, semestre : semestre, dataInicio : dataInicio, dataFim : dataFim
 		}, function(data) {
 			if (data['success']) {
-				
+				$('#mensagem-sucesso').empty();
+				$('#mensagem-sucesso').show();
+				$('#mensagem-sucesso').append("Semestre Salvo com Sucesso");
+				setInterval(fecharMensagem, 4000);
 			}
 		});
 	});
@@ -86,11 +82,37 @@ $(document).ready(function() {
 			dataRecesso : dataRecesso
 		}, function(data) {
 			if (data['success']) {
-				
+				$('#mensagem-sucesso').empty();
+				$('#mensagem-sucesso').show();
+				$('#mensagem-sucesso').append("Recesso Salvo com Sucesso")
+				setInterval(fecharMensagem, 4000);
 			}
 		});
 	});
 	
+	function fecharMensagem() {
+		$('#mensagem-sucesso').hide();
+	}
+	
+	function fecharMensagemErro() {
+		$('#mensagem-erro').hide();
+	}
+	
+	function mensagem(mensagem) {
+		$('#mensagem-sucesso').empty();
+		$('#mensagem-sucesso').show();
+		$('#mensagem-sucesso').append(mensagem);
+		//window.location.replace("http://localhost:8080/siscord/usuarios/");
+		setInterval(fecharMensagem, 4000);
+	}
+	
+	function mensagemErro(mensagem) {
+		$('#mensagem-erro').empty();
+		$('#mensagem-erro').show();
+		$('#mensagem-erro').append(mensagem)
+		setInterval(fecharMensagem, 4000);
+	}
+
 });
 </script>
 
@@ -98,6 +120,19 @@ $(document).ready(function() {
 #ui-datepicker-div {
 	z-index: 999 !important;
 }
+
+.bloco-left {
+	padding-left: 5%;
+	padding-right: 5%;
+	margin-top: 10px;
+	margin-bottom: 15px;
+	font-size: 0.9em;
+	text-align: left;
+	float: left;
+	width: 50%;
+	margin: 0;
+}
+
 </style>
 
 </head>
@@ -134,16 +169,12 @@ $(document).ready(function() {
 		</div>
 		<div class="white-grid-layout">
 			<div id="content-box">
-			<!-- 
-				<div class="alert alert-success">
-		 			<a href="#" class="close" data-dismiss="alert">&times;</a>
-		 			<strong>Sucesso</strong>
-		 			<div id="mensagem"> </div> 
-		 		</div>
-		 	 -->
+			
+				<div id="mensagem-sucesso" style="width: 100%; height:50px; background-color: #AFEEEE;"> </div>
+			 	<div id="mensagem-erro" style="width: 100%; height:50px; background-color: #FF0000; color: #FFFFFF;"> </div>
 			
 				<div id="content">
-					<form class="form-left" novalidate="novalidate">
+					<div class="bloco-left">
 
 						<h1>Bem Vindo</h1>
 
@@ -188,7 +219,7 @@ $(document).ready(function() {
 						<center>
 							<input id="btn-salvar-data-recesso" name="btn-salvar-data-recesso" type="submit" value="Salvar Recesso">
 						</center>
-					</form>
+					</div>
 
 					<div class="form-help">
 						<h2>Semestre Atual</h2>

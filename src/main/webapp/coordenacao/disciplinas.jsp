@@ -47,7 +47,7 @@ $(document).ready(function() {
 	$('#mensagem-sucesso').hide();
 	$('#mensagem-erro').hide();
 	
-	$('.editar-disciplina').click(function() {
+	$('#lista-disciplinas').on('click', '.editar-disciplina', function() {
 		var idDisciplina = $(this).attr('id');
 		
 		$.post("../disciplinas/buscarDisciplina", {
@@ -95,7 +95,7 @@ $(document).ready(function() {
     	});
 	});
 	
-	$('.apagar-disciplina').click(function() {
+	$('#lista-disciplinas').on('click', '.apagar-disciplina', function() {
 		var idDisciplina = $(this).attr('id');
 		
 		$.post("../disciplinas/excluirDisciplina", {
@@ -169,13 +169,14 @@ $(document).ready(function() {
 	        '		<td> '+value.codigoDisciplina+' </td> ' +
 	  	    '    	<td> '+value.nomeDisciplina+' </td> ' +
 	   	    '    	<td> '+value.turma.codigoTurma+' </td> ' +
-	   	    '    	<td> '+value.professor.nomeProfessor+' </td> ' +
+	   	 	'    	<td> '+value.professor.nomeProfessor+' </td> ' +
 	   	    '    	<td id="'+value.idDisciplina+'" class="editar-disciplina"> <i class="fa fa-book fa-fw"></i> </td> ' +
 	   	    '    	<td id="'+value.idDisciplina+'" class="apagar-disciplina"> <i class="fa fa-times fa-fw"></i> </td> ' +
 	      	'	</tr> ';
 		});
 		dados = dados + '</table>';
 		
+		$('#lista-disciplinas').empty();
 		$('#lista-disciplinas').append(dados);
 	}
 	
@@ -190,7 +191,7 @@ $(document).ready(function() {
 	function mensagem(mensagem) {
 		$('#mensagem-sucesso').empty();
 		$('#mensagem-sucesso').show();
-		$('#mensagem-sucesso').append(mensagem)
+		$('#mensagem-sucesso').append(mensagem);
 		//window.location.replace("http://localhost:8080/siscord/usuarios/");
 		setInterval(fecharMensagem, 4000);
 	}
@@ -198,7 +199,7 @@ $(document).ready(function() {
 	function mensagemErro(mensagem) {
 		$('#mensagem-erro').empty();
 		$('#mensagem-erro').show();
-		$('#mensagem-erro').append(mensagem)
+		$('#mensagem-erro').append(mensagem);
 		setInterval(fecharMensagem, 4000);
 	}
 

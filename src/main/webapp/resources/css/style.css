@@ -611,6 +611,18 @@ form.form-left {
     text-align: justify;
 }
 
+.bloco-left {
+	padding-left: 5%;
+	padding-right: 5%;
+	margin-top: 10px;
+	margin-bottom: 15px;
+	font-size: 0.9em;
+	text-align: left;
+	float: left;
+	width: 50%;
+	margin: 0;
+}
+
 .planodisciplina-right {
     float: right;
     width: 45%;

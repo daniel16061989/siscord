@@ -89,7 +89,7 @@ public class UsuariosAction extends GenericAction {
 	}
 	
 	@Action(value = "excluirProfessor", results = {@Result(name="success", type="json", params = {"root","jsonData"}),
-			  									  @Result(name="error", type="json", params = {"root","jsonData"})})
+			  									   @Result(name="error", type="json", params = {"root","jsonData"})})
 	public String excluirProfessor() {
 		String idProfessor = request.getParameter("idProfessor");
 		
