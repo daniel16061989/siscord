@@ -170,7 +170,7 @@ public class PlanoDisciplinaAction extends GenericAction {
 			Disciplina disciplina = new Disciplina();
 			List<Semestre> semestre = new ArrayList<Semestre>();
 			
-			semestre = semestreService.findAll();
+			semestre = semestreService.findByData();
 			if(semestre.size() > 0) {
 				disciplina = disciplinaService.findOne(Integer.valueOf(idDisciplina));
 				
@@ -179,7 +179,7 @@ public class PlanoDisciplinaAction extends GenericAction {
 				
 				String[] aux = disciplina.getHorariosAula().split("-");
 				
-				for(int i = 1; i < aux.length; i++) {
+				for(int i = 0; i < aux.length; i++) {
 					if((aux[i].substring(0, 1)).equals("d")) {
 						// adiciona 1 para que o calendar entenda o dia da semana
 						dias.add(Integer.valueOf(aux[i].substring(1, 2)) + 1);

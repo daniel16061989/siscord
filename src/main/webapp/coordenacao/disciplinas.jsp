@@ -44,6 +44,9 @@ function overlayHide() {
 
 $(document).ready(function() {
 	
+	$('#mensagem-sucesso').hide();
+	$('#mensagem-erro').hide();
+	
 	$('.editar-disciplina').click(function() {
 		var idDisciplina = $(this).attr('id');
 		
@@ -76,17 +79,18 @@ $(document).ready(function() {
 		var idTurma = $('#idTurma').val();
 		var horariosAula = $('#horariosAula').val();
 		var ementa = $('#ementa').val();
-		var bibliografia = $('#bibliografia').val("");
+		var bibliografia = $('#bibliografia').val();
 		
 		$.post("../disciplinas/salvarDisciplina", {
 			idDisciplina : idDisciplina, codigoDisciplina : codigoDisciplina, nomeDisciplina : nomeDisciplina, cargaHoraria : cargaHoraria, 
 			periodoDisciplina : periodoDisciplina, idProfessor : idProfessor, idTurma : idTurma, horariosAula : horariosAula, ementa : ementa,
 			bibliografia : bibliografia
 			}, function(data){
-    			if(data['success']){
-    				alert("Aluno salvo com sucesso!");
+    			if(data['error']){
 	    		} else {
-	    			
+	    			mensagem("Disciplina salva com Sucesso");
+	    			var jsonData = jQuery.parseJSON(data['success']);
+	    			montaListaDisciplina(jsonData);
 	    		}
     	});
 	});
@@ -97,8 +101,11 @@ $(document).ready(function() {
 		$.post("../disciplinas/excluirDisciplina", {
 			idDisciplina : idDisciplina
 		}, function(data) {
-			if (data['success']) {
-				alert("Disciplina removida com sucesso!");
+			if (data['error']) {
+			} else {
+				mensagem("Disciplina Deletada com Sucesso");
+				var jsonData = jQuery.parseJSON(data['success']);
+    			montaListaDisciplina(jsonData);
 			}
 		});
 	});
@@ -143,8 +150,57 @@ $(document).ready(function() {
 			horarios.push(id);
 			$('#'+id).css('background-color', 'black');
 		}
-		
 	});
+	
+	function montaListaDisciplina(jsonData) {
+		var dados = '' +
+		'<table style="width:100%;" id="t01"> ' +
+		'	<tr> ' +
+		'		<th>Sigla</th> ' +
+		'		<th>Nome</th> ' +
+		'		<th>Turma</th> ' +
+		'		<th>Professor</th> ' +
+		'		<th> </th> ' +
+		'		<th> </th> ' +
+		'	</tr> ';
+		$.each(jsonData, function(key, value) {
+			dados = dados +
+			'	<tr> ' +
+	        '		<td> '+value.codigoDisciplina+' </td> ' +
+	  	    '    	<td> '+value.nomeDisciplina+' </td> ' +
+	   	    '    	<td> '+value.turma.codigoTurma+' </td> ' +
+	   	    '    	<td> '+value.professor.nomeProfessor+' </td> ' +
+	   	    '    	<td id="'+value.idDisciplina+'" class="editar-disciplina"> <i class="fa fa-book fa-fw"></i> </td> ' +
+	   	    '    	<td id="'+value.idDisciplina+'" class="apagar-disciplina"> <i class="fa fa-times fa-fw"></i> </td> ' +
+	      	'	</tr> ';
+		});
+		dados = dados + '</table>';
+		
+		$('#lista-disciplinas').append(dados);
+	}
+	
+	function fecharMensagem() {
+		$('#mensagem-sucesso').hide();
+	}
+	
+	function fecharMensagemErro() {
+		$('#mensagem-erro').hide();
+	}
+	
+	function mensagem(mensagem) {
+		$('#mensagem-sucesso').empty();
+		$('#mensagem-sucesso').show();
+		$('#mensagem-sucesso').append(mensagem)
+		//window.location.replace("http://localhost:8080/siscord/usuarios/");
+		setInterval(fecharMensagem, 4000);
+	}
+	
+	function mensagemErro(mensagem) {
+		$('#mensagem-erro').empty();
+		$('#mensagem-erro').show();
+		$('#mensagem-erro').append(mensagem)
+		setInterval(fecharMensagem, 4000);
+	}
 
 });
 	
@@ -292,33 +348,36 @@ table#t01 th	{
 		
 		<div class="white-grid-layout">
 			<div id="content-box">
+				
+				<div id="mensagem-sucesso" style="width: 100%; height:50px; background-color: #AFEEEE;"> </div>
+				
 				<div id="content">
-					<form class="form-left" id="solicitacao" name="solicitacao"
-						action="../controller/cSubmeterSolicitacao.php" method="POST"
-						enctype="multipart/form-data" novalidate="novalidate">
+					<form class="form-left" id="solicitacao" name="solicitacao">
 
 						<h1>Bem Vindo</h1>
-
-						<table style="width:100%;" id="t01">
-							<tr>
-								<th>Sigla</th>
-								<th>Nome</th>
-								<th>Turma</th>
-								<th>Professor</th>
-								<th> </th>
-								<th> </th>
-							</tr>
-							<s:iterator value="disciplinas" var="user" status="stat">
+	
+						<div id="lista-disciplinas">
+							<table style="width:100%;" id="t01">
 								<tr>
-				                    <td> <s:property value="codigoDisciplina"/> </td>
-				           	        <td> <s:property value="nomeDisciplina"/> </td>
-				           	        <td> <s:property value="turma.codigoTurma"/> </td>
-				           	        <td> <s:property value="professor.nomeProfessor"/> </td>
-				           	        <td id="<s:property value="idDisciplina"/>" class="editar-disciplina"> <i class="fa fa-book fa-fw"></i> </td>
-				           	        <td id="<s:property value="idDisciplina"/>" class="apagar-disciplina"> <i class="fa fa-times fa-fw"></i> </td>
-			               		</tr>
-				            </s:iterator>
-						</table>
+									<th>Sigla</th>
+									<th>Nome</th>
+									<th>Turma</th>
+									<th>Professor</th>
+									<th> </th>
+									<th> </th>
+								</tr>
+								<s:iterator value="disciplinas" var="user" status="stat">
+									<tr>
+					                    <td> <s:property value="codigoDisciplina"/> </td>
+					           	        <td> <s:property value="nomeDisciplina"/> </td>
+					           	        <td> <s:property value="turma.codigoTurma"/> </td>
+					           	        <td> <s:property value="professor.nomeProfessor"/> </td>
+					           	        <td id="<s:property value="idDisciplina"/>" class="editar-disciplina"> <i class="fa fa-book fa-fw"></i> </td>
+					           	        <td id="<s:property value="idDisciplina"/>" class="apagar-disciplina"> <i class="fa fa-times fa-fw"></i> </td>
+				               		</tr>
+					            </s:iterator>
+							</table>
+						</div>
 					</form>
 
 					<div class="form-help">
@@ -327,6 +386,7 @@ table#t01 th	{
 							<tr>
 								<td>Codigo:</td>
 								<td>
+									<input id="idDisciplina" name="idDisciplina" type="hidden">
 									<input id="codigoDisciplina" name="codigoDisciplina" type="text" placeholder="Sigla da Disciplina" />
 								</td>
 							</tr>

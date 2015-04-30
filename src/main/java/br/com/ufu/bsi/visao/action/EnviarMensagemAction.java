@@ -38,9 +38,8 @@ public class EnviarMensagemAction extends GenericAction {
 		
 		try {
 			mensagemService.save(m);
-			addActionMessage("Mensagem enviada para os alunos com sucesso.");
+			index();
 		} catch (SiscordGenericException e) {
-			addActionError("Erro ao enviar mensagem.");
 			e.printStackTrace();
 		}
 		
@@ -63,12 +62,10 @@ public class EnviarMensagemAction extends GenericAction {
 		
 		try {
 			mensagemService.save(m);
-			addActionMessage("Mensagem enviada para os professores com sucesso.");
+			index();
 		} catch (SiscordGenericException e) {
-			addActionError("Erro ao enviar mensagem.");
 			e.printStackTrace();
 		}
-		
 		jsonData.put("success", "success");
 		return SUCCESS;
 	}

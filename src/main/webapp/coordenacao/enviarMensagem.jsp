@@ -28,14 +28,21 @@
 <script type="text/javascript" >
 $(document).ready(function() {
 	
+	$('#mensagem-sucesso').hide();
+	
 	$('#btn-aluno').click(function() {
 		var mensagem = $('#aluno').val();
 
 		$.post("../enviarMensagem/enviarMensagemAluno", {
 			mensagem : mensagem
 		}, function(data) {
-			if (data['success']) {
-				/*$("#dialog").dialog("open");*/
+			console.log(data);
+			if (data['error']) {
+			} else {
+				$('#mensagem-sucesso').empty();
+    			$('#mensagem-sucesso').show();
+				$('#mensagem-sucesso').append("Mensagem enviada para todos os Alunos")
+				setInterval(fecharMensagem, 4000);
 			}
 		});
 	});
@@ -46,10 +53,21 @@ $(document).ready(function() {
 		$.post("../enviarMensagem/enviarMensagemProfessor", {
 			mensagem : mensagem
 		}, function(data) {
-			if (data['success']) {
+			console.log(data);
+			if (data['error']) {
+			} else {
+				$('#mensagem-sucesso').empty();
+    			$('#mensagem-sucesso').show();
+				$('#mensagem-sucesso').append("Mensagem enviada para todos os Professores")
+				setInterval(fecharMensagem, 4000);
 			}
 		});
 	});
+	
+	function fecharMensagem() {
+		$('#mensagem-sucesso').hide();
+	}
+
 });
 </script>
 
@@ -88,20 +106,7 @@ $(document).ready(function() {
 		<div class="white-grid-layout">
 			<div id="content-box">
 			
-				<s:if test="hasActionErrors()">
-			 		<div class="alert alert-danger">
-			 			<a href="#" class="close" data-dismiss="alert">&times;</a>
-			 			<strong>Erros</strong>
-			 			<s:actionerror/>
-			 		</div>
-			 	</s:if>
-			 	<s:if test="hasActionMessages()">
-			 		<div class="alert alert-success">
-			 			<a href="#" class="close" data-dismiss="alert">&times;</a>
-			 			<strong>Sucesso</strong>
-			 			<s:actionmessage/>
-			 		</div>
-			 	</s:if>
+				<div id="mensagem-sucesso" style="width: 100%; height:50px; background-color: #AFEEEE;"> </div>
 			
 				<div id="content">
 					<form class="form-left" id="solicitacao" name="solicitacao"

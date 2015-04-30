@@ -29,6 +29,9 @@ $(document).ready(function() {
 	$('#formulario-professor').hide();
 	$('#formulario-aluno').hide();
 	
+	$('#mensagem-sucesso').hide();
+	$('#mensagem-erro').hide();
+	
 	$('#tipoUsuario').change(function() {
 		$('#lista_alunos').empty();
 		$('#lista_professores').empty();
@@ -44,44 +47,13 @@ $(document).ready(function() {
 					$('#formulario-aluno').show();
 					$('#formulario-professor').hide();
 					
-					var dados = '' +
-							'<table style="width:100%;"> ' +
-							'	<tr> ' +
-							'		<th>Nome</th> ' +
-							'		<th> </th> ' +
-							'		<th> </th> ' +
-							'	</tr> ';
-					$.each(jsonData, function(key, value) {
-						dados = dados +
-							'	<tr> ' +
-				            '       <td> '+value.nomeAluno+'</td> ' +
-				            '       <td id="'+value.idAluno+'" class="editar-aluno"> <i class="fa fa-book fa-fw"></i> </td> ' +
-				           	'       <td id="'+value.idAluno+'" class="apagar-aluno"> <i class="fa fa-times fa-fw"></i> </td> ' +
-			                '	</tr> ';
-					});
-					dados = dados + ' </table> ';
-					$('#lista_alunos').append(dados);
+					montaListaAluno(jsonData);
+					
 				} else if(tipoUsuario == 'P') {
 					$('#formulario-aluno').hide();
 					$('#formulario-professor').show();
 					
-					var dados = '' +
-							'<table style="width:100%;"> ' +
-							'	<tr> ' +
-							'		<th>Nome</th> ' +
-							'		<th> </th> ' +
-							'		<th> </th> ' +
-							'	</tr> ';
-					$.each(jsonData, function(key, value) {
-						dados = dados +
-							'	<tr> ' +
-				            '       <td> '+value.nomeProfessor+'</td> ' +
-				            '       <td id="'+value.idProfessor+'" class="editar-professor"> <i class="fa fa-book fa-fw"></i> </td> ' +
-				           	'       <td id="'+value.idProfessor+'" class="apagar-professor"> <i class="fa fa-times fa-fw"></i> </td> ' +
-			                '	</tr> ';
-					});
-					dados = dados + ' </table> ';
-					$('#lista_professores').append(dados);
+					montaListaProfessor(jsonData);
 				}
 			}
 		});
@@ -103,14 +75,18 @@ $(document).ready(function() {
     	});
 	});
 	
-	$('.apagar-professor').click(function() {
+	$('#lista_professores').on('click', '.apagar-professor', function() {
 		var idProfessor = $(this).attr('id');
 		
 		$.post("../usuarios/excluirProfessor", {
 				idProfessor : idProfessor
 			}, function(data){
-    			if(data['success']){
-	    		} else { 
+    			if(data['error']){
+    				mensagemErro("Erro ao Deletar o Professor");
+	    		} else {
+	    			mensagem("Professor Deletado com Sucesso");
+	    			var jsonData = jQuery.parseJSON(data['success']);
+	    			montaListaProfessor(jsonData);
 	    		}
     		});
 	});
@@ -124,9 +100,12 @@ $(document).ready(function() {
 		$.post("../usuarios/salvarProfessor", {
 				idProfessor : idProfessor, matriculaProfessor : matriculaProfessor, nomeUsuarioProfessor : nomeUsuarioProfessor, loginProfessor : loginProfessor
 			}, function(data){
-    			if(data['success']){
-    				alert("Professor salvo com sucesso!");
-	    		} else { }
+    			if(data['error']){
+	    		} else {
+	    			mensagem("Professor Salvo com Sucesso");
+	    			var jsonData = jQuery.parseJSON(data['success']);
+	    			montaListaProfessor(jsonData);
+	    		}
     	});
 	});
 	
@@ -153,14 +132,19 @@ $(document).ready(function() {
     	});
 	});
 	
-	$('.apagar-aluno').click(function() {
+	$('#lista_alunos').on('click', '.apagar-aluno', function() {
 		var idAluno = $(this).attr('id');
 		
 		$.post("../usuarios/excluirAluno", {
 				idAluno : idAluno
 			}, function(data){
-    			if(data['success']){
-	    		} else { }
+    			if(data['error']){
+    				mensagemErro("Erro ao Deletar o Aluno");
+	    		} else {
+	    			mensagem("Aluno Deletado com Sucesso");
+	    			var jsonData = jQuery.parseJSON(data['success']);
+	    			montaListaAluno(jsonData);
+	    		}
     	});
 	});
 	
@@ -173,9 +157,14 @@ $(document).ready(function() {
 		$.post("../usuarios/salvarAluno", {
 				idAluno : idAluno, matriculaAluno : matriculaAluno, nomeAluno : nomeAluno, loginAluno : loginAluno
 			}, function(data){
-    			if(data['success']){
-    				alert("Aluno salvo com sucesso!");
-	    		} else { }
+				console.log(data);
+    			if(data['error']){
+    				console.log("ERRO");
+	    		} else {
+	    			mensagem("Aluno Salvo com Sucesso");
+	    			var jsonData = jQuery.parseJSON(data['success']);
+	    			montaListaAluno(jsonData);
+	    		}
     	});
 	});
 	
@@ -185,6 +174,74 @@ $(document).ready(function() {
 		$('#nomeUsuarioAluno').val("");
 		$('#loginAluno').val("");
 	});
+	
+	function fecharMensagem() {
+		$('#mensagem-sucesso').hide();
+	}
+	
+	function fecharMensagemErro() {
+		$('#mensagem-erro').hide();
+	}
+	
+	function mensagem(mensagem) {
+		$('#mensagem-sucesso').empty();
+		$('#mensagem-sucesso').show();
+		$('#mensagem-sucesso').append(mensagem)
+		//window.location.replace("http://localhost:8080/siscord/usuarios/");
+		setInterval(fecharMensagem, 4000);
+	}
+	
+	function mensagemErro(mensagem) {
+		$('#mensagem-erro').empty();
+		$('#mensagem-erro').show();
+		$('#mensagem-erro').append(mensagem)
+		setInterval(fecharMensagem, 4000);
+	}
+	
+	function montaListaAluno(jsonData) {
+		var dados = '' +
+				'<table style="width:100%;"> ' +
+				'	<tr> ' +
+				'		<th>Nome</th> ' +
+				'		<th> </th> ' +
+				'		<th> </th> ' +
+				'	</tr> ';
+		$.each(jsonData, function(key, value) {
+			dados = dados +
+				'	<tr> ' +
+	            '       <td> '+value.nomeAluno+'</td> ' +
+	            '       <td id="'+value.idAluno+'" class="editar-aluno"> <i class="fa fa-book fa-fw"></i> </td> ' +
+	           	'       <td id="'+value.idAluno+'" class="apagar-aluno"> <i class="fa fa-times fa-fw"></i> </td> ' +
+                '	</tr> ';
+		});
+		dados = dados + ' </table> ';
+		
+		$('#lista_alunos').empty();
+		$('#lista_alunos').append(dados);
+	}
+	
+	function montaListaProfessor(jsonData) {
+		var dados = '' +
+		'<table style="width:100%;"> ' +
+		'	<tr> ' +
+		'		<th>Nome</th> ' +
+		'		<th> </th> ' +
+		'		<th> </th> ' +
+		'	</tr> ';
+		$.each(jsonData, function(key, value) {
+			dados = dados +
+				'	<tr> ' +
+		        '       <td> '+value.nomeProfessor+'</td> ' +
+		        '       <td id="'+value.idProfessor+'" class="editar-professor"> <i class="fa fa-book fa-fw"></i> </td> ' +
+		       	'       <td id="'+value.idProfessor+'" class="apagar-professor"> <i class="fa fa-times fa-fw"></i> </td> ' +
+		        '	</tr> ';
+		});
+		dados = dados + ' </table> ';
+		
+		$('#lista_professores').empty();
+		$('#lista_professores').append(dados);
+	}
+	
 });
 </script>
 
@@ -240,6 +297,9 @@ $(document).ready(function() {
 		</div>
 		<div class="white-grid-layout">
 			<div id="content-box">
+			 	<div id="mensagem-sucesso" style="width: 100%; height:50px; background-color: #AFEEEE;"> </div>
+			 	<div id="mensagem-erro" style="width: 100%; height:50px; background-color: #FF0000; color: #FFFFFF;"> </div>
+			
 				<div id="content">
 					<form class="form-left" id="solicitacao" name="solicitacao"
 						action="../controller/cSubmeterSolicitacao.php" method="POST"

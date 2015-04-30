@@ -59,8 +59,10 @@ public class UsuariosAction extends GenericAction {
 			}
 
 		} catch (NumberFormatException e) {
+			jsonData.put("error", "Erro ao buscar dados");
 			e.printStackTrace();
 		} catch (SiscordGenericException e) {
+			jsonData.put("error", "Erro ao buscar dados");
 			e.printStackTrace();
 		}
 		jsonData.put("success", jsonUsuario);
@@ -86,9 +88,13 @@ public class UsuariosAction extends GenericAction {
 		return SUCCESS;
 	}
 	
-	@Action(value = "excluirProfessor", results = {@Result(name = "success", location = "/coordenacao/usuarios.jsp")})
+	@Action(value = "excluirProfessor", results = {@Result(name="success", type="json", params = {"root","jsonData"}),
+			  									  @Result(name="error", type="json", params = {"root","jsonData"})})
 	public String excluirProfessor() {
 		String idProfessor = request.getParameter("idProfessor");
+		
+		Gson gson = new Gson();
+		String jsonProfessor = "";
 		
 		try {
 			professor = new Professor();
@@ -96,18 +102,29 @@ public class UsuariosAction extends GenericAction {
 		
 			professorService.delete(professor);
 		
+			List<Professor> ps = new ArrayList<Professor>();
+			ps = professorService.findAll();
+			jsonProfessor = gson.toJson(ps);
+			
 		} catch (SiscordGenericException e) {
+			jsonData.put("error", "Erro: ao excluir o Professor");
 			e.printStackTrace();
 		}
+		jsonData.put("success", jsonProfessor);
 		return SUCCESS;
 	}
 	
-	@Action(value = "salvarProfessor", results = {@Result(name = "success", location = "/coordenacao/usuarios.jsp")})
+	@Action(value = "salvarProfessor", results = {@Result(name="success", type="json", params = {"root","jsonData"}),
+				  								  @Result(name="error", type="json", params = {"root","jsonData"})})
 	public String salvarProfessor() {
 		String idProfessor = request.getParameter("idProfessor");
 		String matriculaProfessor = request.getParameter("matriculaProfessor");
 		String nomeUsuarioProfessor = request.getParameter("nomeUsuarioProfessor");
 		String loginProfessor = request.getParameter("loginProfessor");
+		
+		Gson gson = new Gson();
+		String jsonProfessor = "";
+		
 		try {
 			Professor professor = new Professor();
 			professor.setUsuario(new Usuario());
@@ -131,10 +148,14 @@ public class UsuariosAction extends GenericAction {
 			
 			professorService.save(professor);
 		
-			index();
+			List<Professor> ps = new ArrayList<Professor>();
+			ps = professorService.findAll();
+			jsonProfessor = gson.toJson(ps);
+			
 		} catch (SiscordGenericException e) {
 			e.printStackTrace();
 		}
+		jsonData.put("success", jsonProfessor);
 		return SUCCESS;
 	}
 	
@@ -157,9 +178,13 @@ public class UsuariosAction extends GenericAction {
 		return SUCCESS;
 	}
 	
-	@Action(value = "excluirAluno", results = {@Result(name = "success", location = "/coordenacao/usuarios.jsp")})
+	@Action(value = "excluirAluno", results = {@Result(name="success", type="json", params = {"root","jsonData"}),
+				  							   @Result(name="error", type="json", params = {"root","jsonData"})})
 	public String excluirAluno() {
 		String idAluno = request.getParameter("idAluno");
+		
+		Gson gson = new Gson();
+		String jsonAluno = "";
 		
 		try {
 			aluno = new Aluno();
@@ -167,18 +192,28 @@ public class UsuariosAction extends GenericAction {
 		
 			alunoService.delete(aluno);
 		
+			List<Aluno> as = new ArrayList<Aluno>();
+			as = alunoService.findAll();
+			jsonAluno = gson.toJson(as);
+			
 		} catch (SiscordGenericException e) {
+			jsonData.put("error", "Erro: ao excluir o Aluno");
 			e.printStackTrace();
 		}
+		jsonData.put("success", jsonAluno);
 		return SUCCESS;
 	}
 	
-	@Action(value = "salvarAluno", results = {@Result(name = "success", location = "/coordenacao/usuarios.jsp")})
+	@Action(value = "salvarAluno", results = {@Result(name="success", type="json", params = {"root","jsonData"}),
+	  			  							  @Result(name="error", type="json", params = {"root","jsonData"})})
 	public String salvarAluno() {
 		String idAluno = request.getParameter("idAluno");
 		String matriculaAluno = request.getParameter("matriculaAluno");
 		String nomeUsuarioAluno = request.getParameter("nomeAluno");
 		String loginAluno = request.getParameter("loginAluno");
+		
+		Gson gson = new Gson();
+		String jsonAluno = "";
 		try {
 			aluno = new Aluno();
 			aluno.setUsuario(new Usuario());
@@ -202,10 +237,14 @@ public class UsuariosAction extends GenericAction {
 			
 			alunoService.save(aluno);
 		
-			index();
+			List<Aluno> as = new ArrayList<Aluno>();
+			as = alunoService.findAll();
+			jsonAluno = gson.toJson(as);
+			
 		} catch (SiscordGenericException e) {
 			e.printStackTrace();
 		}
+		jsonData.put("success", jsonAluno);
 		return SUCCESS;
 	}
 	

@@ -46,7 +46,8 @@ public class DisciplinasAction extends GenericAction {
 		return SUCCESS;
 	}
 	
-	@Action(value = "salvarDisciplina", results = {@Result(name = "success", location = "/coordenacao/disciplinas.jsp")})
+	@Action(value = "salvarDisciplina", results = {@Result(name="success", type="json", params = {"root","jsonData"}),
+			   									   @Result(name="error", type="json", params = {"root","jsonData"})})
 	public String salvarDisciplina() {
 		String idDisciplina = request.getParameter("idDisciplina");
 		String codigoDisciplina = request.getParameter("codigoDisciplina");
@@ -58,6 +59,9 @@ public class DisciplinasAction extends GenericAction {
 		String horariosAula = request.getParameter("horariosAula");
 		String ementa = request.getParameter("ementa");
 		String bibliografia = request.getParameter("bibliografia");
+		
+		Gson gson = new Gson();
+		String jsonDisciplina = "";
 		
 		try {
 			Disciplina d = new Disciplina();
@@ -84,10 +88,13 @@ public class DisciplinasAction extends GenericAction {
 			
 			disciplinaService.save(d);
 		
-			index();
+			disciplinas = disciplinaService.findAll();
+			jsonDisciplina = gson.toJson(disciplinas);
+			
 		} catch (SiscordGenericException e) {
 			e.printStackTrace();
 		}
+		jsonData.put("success", jsonDisciplina);
 		return SUCCESS;
 	}
 	
@@ -117,17 +124,22 @@ public class DisciplinasAction extends GenericAction {
 	public String excluirDisciplina() {
 		String idDisciplina = request.getParameter("idDisciplina");
 		
+		Gson gson = new Gson();
+		String jsonDisciplina = "";
 		try {
 			Disciplina d = new Disciplina();
 			d = disciplinaService.findOne(Integer.parseInt(idDisciplina));
 		
 			disciplinaService.delete(d);
 		
+			disciplinas = disciplinaService.findAll();
+			jsonDisciplina = gson.toJson(disciplinas);
+			
 		} catch (SiscordGenericException e) {
 			e.printStackTrace();
 		}
 		
-		jsonData.put("success", "success");
+		jsonData.put("success", jsonDisciplina);
 		return SUCCESS;
 	}
 
