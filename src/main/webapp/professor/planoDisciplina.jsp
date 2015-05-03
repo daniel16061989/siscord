@@ -14,6 +14,7 @@
 <meta name="description" content="">
 <meta name="keywords" content="">
 
+<link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/util.css"/>" />
 <link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/font-awesome.css"/>" />
 <link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/bebas-neue.css"/>" />
 <link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/normalize.css"/>" />
@@ -36,8 +37,11 @@ $(document).ready(function() {
 			idDisciplina : idDisciplina
 		}, function(data) {
 			if (data['success']) {
+				
+				var jsonData = jQuery.parseJSON(data['success']);
+				
 				var blocoDias = '';
-				var datas = data['success'].split(';');
+				var datas = jsonData.objectB.split(';');
 				quantDias = datas.length;
 				
 				for(var i = 1; i <= datas.length; i++) {
@@ -51,6 +55,8 @@ $(document).ready(function() {
 					'</table> ';
 				}
 				
+				$('#ementa').val(jsonData.objectA.ementa);
+				$('#bibliografia').val(jsonData.objectA.bibliografia);
 				$('#blocos').html(blocoDias);
 			}
 		});
@@ -58,7 +64,7 @@ $(document).ready(function() {
 	
 	$('#salvar').click(function() {
 		var disciplina = idDisciplina;
-		var idPlanoDisciplina = $('#idPlanoDisciplina');
+		var idPlanoDisciplina = $('#idPlanoDisciplina').val();;
 		/*var ementa = $('#ementa').val();
 		var bibliografia = $('#bibliografia').val();*/
 		var metodologia = $('#metodologia').val();
@@ -76,7 +82,7 @@ $(document).ready(function() {
 			recuperacao : recuperacao, descricaoDia : descricaoDia, idPlanoDisciplina : idPlanoDisciplina
 		}, function(data) {
 			if (data['success']) {
-				alert("Plano disciplina salvo com sucesso");
+				mensagem("Plano disciplina salvo com sucesso");
 			} 
 		});
 	});
@@ -100,6 +106,29 @@ $(document).ready(function() {
 		});
 		
 	});
+	
+	function fecharMensagem() {
+		$('#mensagem-sucesso').hide();
+	}
+	
+	function fecharMensagemErro() {
+		$('#mensagem-erro').hide();
+	}
+	
+	function mensagem(mensagem) {
+		$('#mensagem-sucesso').empty();
+		$('#mensagem-sucesso').show();
+		$('#mensagem-sucesso').append(mensagem);
+		//window.location.replace("http://localhost:8080/siscord/usuarios/");
+		setInterval(fecharMensagem, 4000);
+	}
+	
+	function mensagemErro(mensagem) {
+		$('#mensagem-erro').empty();
+		$('#mensagem-erro').show();
+		$('#mensagem-erro').append(mensagem)
+		setInterval(fecharMensagem, 4000);
+	}
 	
 });
 
@@ -158,7 +187,7 @@ $(document).ready(function() {
 		<div class="white-grid-layout">
 			<div id="content-box">
 				<div id="content">
-					<form class="form-left" action="#" method="POST">
+					<div class="bloco-left">
 						<h1>Minhas Disciplinas</h1>
 						<table style="width:100%;">
 							<tr>
@@ -176,9 +205,8 @@ $(document).ready(function() {
 			               		</tr>
 				            </s:iterator>
 						</table>
-					</form>
-					<form class="form-left" id="solicitacao" name="solicitacao" action="#" method="POST">
-
+					</div>
+					<div class="bloco-left">
 						<h1>Plano da Disciplina</h1>
 
 						<div class="flex-div">
@@ -197,7 +225,7 @@ $(document).ready(function() {
 						<input type="hidden" name="idPlanoDisciplina" id="idPlanoDisciplina" />
 
 						<label>Ementa</label>
-						<textarea maxlength="250" name="ementa" id="ementa" placeholder="Descreva a ementa"></textarea>
+						<textarea disabled maxlength="250" name="ementa" id="ementa" placeholder="Descreva a ementa"></textarea>
 
 						<label>Metodologia</label>
 						<textarea maxlength="250" name="metodologia" id="metodologia" placeholder="Descreva a metodologia"></textarea>
@@ -212,13 +240,12 @@ $(document).ready(function() {
 						<textarea maxlength="250" name="recuperacao" id="recuperacao" placeholder="Descreva os meios de recuperacao"></textarea>
 						
 						<label>Bibliografia</label>
-						<textarea maxlength="250" name="bibliografia" id="bibliografia" placeholder="Descreva a bibliografia"></textarea>
+						<textarea disabled maxlength="250" name="bibliografia" id="bibliografia" placeholder="Descreva a bibliografia"></textarea>
 						
 						<center>
 							<input id="salvar" name="salvar" type="submit" value="Salvar">
 						</center>
-					</form>
-
+					</div>
 					<div class="form-help">
 						<h2>Plano das Aulas</h2>
 							<div id="blocos"> </div>

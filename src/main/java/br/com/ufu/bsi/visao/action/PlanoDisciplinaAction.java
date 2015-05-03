@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.struts2.convention.annotation.Action;
@@ -23,6 +24,7 @@ import br.com.ufu.bsi.dto.Professor;
 import br.com.ufu.bsi.dto.ProgramaDisciplina;
 import br.com.ufu.bsi.dto.ProgramaPlanoDisciplina;
 import br.com.ufu.bsi.dto.Semestre;
+import br.com.ufu.bsi.util.TratamentoObjeto;
 
 @ParentPackage("default")
 @InterceptorRef("professor")
@@ -85,7 +87,7 @@ public class PlanoDisciplinaAction extends GenericAction {
 		String descricaoDia = request.getParameter("descricaoDia");
 		String idPlanoDisciplina = request.getParameter("idPlanoDisciplina");
 		
-		String conteudoAula[] = descricaoDia.split(";");  
+		String conteudoAula[] = descricaoDia.split(";");
 		
 		try {
 			Professor professor = new Professor();
@@ -95,7 +97,7 @@ public class PlanoDisciplinaAction extends GenericAction {
 			disciplina = disciplinaService.findOne(Integer.valueOf(idDisciplina));
 			 
 			List<Semestre> semestre = new ArrayList<Semestre>();
-			semestre = semestreService.findAll();
+			semestre = semestreService.findByData();
 
 			List<Date> diasAula = new ArrayList<Date>();
 			if(semestre.size() > 0) {
@@ -105,8 +107,8 @@ public class PlanoDisciplinaAction extends GenericAction {
 			// plano de disciplina
 			PlanoDisciplina planoDisciplina = new PlanoDisciplina();
 			
-			if(idPlanoDisciplina != null) {
-				if(!(idDisciplina.trim().equals(""))) {
+			if(idPlanoDisciplina != null && !"".equals(idPlanoDisciplina.trim())) {
+				if(idDisciplina != null && !"".equals(idDisciplina.trim())) {
 //					planoDisciplina.setIdPlanoDisciplina(Integer.parseInt(idPlanoDisciplina));
 					
 					planoDisciplina = planoDisciplinaService.findOne(Integer.parseInt(idPlanoDisciplina));
@@ -165,6 +167,9 @@ public class PlanoDisciplinaAction extends GenericAction {
 		String datas = "";
 		String idDisciplina = request.getParameter("idDisciplina");
 		
+		Gson gson = new Gson();
+		String jsonDisciplina = "";
+		
 		try {
 			// busca Disciplina
 			Disciplina disciplina = new Disciplina();
@@ -191,12 +196,10 @@ public class PlanoDisciplinaAction extends GenericAction {
 				String dataInicio = f.format(semestre.get(0).getDataInicio());
 				
 				// busca quantidade de dias no semestre
-//				int quantDias = planoDisciplinaService.findByDiferencaEntreDatas("2014-09-02", "2014-01-01");
 				int quantDias = planoDisciplinaService.findByDiferencaEntreDatas(dataFim, dataInicio);
 				
 				// busca cada data dentro do semestre e verifica se é dia daquela aula
 				for(int i = 0; i <= quantDias; i++) {
-//					String data = planoDisciplinaService.findByDataDisciplina("2014-01-01", i);
 					String data = planoDisciplinaService.findByDataDisciplina(dataInicio, i);
 					
 					DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");  
@@ -219,13 +222,19 @@ public class PlanoDisciplinaAction extends GenericAction {
 				datas = datas.substring(1);
 			}
 			
+			TratamentoObjeto objeto = new TratamentoObjeto(disciplina, datas);
+			objeto.setObjectA(disciplina);
+			objeto.setObjectB(datas);
+			
+			jsonDisciplina = gson.toJson(objeto);
+			
 		} catch (SiscordGenericException e) {
 			e.printStackTrace();
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}  
 		
-		jsonData.put("success", datas);
+		jsonData.put("success", jsonDisciplina);
 		return SUCCESS;
 	}
 	
@@ -235,7 +244,7 @@ public class PlanoDisciplinaAction extends GenericAction {
 		List<Integer> diasSemanaDisciplina = new ArrayList<Integer>();
 		String[] aux = disciplina.getHorariosAula().split("-");
 		
-		for(int i = 1; i < aux.length; i++) {
+		for(int i = 0; i < aux.length; i++) {
 			if((aux[i].substring(0, 1)).equals("d")) {
 				diasSemanaDisciplina.add(Integer.valueOf(aux[i].substring(1, 2)) + 1);
 			}

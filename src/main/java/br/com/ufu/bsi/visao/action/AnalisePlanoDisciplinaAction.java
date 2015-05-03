@@ -1,6 +1,7 @@
 package br.com.ufu.bsi.visao.action;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.struts2.convention.annotation.Action;
@@ -10,9 +11,15 @@ import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 
 import br.com.ufu.bsi.dao.excecoes.SiscordGenericException;
+import br.com.ufu.bsi.dto.Mensagem;
 import br.com.ufu.bsi.dto.PlanoDisciplina;
 import br.com.ufu.bsi.dto.Professor;
+import br.com.ufu.bsi.dto.ProgramaDisciplina;
 import br.com.ufu.bsi.dto.ProgramaPlanoDisciplina;
+import br.com.ufu.bsi.dto.Usuario;
+import br.com.ufu.bsi.util.TratamentoObjeto;
+
+import com.google.gson.Gson;
 
 @ParentPackage("default")
 @InterceptorRef("professor")
@@ -46,23 +53,23 @@ public class AnalisePlanoDisciplinaAction extends GenericAction {
 			   											@Result(name="error", type="json", params = {"root","jsonData"})})
 	public String buscarPlanoDisciplina() {
 		String idProgramaPlanoDisciplina = request.getParameter("idProgramaPlanoDisciplina");
-//		Gson gson = new Gson();
-		String jsonProgramaPlanoDisciplina = "";
+		Gson gson = new Gson();
 	
+		ProgramaPlanoDisciplina ppd = new ProgramaPlanoDisciplina();
+		List<ProgramaDisciplina> pds = new ArrayList<ProgramaDisciplina>();
 		try { 
-			ProgramaPlanoDisciplina ppd = new ProgramaPlanoDisciplina();
 			ppd = programaPlanoDisciplinaService.findOne(Integer.parseInt(idProgramaPlanoDisciplina));
-			
-//			jsonProgramaPlanoDisciplina = gson.toJson(ppd);
-			jsonProgramaPlanoDisciplina = ppd.getIdProgramaPlanoDisciplina()+"&"+ppd.getDisciplina().getCodigoDisciplina()+"&"+ppd.getDisciplina().getEmenta()+"&"+
-					ppd.getPlanoDisciplina().getMetodologia()+"&"+ppd.getPlanoDisciplina().getAvaliacao()+"&"+ppd.getPlanoDisciplina().getAtendimento()+"&"+
-					ppd.getPlanoDisciplina().getRecuperacao()+"&"+ppd.getDisciplina().getBibliografia();
+			pds = programaDisciplinaService.findByPlanoDisciplina(ppd.getPlanoDisciplina());
 		
 		} catch (SiscordGenericException e) {
 			e.printStackTrace();
 		}
+		
+		TratamentoObjeto objeto = new TratamentoObjeto(ppd, pds);
+		objeto.setObjectA(ppd);
+		objeto.setObjectB(pds);
 	
-		jsonData.put("success", jsonProgramaPlanoDisciplina);
+		jsonData.put("success", gson.toJson(objeto));
 		return SUCCESS;
 	}
 	
@@ -70,6 +77,7 @@ public class AnalisePlanoDisciplinaAction extends GenericAction {
 														 @Result(name="error", type="json", params = {"root","jsonData"})})
 	public String aprovarPlanoDisciplina() {
 		String idProgramaPlanoDisciplina = request.getParameter("idProgramaPlanoDisciplina");
+		String justificativa = request.getParameter("justificativa");
 		
 		try {
 			ProgramaPlanoDisciplina ppd = new ProgramaPlanoDisciplina();
@@ -77,6 +85,8 @@ public class AnalisePlanoDisciplinaAction extends GenericAction {
 			
 			PlanoDisciplina p = new PlanoDisciplina();
 			p = ppd.getPlanoDisciplina();
+			
+			enviarMensagemJustificativa(justificativa, p.getProfessor().getUsuario());
 		
 			if(p.getStatus().equals(PlanoDisciplina.STATUS_COLEGIADO)) {
 				p.setStatus(PlanoDisciplina.STATUS_COORDENADOR);
@@ -125,6 +135,16 @@ public class AnalisePlanoDisciplinaAction extends GenericAction {
 		return SUCCESS;
 	}
 
+	private void enviarMensagemJustificativa(String justificativa, Usuario usuario) {
+		Mensagem m = new Mensagem();
+		m.setAssunto("Aviso Plano Disciplina");
+		m.setDataMensagem(new Date());
+		m.setLida(Boolean.FALSE);
+		m.setMensagem(justificativa);
+		m.setStatus(Mensagem.STATUS_PROFESSOR);
+		m.setUsuario(usuario);
+	}
+	
 	public List<ProgramaPlanoDisciplina> getProgramaPlanoDisciplinas() {
 		return programaPlanoDisciplinas;
 	}

@@ -1,0 +1,13 @@
+@CHARSET "ISO-8859-1";
+
+.bloco-left {
+	padding-left: 5%;
+	padding-right: 5%;
+	margin-top: 10px;
+	margin-bottom: 15px;
+	font-size: 0.9em;
+	text-align: left;
+	float: left;
+	width: 50%;
+	margin: 0;
+}

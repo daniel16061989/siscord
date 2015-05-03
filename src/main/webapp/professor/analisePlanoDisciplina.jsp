@@ -18,9 +18,11 @@
 <link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/bebas-neue.css"/>" />
 <link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/normalize.css"/>" />
 <link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/style.css"/>" />
+<link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/jquery-ui.min.css"/>" />
 
-<!-- <script type="text/javascript" src='<s:url value="/resources/js/function.js" />'></script> -->
+<script type="text/javascript" src='<s:url value="/resources/js/function.js" />'></script>
 <script type="text/javascript" src='<s:url value="/resources/js/jquery-1.9.1.js" />'></script>
+<script type="text/javascript" src='<s:url value="/resources/js/jquery-ui.min.js" />'></script>
 
 <script type="text/javascript" >
 $(document).ready(function() {
@@ -32,26 +34,46 @@ $(document).ready(function() {
 			idProgramaPlanoDisciplina : idProgramaPlanoDisciplina
 		}, function(data) {
 			if (data['success']) {
-				var aux = data['success'].split('&');
-				for(var i = 0; i < aux.length; i++) {
-					$('#idProgramaPlanoDisciplina').val(aux[0]);
-					$('#disciplina').val(aux[1]);
-					$('#ementa').val(aux[2]);
-					$('#metodologia').val(aux[3]);
-					$('#avaliacao').val(aux[4]);
-					$('#atendimento').val(aux[5]);
-					$('#recuperacao').val(aux[6]);
-					$('#bibliografia').val(aux[7]);
-				} 
+				
+				var jsonData = jQuery.parseJSON(data['success']);
+				
+				$('#idProgramaPlanoDisciplina').val(jsonData.objectA.idProgramaPlanoDisciplina);
+				$('#disciplina').val(jsonData.objectA.disciplina.nomeDisciplina);
+				$('#ementa').val(jsonData.objectA.disciplina.ementa);
+				$('#metodologia').val(jsonData.objectA.planoDisciplina.metodologia);
+				$('#avaliacao').val(jsonData.objectA.planoDisciplina.avaliacao);
+				$('#atendimento').val(jsonData.objectA.planoDisciplina.atendimento);
+				$('#recuperacao').val(jsonData.objectA.planoDisciplina.recuperacao);
+				$('#bibliografia').val(jsonData.objectA.disciplina.bibliografia);
+				
+				var blocoDias = '';
+				quantDias = 1;
+				$.each(jsonData.objectB, function(key, value) {
+					var dateFormat = value.dataAula;
+			        var dateFormat = $.datepicker.formatDate('dd/mm/yy', new Date(dateFormat));
+					
+					blocoDias = blocoDias +
+					'<table class="bloco-plano-aula"> ' +
+					'	<tr> ' +
+					'		<td style="width: 25px;"> '+quantDias+' </td> ' +
+					'		<td style="width: 95px;"> '+dateFormat+' </td> ' +
+					'		<td> <textarea type="text" disabled id="'+quantDias+'" maxlength="250" style="background-color: white; max-width: 380px;">'+value.conteudoAula+'</textarea></td> ' +
+					'	</tr> ' +
+					'</table> ';
+					
+					quantDias++;
+				});
+				$('#blocos').html(blocoDias);
 			}
 		});
 	});
 	
 	$('#aprovar').click(function() {
 		var idProgramaPlanoDisciplina = $(this).val();
+		var justificativa = $('#justificativa').val();
 		
 		$.post("../analisePlanoDisciplina/aprovarPlanoDisciplina", {
-			idProgramaPlanoDisciplina : idProgramaPlanoDisciplina
+			idProgramaPlanoDisciplina : idProgramaPlanoDisciplina, justificativa : justificativa
 		}, function(data) {
 			if (data['success']) {
 				alert("Aprovado com sucesso");
@@ -79,6 +101,14 @@ $(document).ready(function() {
 
 .selecionar-plano-disciplina {
 	cursor:pointer;
+}
+
+.bloco-plano-aula {
+	background-color: #eee;
+	width: 100%;
+	border-style: solid;
+	border-width: 1px;
+	height: 51px;
 }
 
  </style>
@@ -137,12 +167,15 @@ $(document).ready(function() {
 							</div>
 						</div>
 						
+						<textarea disabled maxlength="250" name="justificativa" id="justificativa" placeholder="Justificativa"></textarea>
+						
 						<input type="hidden" name="idProgramaPlanoDisciplina" id="idProgramaPlanoDisciplina" />
 						
+						<label>Disciplina</label>
 						<textarea disabled maxlength="250" name="disciplina" id="disciplina"></textarea>
 						
 						<label>Ementa</label>
-						<textarea disabled maxlength="250" name="ementa" id="ementa" placeholder="Descreva a ementa"></textarea>
+						<textarea disabled maxlength="250" name="ementa" id="ementa"></textarea>
 
 						<label>Metodologia</label>
 						<textarea disabled maxlength="250" name="metodologia" id="metodologia" placeholder="Descreva a metodologia"></textarea>
@@ -180,6 +213,10 @@ $(document).ready(function() {
 					            </s:iterator>
 							</table>
 						</form>
+					</div>
+					<div class="form-help">
+						<h2>Plano das Aulas</h2>
+							<div id="blocos"> </div>
 					</div>
 				</div>
 			</div>
