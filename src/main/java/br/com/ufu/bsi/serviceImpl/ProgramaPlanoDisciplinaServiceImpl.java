@@ -56,6 +56,14 @@ public class ProgramaPlanoDisciplinaServiceImpl extends GenericServiceImpl<Progr
 		}
 	}
 	
+	public List<ProgramaPlanoDisciplina> findByStatusReprovado(Professor professor, Character status1, Character status2)  throws SiscordGenericException {
+		try {
+			return programaPlanoDisciplinaDAO.findByStatusReprovado(professor, status1, status2);
+		} catch (Exception e) {
+			throw new SiscordGenericException(e.getMessage(), e);
+		}
+	}
+	
 	public void setProgramaPlanoDisciplinaDAO(ProgramaPlanoDisciplinaDAO programaPlanoDisciplinaDAO) {
 		this.programaPlanoDisciplinaDAO = programaPlanoDisciplinaDAO;
 	}

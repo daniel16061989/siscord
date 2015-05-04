@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import org.apache.struts2.convention.annotation.Action;
@@ -14,8 +13,6 @@ import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
-
-import com.google.gson.Gson;
 
 import br.com.ufu.bsi.dao.excecoes.SiscordGenericException;
 import br.com.ufu.bsi.dto.Disciplina;
@@ -25,6 +22,8 @@ import br.com.ufu.bsi.dto.ProgramaDisciplina;
 import br.com.ufu.bsi.dto.ProgramaPlanoDisciplina;
 import br.com.ufu.bsi.dto.Semestre;
 import br.com.ufu.bsi.util.TratamentoObjeto;
+
+import com.google.gson.Gson;
 
 @ParentPackage("default")
 @InterceptorRef("professor")
@@ -36,16 +35,20 @@ public class PlanoDisciplinaAction extends GenericAction {
 	private List<Disciplina> professorDisciplinas;
 	
 	private List<ProgramaPlanoDisciplina> programaPlanoDisciplinasProfessor;
+	
+	private List<ProgramaPlanoDisciplina> programaPlanoDisciplinasReprovado;
 
 	@Action(value = "index", results = {@Result(name = "success", location = "/professor/planoDisciplina.jsp")})
 	public String index() {
 		Professor professor = new Professor();
 		professorDisciplinas = new ArrayList<Disciplina>();
 		programaPlanoDisciplinasProfessor = new ArrayList<ProgramaPlanoDisciplina>();
+		programaPlanoDisciplinasReprovado = new ArrayList<ProgramaPlanoDisciplina>();
 
 		try {
 			professor = professorService.findByUsuario(usuarioLogado.getUsuario());
 			professorDisciplinas = disciplinaService.findByProfessor(professor);
+			programaPlanoDisciplinasReprovado = programaPlanoDisciplinaService.findByStatusReprovado(professor, PlanoDisciplina.STATUS_VOLTAR_COLEGIADO, PlanoDisciplina.STATUS_VOLTAR_COORDENADOR);
 			programaPlanoDisciplinasProfessor = programaPlanoDisciplinaService.findByDisciplinaProfessorAndPlanoDisciplina(professor, PlanoDisciplina.STATUS_FINAL);
 		} catch (SiscordGenericException e) {
 			e.printStackTrace();
@@ -282,6 +285,14 @@ public class PlanoDisciplinaAction extends GenericAction {
 
 	public void setProgramaPlanoDisciplinasProfessor(List<ProgramaPlanoDisciplina> programaPlanoDisciplinasProfessor) {
 		this.programaPlanoDisciplinasProfessor = programaPlanoDisciplinasProfessor;
+	}
+
+	public List<ProgramaPlanoDisciplina> getProgramaPlanoDisciplinasReprovado() {
+		return programaPlanoDisciplinasReprovado;
+	}
+
+	public void setProgramaPlanoDisciplinasReprovado(List<ProgramaPlanoDisciplina> programaPlanoDisciplinasReprovado) {
+		this.programaPlanoDisciplinasReprovado = programaPlanoDisciplinasReprovado;
 	}
 
 }

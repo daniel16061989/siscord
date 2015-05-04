@@ -69,7 +69,7 @@ $(document).ready(function() {
 	});
 	
 	$('#aprovar').click(function() {
-		var idProgramaPlanoDisciplina = $(this).val();
+		var idProgramaPlanoDisciplina = $('#idProgramaPlanoDisciplina').val();
 		var justificativa = $('#justificativa').val();
 		
 		$.post("../analisePlanoDisciplina/aprovarPlanoDisciplina", {
@@ -77,18 +77,21 @@ $(document).ready(function() {
 		}, function(data) {
 			if (data['success']) {
 				alert("Aprovado com sucesso");
+				window.location.replace("http://localhost:8080/siscord/analisePlanoDisciplina/");
 			}
 		});
 	});
 	
 	$('#reprovar').click(function() {
-		var idProgramaPlanoDisciplina = $(this).val();
+		var idProgramaPlanoDisciplina = $('#idProgramaPlanoDisciplina').val();
+		var justificativa = $('#justificativa').val();
 		
 		$.post("../analisePlanoDisciplina/reprovarPlanoDisciplina", {
-			idProgramaPlanoDisciplina : idProgramaPlanoDisciplina
+			idProgramaPlanoDisciplina : idProgramaPlanoDisciplina, justificativa : justificativa
 		}, function(data) {
 			if (data['success']) {
 				alert("Re-Provado com sucesso");
+				window.location.replace("http://localhost:8080/siscord/analisePlanoDisciplina/");
 			}
 		});
 	});
@@ -153,8 +156,7 @@ $(document).ready(function() {
 		<div class="white-grid-layout">
 			<div id="content-box">
 				<div id="content">
-					<form class="form-left" action="#" method="POST" >
-
+					<div class="bloco-left">
 						<h1>Plano da Disciplina</h1>
 						
 						<div>
@@ -167,7 +169,7 @@ $(document).ready(function() {
 							</div>
 						</div>
 						
-						<textarea disabled maxlength="250" name="justificativa" id="justificativa" placeholder="Justificativa"></textarea>
+						<textarea maxlength="250" name="justificativa" id="justificativa" placeholder="Justificativa"></textarea>
 						
 						<input type="hidden" name="idProgramaPlanoDisciplina" id="idProgramaPlanoDisciplina" />
 						
@@ -191,28 +193,26 @@ $(document).ready(function() {
 						
 						<label>Bibliografia</label>
 						<textarea disabled maxlength="250" name="bibliografia" id="bibliografia" placeholder="Descreva a bibliografia"></textarea>
-					</form>
-
+					</div>
+											
 					<div class="form-help">
 						<h2>Adicionar ou Atualizar Disciplina</h2>
-						<form method="post" action="#">
-							<table style="width:100%;">
+						<table style="width:100%;">
+							<tr>
+								<th>Discplina</th>
+								<th>Turma</th>
+								<th>Professor</th>
+								<th> </th>
+							</tr>
+							<s:iterator value="programaPlanoDisciplinas" var="user" status="stat">
 								<tr>
-									<th>Discplina</th>
-									<th>Turma</th>
-									<th>Professor</th>
-									<th> </th>
-								</tr>
-								<s:iterator value="programaPlanoDisciplinas" var="user" status="stat">
-									<tr>
-					                    <td> <s:property value="disciplina.codigoDisciplina"/> </td>
-					           	        <td> <s:property value="disciplina.turma.codigoTurma"/> </td>
-					           	        <td> <s:property value="planoDisciplina.professor.nomeProfessor"/> </td>
-					           	        <td id="<s:property value="idProgramaPlanoDisciplina"/>" class="selecionar-plano-disciplina"> <i class="fa fa-book fa-fw"></i> </td>
-				               		</tr>
-					            </s:iterator>
-							</table>
-						</form>
+				                    <td> <s:property value="disciplina.codigoDisciplina"/> </td>
+				           	        <td> <s:property value="disciplina.turma.codigoTurma"/> </td>
+				           	        <td> <s:property value="planoDisciplina.professor.nomeProfessor"/> </td>
+				           	        <td id="<s:property value="idProgramaPlanoDisciplina"/>" class="selecionar-plano-disciplina"> <i class="fa fa-book fa-fw"></i> </td>
+			               		</tr>
+				            </s:iterator>
+						</table>
 					</div>
 					<div class="form-help">
 						<h2>Plano das Aulas</h2>

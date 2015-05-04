@@ -16,4 +16,6 @@ public interface ProgramaPlanoDisciplinaService extends GenericService<ProgramaP
 	List<ProgramaPlanoDisciplina> findByDisciplinaAndPlanoDisciplinaStatus(Disciplina disciplina, Character status) throws SiscordGenericException;
 	
 	List<ProgramaPlanoDisciplina> findByDisciplinaProfessorAndPlanoDisciplina(Professor professor, Character status) throws SiscordGenericException;
+	
+	List<ProgramaPlanoDisciplina> findByStatusReprovado(Professor professor, Character status1, Character status2)  throws SiscordGenericException;
 }

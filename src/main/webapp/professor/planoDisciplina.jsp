@@ -1,3 +1,6 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="br.com.ufu.bsi.dto.ProgramaPlanoDisciplina"%>
+<%@page import="java.util.List"%>
 <%@page import="br.com.ufu.bsi.session.UsuarioLogado"%>
 <%@page import="br.com.ufu.bsi.dto.Professor"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
@@ -145,6 +148,10 @@ $(document).ready(function() {
 	height: 51px;
 }
 
+.selecionar-plano-disciplina {
+	cursor:pointer;
+}
+
 </style>
 
 </head>
@@ -206,6 +213,34 @@ $(document).ready(function() {
 				            </s:iterator>
 						</table>
 					</div>
+					
+					<%  List<ProgramaPlanoDisciplina> ppds = new ArrayList<ProgramaPlanoDisciplina>();
+		            	ppds = (List<ProgramaPlanoDisciplina>) request.getAttribute("programaPlanoDisciplinasReprovado");
+					    if(ppds.size() > 0) { %>
+					    	<div class="bloco-left">
+							<h1>Disciplinas Recusadas</h1>
+					    	
+						    	<table style="width:100%;">
+									<tr>
+										<th>Discplina</th>
+										<th>Turma</th>
+										<th>Professor</th>
+										<th> </th>
+									</tr>
+						    
+							    	<s:iterator value="programaPlanoDisciplinasReprovado" var="user" status="stat">
+										<tr>
+						                    <td> <s:property value="disciplina.codigoDisciplina"/> </td>
+						           	        <td> <s:property value="disciplina.turma.codigoTurma"/> </td>
+						           	        <td> <s:property value="planoDisciplina.professor.nomeProfessor"/> </td>
+						           	        <td id="<s:property value="idProgramaPlanoDisciplina"/>" class="selecionar-plano-disciplina"> <i class="fa fa-book fa-fw"></i> </td>
+					               		</tr>
+					           	 	</s:iterator>
+					           	 </table>
+				          	 </div>
+					<%  }
+					%>
+					
 					<div class="bloco-left">
 						<h1>Plano da Disciplina</h1>
 

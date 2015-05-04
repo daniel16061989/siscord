@@ -109,13 +109,16 @@ public class AnalisePlanoDisciplinaAction extends GenericAction {
 			 											  @Result(name="error", type="json", params = {"root","jsonData"})})
 	public String reprovarPlanoDisciplina() {
 		String idProgramaPlanoDisciplina = request.getParameter("idProgramaPlanoDisciplina");
-
+		String justificativa = request.getParameter("justificativa");
+		
 		try {
 			ProgramaPlanoDisciplina ppd = new ProgramaPlanoDisciplina();
 			ppd = programaPlanoDisciplinaService.findOne(Integer.parseInt(idProgramaPlanoDisciplina));
 			
 			PlanoDisciplina p = new PlanoDisciplina();
 			p = ppd.getPlanoDisciplina();
+			
+			enviarMensagemJustificativa(justificativa, p.getProfessor().getUsuario());
 			
 			if(p.getStatus().equals(PlanoDisciplina.STATUS_COLEGIADO)) {
 				p.setStatus(PlanoDisciplina.STATUS_VOLTAR_COLEGIADO);
