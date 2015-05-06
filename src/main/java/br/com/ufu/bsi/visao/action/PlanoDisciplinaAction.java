@@ -58,23 +58,26 @@ public class PlanoDisciplinaAction extends GenericAction {
 	}
 	
 	@Action(value = "buscarPlanoDisciplinaProfessor", results = {@Result(name="success", type="json", params = {"root","jsonData"}),
-														@Result(name="error", type="json", params = {"root","jsonData"})})
+																 @Result(name="error", type="json", params = {"root","jsonData"})})
 	public String buscarPlanoDisciplinaProfessor() {
 		String idProgramaPlanoDisciplina = request.getParameter("idProgramaPlanoDisciplina");
 		Gson gson = new Gson();
-		String jsonProgramaPlanoDisciplina = "";
-		
+	
 		ProgramaPlanoDisciplina ppd = new ProgramaPlanoDisciplina();
-		try {
-			ppd = programaPlanoDisciplinaService.findOne(Integer.valueOf(idProgramaPlanoDisciplina));
-			jsonProgramaPlanoDisciplina = gson.toJson(ppd);
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
+		List<ProgramaDisciplina> pds = new ArrayList<ProgramaDisciplina>();
+		try { 
+			ppd = programaPlanoDisciplinaService.findOne(Integer.parseInt(idProgramaPlanoDisciplina));
+			pds = programaDisciplinaService.findByPlanoDisciplina(ppd.getPlanoDisciplina());
+		
 		} catch (SiscordGenericException e) {
 			e.printStackTrace();
 		}
 		
-		jsonData.put("success", jsonProgramaPlanoDisciplina);
+		TratamentoObjeto objeto = new TratamentoObjeto(ppd, pds);
+		objeto.setObjectA(ppd);
+		objeto.setObjectB(pds);
+	
+		jsonData.put("success", gson.toJson(objeto));
 		return SUCCESS;
 	}
 	
@@ -82,6 +85,7 @@ public class PlanoDisciplinaAction extends GenericAction {
 	@Action(value = "salvarPlanoDisciplina", results = {@Result(name="success", type="json", params = {"root","jsonData"}),
 					 						 			@Result(name="error", type="json", params = {"root","jsonData"})})
 	public String salvarPlanoDisciplina() {
+		String idProgramaPlanoDisciplina = request.getParameter("idProgramaPlanoDisciplina");
 		String idDisciplina = request.getParameter("disciplina");
 		String metodologia = request.getParameter("metodologia");
 		String avaliacao = request.getParameter("avaliacao");
@@ -92,7 +96,18 @@ public class PlanoDisciplinaAction extends GenericAction {
 		
 		String conteudoAula[] = descricaoDia.split(";");
 		
+		ProgramaPlanoDisciplina programaPlanoDisciplina = new ProgramaPlanoDisciplina();
+		PlanoDisciplina planoDisciplina = new PlanoDisciplina();
+		
+		Calendar c = Calendar.getInstance();
+		c.get(Calendar.YEAR);
+		
 		try {
+			if(idProgramaPlanoDisciplina!= null && !"".equals(idProgramaPlanoDisciplina)) {
+				programaPlanoDisciplina = programaPlanoDisciplinaService.findOne(Integer.valueOf(idProgramaPlanoDisciplina));
+				planoDisciplina = programaPlanoDisciplina.getPlanoDisciplina();
+			}
+			
 			Professor professor = new Professor();
 			professor = professorService.findByUsuario(usuarioLogado.getUsuario());
 		
@@ -108,8 +123,6 @@ public class PlanoDisciplinaAction extends GenericAction {
 			}
 			
 			// plano de disciplina
-			PlanoDisciplina planoDisciplina = new PlanoDisciplina();
-			
 			if(idPlanoDisciplina != null && !"".equals(idPlanoDisciplina.trim())) {
 				if(idDisciplina != null && !"".equals(idDisciplina.trim())) {
 //					planoDisciplina.setIdPlanoDisciplina(Integer.parseInt(idPlanoDisciplina));
@@ -149,8 +162,6 @@ public class PlanoDisciplinaAction extends GenericAction {
 			}
 			
 			// programa do plano de disciplina
-			ProgramaPlanoDisciplina programaPlanoDisciplina = new ProgramaPlanoDisciplina();
-			
 			programaPlanoDisciplina.setPlanoDisciplina(planoDisciplina);
 			programaPlanoDisciplina.setDisciplina(disciplina);
 			

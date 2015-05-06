@@ -22,9 +22,11 @@
 <link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/bebas-neue.css"/>" />
 <link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/normalize.css"/>" />
 <link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/style.css"/>" />
+<link rel="stylesheet" type="text/css" href="<s:url value="/resources/css/jquery-ui.min.css"/>" />
 
 <script type="text/javascript" src='<s:url value="/resources/js/function.js" />'></script>
 <script type="text/javascript" src='<s:url value="/resources/js/jquery-1.9.1.js" />'></script>
+<script type="text/javascript" src='<s:url value="/resources/js/jquery-ui.min.js" />'></script>
 
 <script type="text/javascript" >
 
@@ -67,6 +69,7 @@ $(document).ready(function() {
 	
 	$('#salvar').click(function() {
 		var disciplina = idDisciplina;
+		var idProgramaPlanoDisciplina = $('#idProgramaPlanoDisciplina').val();
 		var idPlanoDisciplina = $('#idPlanoDisciplina').val();;
 		/*var ementa = $('#ementa').val();
 		var bibliografia = $('#bibliografia').val();*/
@@ -82,8 +85,10 @@ $(document).ready(function() {
 		
 		$.post("../planoDisciplina/salvarPlanoDisciplina", {
 			disciplina : disciplina, metodologia : metodologia, avaliacao : avaliacao, atendimento : atendimento, 
-			recuperacao : recuperacao, descricaoDia : descricaoDia, idPlanoDisciplina : idPlanoDisciplina
+			recuperacao : recuperacao, descricaoDia : descricaoDia, idPlanoDisciplina : idPlanoDisciplina, 
+			idProgramaPlanoDisciplina: idProgramaPlanoDisciplina
 		}, function(data) {
+			$('#idProgramaPlanoDisciplina').val("");
 			if (data['success']) {
 				mensagem("Plano disciplina salvo com sucesso");
 			} 
@@ -98,13 +103,35 @@ $(document).ready(function() {
 		}, function(data) {
 			if (data['success']) {
 				var jsonData = jQuery.parseJSON(data['success']);
-				$('#idPlanoDisciplina').val(jsonData.planoDisciplina.idPlanoDisciplina);
-				$('#ementa').val(jsonData.disciplina.ementa);
-				$('#bibliografia').val(jsonData.disciplina.bibliografia);
-				$('#metodologia').val(jsonData.planoDisciplina.metodologia);
-				$('#avaliacao').val(jsonData.planoDisciplina.avaliacao);
-				$('#atendimento').val(jsonData.planoDisciplina.atendimento);
-				$('#recuperacao').val(jsonData.planoDisciplina.recuperacao);
+				
+				$('#codDisciplina').val(jsonData.objectA.disciplina.idDisciplina);
+				$('#idProgramaPlanoDisciplina').val(jsonData.objectA.idProgramaPlanoDisciplina);
+				$('#disciplina').val(jsonData.objectA.disciplina.nomeDisciplina);
+				$('#ementa').val(jsonData.objectA.disciplina.ementa);
+				$('#metodologia').val(jsonData.objectA.planoDisciplina.metodologia);
+				$('#avaliacao').val(jsonData.objectA.planoDisciplina.avaliacao);
+				$('#atendimento').val(jsonData.objectA.planoDisciplina.atendimento);
+				$('#recuperacao').val(jsonData.objectA.planoDisciplina.recuperacao);
+				$('#bibliografia').val(jsonData.objectA.disciplina.bibliografia);
+				
+				var blocoDias = '';
+				quantDias = 1;
+				$.each(jsonData.objectB, function(key, value) {
+					var dateFormat = value.dataAula;
+			        var dateFormat = $.datepicker.formatDate('dd/mm/yy', new Date(dateFormat));
+					
+					blocoDias = blocoDias +
+					'<table class="bloco-plano-aula"> ' +
+					'	<tr> ' +
+					'		<td style="width: 25px;"> '+quantDias+' </td> ' +
+					'		<td style="width: 95px;"> '+dateFormat+' </td> ' +
+					'		<td> <textarea type="text" placeholder="Descreva este dia" name="descricao-dia" class="descricao-dia" id="'+quantDias+'" maxlength="250" style="background-color: white; max-width: 380px;">'+value.conteudoAula+'</textarea></td> ' +
+					'	</tr> ' +
+					'</table> ';
+					
+					quantDias++;
+				});
+				$('#blocos').html(blocoDias);
 			} 
 		});
 		
@@ -257,6 +284,7 @@ $(document).ready(function() {
 							</div-1>
 						</div>
 
+						<input type="hidden" name="idProgramaPlanoDisciplina" id="idProgramaPlanoDisciplina" />
 						<input type="hidden" name="idPlanoDisciplina" id="idPlanoDisciplina" />
 
 						<label>Ementa</label>
