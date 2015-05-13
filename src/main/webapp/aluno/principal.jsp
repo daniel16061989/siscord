@@ -47,7 +47,7 @@
 					<li><a href="<s:url value="/principalAluno"/>"><i class="fa fa-home fa"></i> Home </a></li>
 					<li><a href="<s:url value="/simulacaoAjusteMatricula"/>"><i class="fa-file fa"></i> Simulação Matrícula </a></li>
 					<li><a href="<s:url value="/planoDisciplinaAluno"/>"><i class="fa-user fa"></i> Plano de Disciplina </a></li>
-					<li><a href=""><i class="fa-star fa"></i> Links Úteis</a></li>
+					<li><a href="<s:url value="/aterarSenhaAluno"/>"><i class="fa-star fa"></i> Trocar Senha </a></li>
 					<li><a href=""><i class="fa-info-circle fa"></i> Sobre</a></li>
 				</ul>
 			</nav>

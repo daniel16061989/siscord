@@ -93,9 +93,12 @@ $(document).ready(function() {
 		var matriculaProfessor = $('#matriculaProfessor').val();
 		var nomeUsuarioProfessor = $('#nomeUsuarioProfessor').val();
 		var loginProfessor = $('#loginProfessor').val();
+		var loginProfessor = $('#loginProfessor').val();
+		var emailProfessor = $('#emailProfessor').val();
 		
 		$.post("../usuarios/salvarProfessor", {
-				idProfessor : idProfessor, matriculaProfessor : matriculaProfessor, nomeUsuarioProfessor : nomeUsuarioProfessor, loginProfessor : loginProfessor
+				idProfessor : idProfessor, matriculaProfessor : matriculaProfessor, nomeUsuarioProfessor : nomeUsuarioProfessor, 
+				loginProfessor : loginProfessor, emailProfessor : emailProfessor
 			}, function(data){
     			if(data['error']){
 	    		} else {
@@ -111,6 +114,7 @@ $(document).ready(function() {
 		$('#matriculaProfessor').val("");
 		$('#nomeUsuarioProfessor').val("");
 		$('#loginProfessor').val("");
+		$('#emailProfessor').val("");
 	});
 	
 	$('#lista_alunos').on('click', '.editar-aluno', function() {
@@ -150,9 +154,11 @@ $(document).ready(function() {
 		var matriculaAluno = $('#matriculaAluno').val();
 		var nomeAluno = $('#nomeUsuarioAluno').val();
 		var loginAluno = $('#loginAluno').val();
+		var emailAluno = $('#emailAluno').val();
 		
 		$.post("../usuarios/salvarAluno", {
-				idAluno : idAluno, matriculaAluno : matriculaAluno, nomeAluno : nomeAluno, loginAluno : loginAluno
+				idAluno : idAluno, matriculaAluno : matriculaAluno, nomeAluno : nomeAluno,
+				loginAluno : loginAluno, emailAluno : emailAluno
 			}, function(data){
 				console.log(data);
     			if(data['error']){
@@ -170,6 +176,7 @@ $(document).ready(function() {
 		$('#matriculaAluno').val("");
 		$('#nomeUsuarioAluno').val("");
 		$('#loginAluno').val("");
+		$('#emailAluno').val("");
 	});
 	
 	function fecharMensagem() {
@@ -345,6 +352,12 @@ $(document).ready(function() {
 									</td>
 								</tr>
 								<tr>
+									<td>E-mail:</td>
+									<td>
+										<input id="emailAluno" name="emailAluno" type="text" placeholder="Email do usuário" />
+									</td>
+								</tr>
+								<tr>
 									<td><input id="limparAluno" name="limparAluno" type="submit" value="Novo"></td>
 									<td><input id="salvarAluno" name="salvarAluno" type="submit" value="Salvar"></td>
 								</tr>
@@ -370,6 +383,12 @@ $(document).ready(function() {
 									<td>Login:</td>
 									<td>
 										<input id="loginProfessor" name="loginProfessor" type="text" placeholder="Login do usuário" />
+									</td>
+								</tr>
+								<tr>
+									<td>E-mail:</td>
+									<td>
+										<input id="emailProfessor" name="emailProfessor" type="text" placeholder="Email do usuário" />
 									</td>
 								</tr>
 								<tr>

@@ -130,7 +130,7 @@ $(document).ready(function() {
 					<li><a href="<s:url value="/principalAluno"/>"><i class="fa fa-home fa"></i> Home </a></li>
 					<li><a href="<s:url value="/simulacaoAjusteMatricula"/>"><i class="fa-file fa"></i> Simulação Matrícula </a></li>
 					<li><a href="<s:url value="/planoDisciplinaAluno"/>"><i class="fa-user fa"></i> Plano de Disciplina </a></li>
-					<li><a href=""><i class="fa-star fa"></i> Links Úteis</a></li>
+					<li><a href="<s:url value="/aterarSenhaAluno"/>"><i class="fa-star fa"></i> Trocar Senha </a></li>
 					<li><a href=""><i class="fa-info-circle fa"></i> Sobre</a></li>
 				</ul>
 			</nav>
@@ -138,8 +138,7 @@ $(document).ready(function() {
 		<div class="white-grid-layout">
 			<div id="content-box">
 				<div id="content">
-					<form class="form-left" id="solicitacao" name="solicitacao" action="../reposicaoAula/salvarNovaReposicao" method="POST"
-						enctype="multipart/form-data" novalidate="novalidate">
+					<div class="bloco-left">
 
 						<h1>Plano da Disciplina</h1>
 
@@ -174,7 +173,7 @@ $(document).ready(function() {
 						<label>Bibliografia</label>
 						<textarea disabled maxlength="250" name="bibliografia" id="bibliografia" placeholder="Descreva a bibliografia"></textarea>
 						
-					</form>
+					</div>
 
 					<div class="form-help">
 						<h2>Plano das Aulas</h2>

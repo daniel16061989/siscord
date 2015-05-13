@@ -121,6 +121,7 @@ public class UsuariosAction extends GenericAction {
 		String matriculaProfessor = request.getParameter("matriculaProfessor");
 		String nomeUsuarioProfessor = request.getParameter("nomeUsuarioProfessor");
 		String loginProfessor = request.getParameter("loginProfessor");
+		String emailProfessor = request.getParameter("emailProfessor");
 		
 		Gson gson = new Gson();
 		String jsonProfessor = "";
@@ -145,6 +146,7 @@ public class UsuariosAction extends GenericAction {
 			
 			professor.setCodigo(matriculaProfessor);
 			professor.setNomeProfessor(nomeUsuarioProfessor);
+			professor.setEmail(emailProfessor);
 			
 			professorService.save(professor);
 		
@@ -211,6 +213,7 @@ public class UsuariosAction extends GenericAction {
 		String matriculaAluno = request.getParameter("matriculaAluno");
 		String nomeUsuarioAluno = request.getParameter("nomeAluno");
 		String loginAluno = request.getParameter("loginAluno");
+		String emailAluno = request.getParameter("emailAluno");
 		
 		Gson gson = new Gson();
 		String jsonAluno = "";
@@ -234,6 +237,7 @@ public class UsuariosAction extends GenericAction {
 			
 			aluno.setMatricula(matriculaAluno);
 			aluno.setNomeAluno(nomeUsuarioAluno);
+			aluno.setEmail(emailAluno);
 			
 			alunoService.save(aluno);
 		

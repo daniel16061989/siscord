@@ -93,7 +93,7 @@ $(document).ready(function() {
 					%>
 						<li><a href="<s:url value="/analisePlanoDisciplina"/>"><i class="fa-user fa"></i>Analisar Planos Disciplina </a></li>
 					<% } %>
-					<li><a href=""><i class="fa-star fa"></i> Links Úteis</a></li>
+					<li><a href="<s:url value="/aterarSenhaProfessor"/>"><i class="fa-star fa"></i> Trocar Senha</a></li>
 					<li><a href=""><i class="fa-info-circle fa"></i> Sobre</a></li>
 				</ul>
 			</nav>
@@ -136,10 +136,10 @@ $(document).ready(function() {
 						</div>
 
 						<label>Data da Aula</label>
-						<input name="dataAula" type="text" id="dataAula" placeholder="Digite a data em que não haverá aula" maxlength="100" autofocus="" required="">
+						<input name="dataAula" type="text" id="dataAula" placeholder="Digite a data em que não haverá aula" maxlength="100" required="">
 
 						<label>Data de Reposição</label>
-						<input name="dataAulaReposicao" type="text" id="dataAulaReposicao" placeholder="Digite a data de reposição da aula" maxlength="100" autofocus="" required="">
+						<input name="dataAulaReposicao" type="text" id="dataAulaReposicao" placeholder="Digite a data de reposição da aula" maxlength="100" required="">
 
 						<label>Sala</label>
 						<input name="sala" type="text" id="sala" placeholder="Digite a sala onde será ministrada a aula" maxlength="100" autofocus="" required="">

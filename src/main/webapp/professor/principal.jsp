@@ -58,7 +58,7 @@
 					%>
 						<li><a href="<s:url value="/analisePlanoDisciplina"/>"><i class="fa-user fa"></i>Analisar Planos Disciplina </a></li>
 					<% } %>
-					<li><a href=""><i class="fa-star fa"></i> Links Úteis</a></li>
+					<li><a href="<s:url value="/aterarSenhaProfessor"/>"><i class="fa-star fa"></i> Trocar Senha</a></li>
 					<li><a href=""><i class="fa-info-circle fa"></i> Sobre</a></li>
 				</ul>
 			</nav>
