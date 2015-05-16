@@ -40,5 +40,31 @@
             <result name="inicio">/index.jsp</result>
         </global-results>
 
+		<action name="fileUploadAction" 
+		    class="br.com.ufu.bsi.visao.action.FileUploadAction" method="display">
+		    <result name="none">coordenacao/fileupload.jsp</result>
+		</action>
+	 
+		<action name="resultAction" class="br.com.ufu.bsi.visao.action.FileUploadAction">
+		    <interceptor-ref name="exception"/>
+	            <interceptor-ref name="i18n"/>
+	            <interceptor-ref name="fileUpload">
+	       		<param name="allowedTypes">text/plain</param>
+	       		<param name="maximumSize">10240</param>
+	  	    </interceptor-ref> 
+	            <interceptor-ref name="params">
+	                <param name="excludeParams">dojo\..*,^struts\..*</param>
+	            </interceptor-ref>
+	            <interceptor-ref name="validation">
+	                <param name="excludeMethods">input,back,cancel,browse</param>
+	            </interceptor-ref>
+	            <interceptor-ref name="workflow">
+	                <param name="excludeMethods">input,back,cancel,browse</param>
+	            </interceptor-ref>
+	 
+		    <result name="success">coordenacao/fileupload.jsp</result>
+		    <result name="input">coordenacao/fileupload.jsp</result>
+		</action>
+
 	</package>
 </struts>

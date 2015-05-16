@@ -53,6 +53,7 @@
 					<li><a href="<s:url value="/disciplinas"/>"><i class="fa-star fa"></i>Disciplinas</a></li>
 					<li><a href="<s:url value="/usuarios"/>"><i class="fa-info-circle fa"></i> Usuários</a></li>
 					<li><a href="<s:url value="/visualizarSimulacaoAjusteMatricula"/>"><i class="fa-file fa"></i>Grades Horarias</a></li>
+					<li><a href="<s:url value="/fileUploadAction"/>"><i class="fa-info-circle fa"></i> Upload</a></li>
 				</ul>
 			</nav>
 		</div>
