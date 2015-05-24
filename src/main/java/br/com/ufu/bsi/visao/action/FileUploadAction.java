@@ -2,16 +2,18 @@ package br.com.ufu.bsi.visao.action;
 
 import java.io.File;
 
+import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.InterceptorRef;
+import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
-
-import com.opensymphony.xwork2.ActionSupport;
+import org.apache.struts2.convention.annotation.Result;
 
 // http://www.mkyong.com/struts2/struts-2-file-upload-example/
 
 @ParentPackage("default")
 @InterceptorRef("coordenacao")
-public class FileUploadAction extends ActionSupport {
+@Namespace(value="/fileUpload")
+public class FileUploadAction extends GenericAction {
 
 	private static final long serialVersionUID = 1L;
 
@@ -19,6 +21,11 @@ public class FileUploadAction extends ActionSupport {
 	private String fileUploadContentType;
 	private String fileUploadFileName;
  
+	@Action(value = "index", results = {@Result(name = "success", location = "/coordenacao/fileupload.jsp")})
+	public String index() {
+		return SUCCESS;
+	}
+	
 	public String getFileUploadContentType() {
 		return fileUploadContentType;
 	}

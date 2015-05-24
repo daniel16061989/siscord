@@ -61,13 +61,12 @@
 		<div class="white-grid-layout">
 			<div id="content-box">
 				<div id="content">
-					<form class="form-left" id="solicitacao" name="solicitacao" action="../reposicaoAula/salvarNovaReposicao" method="POST"
-						enctype="multipart/form-data" novalidate="novalidate">
+					<div class="bloco-left">
 
 						<h1>Aviso</h1>
 						<label> A grade horaria já foi enviada a Coordenação aguarde uma resposta! </label>
 						
-					</form>
+					</div>
 				</div>
 			</div>
 		</div>

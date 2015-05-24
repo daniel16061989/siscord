@@ -66,9 +66,7 @@
 		<div class="white-grid-layout">
 			<div id="content-box">
 				<div id="content">
-					<form class="form-left" id="solicitacao" name="solicitacao"
-						action="../controller/cSubmeterSolicitacao.php" method="POST"
-						enctype="multipart/form-data" novalidate="novalidate">
+					<div class="bloco-left">
 
 						<h1>Notícias</h1>
 
@@ -79,8 +77,7 @@
 							</div>
 		                </s:iterator>
 
-					</form>
-
+					</div>
 					<div class="form-help">
 						<h2>Instruções</h2>
 						<text>

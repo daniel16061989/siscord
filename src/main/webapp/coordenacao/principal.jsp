@@ -53,21 +53,16 @@
 					<li><a href="<s:url value="/disciplinas"/>"><i class="fa-star fa"></i>Disciplinas</a></li>
 					<li><a href="<s:url value="/usuarios"/>"><i class="fa-info-circle fa"></i> Usuários</a></li>
 					<li><a href="<s:url value="/visualizarSimulacaoAjusteMatricula"/>"><i class="fa-file fa"></i>Grades Horarias</a></li>
-					<li><a href="<s:url value="/fileUploadAction"/>"><i class="fa-info-circle fa"></i> Upload</a></li>
+					<li><a href="<s:url value="/fileUpload"/>"><i class="fa-info-circle fa"></i> Upload</a></li>
 				</ul>
 			</nav>
 		</div>
 		<div class="white-grid-layout">
 			<div id="content-box">
 				<div id="content">
-					<form class="form-left" id="solicitacao" name="solicitacao"
-						action="../controller/cSubmeterSolicitacao.php" method="POST"
-						enctype="multipart/form-data" novalidate="novalidate">
-
+					<div class="bloco-left">
 						<h1>Bem Vindo</h1>
-
-					</form>
-
+					</div>
 					<div class="form-help">
 						<h2>Instruções</h2>
 						<text>

@@ -40,31 +40,37 @@
             <result name="inicio">/index.jsp</result>
         </global-results>
 
-		<action name="fileUploadAction" 
-		    class="br.com.ufu.bsi.visao.action.FileUploadAction" method="display">
-		    <result name="none">coordenacao/fileupload.jsp</result>
-		</action>
-	 
-		<action name="resultAction" class="br.com.ufu.bsi.visao.action.FileUploadAction">
-		    <interceptor-ref name="exception"/>
-	            <interceptor-ref name="i18n"/>
-	            <interceptor-ref name="fileUpload">
-	       		<param name="allowedTypes">text/plain</param>
-	       		<param name="maximumSize">10240</param>
-	  	    </interceptor-ref> 
-	            <interceptor-ref name="params">
-	                <param name="excludeParams">dojo\..*,^struts\..*</param>
-	            </interceptor-ref>
-	            <interceptor-ref name="validation">
-	                <param name="excludeMethods">input,back,cancel,browse</param>
-	            </interceptor-ref>
-	            <interceptor-ref name="workflow">
-	                <param name="excludeMethods">input,back,cancel,browse</param>
-	            </interceptor-ref>
-	 
-		    <result name="success">coordenacao/fileupload.jsp</result>
-		    <result name="input">coordenacao/fileupload.jsp</result>
-		</action>
+		<action name="fileUploadAction" class="br.com.ufu.bsi.visao.action.FileUploadAction"> 
+            <interceptor-ref name="exception" />
+            <interceptor-ref name="alias" />
+            <interceptor-ref name="servletConfig" />
+            <interceptor-ref name="prepare" />
+            <interceptor-ref name="i18n" />
+            <interceptor-ref name="chain" />
+            <interceptor-ref name="debugging" />
+            <interceptor-ref name="profiling" />
+            <interceptor-ref name="scopedModelDriven" />
+            <interceptor-ref name="modelDriven" />
+            <interceptor-ref name="fileUpload">
+            <param name="maximumSize">2097152</param>
+            </interceptor-ref>
+            <interceptor-ref name="checkbox" />
+            <interceptor-ref name="staticParams" />
+            <interceptor-ref name="actionMappingParams" />
+            <interceptor-ref name="params">
+            <param name="excludeParams"> dojo\..*,^struts\..*</param>
+            </interceptor-ref>
+            <interceptor-ref name="conversionError" />
+            <interceptor-ref name="validation">
+            <param name="excludeMethods"> input,back,cancel,browse</param>
+            </interceptor-ref>
+            <interceptor-ref name="workflow">
+            <param name="excludeMethods"> input,back,cancel,browse</param>
+            </interceptor-ref>
+ 
+            <result name="success">/coordenacao/fileupload.jsp</result>
+        </action>
+
 
 	</package>
 </struts>

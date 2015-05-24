@@ -140,15 +140,14 @@ table#t01 th	{
 					<li><a href="<s:url value="/disciplinas"/>"><i class="fa-star fa"></i>Disciplinas</a></li>
 					<li><a href="<s:url value="/usuarios"/>"><i class="fa-info-circle fa"></i> Usuários</a></li>
 					<li><a href="<s:url value="/visualizarSimulacaoAjusteMatricula"/>"><i class="fa-file fa"></i>Grades Horarias</a></li>
+					<li><a href="<s:url value="/fileUpload"/>"><i class="fa-info-circle fa"></i> Upload</a></li>
 				</ul>
 			</nav>
 		</div>
 		<div class="white-grid-layout">
 			<div id="content-box">
 				<div id="content">
-					<form class="form-left" id="solicitacao" name="solicitacao"
-						action="#" method="POST"
-						enctype="multipart/form-data" novalidate="novalidate">
+					<div class="bloco-left">
 
 						<h1>Grade Horaria</h1>
 
@@ -205,7 +204,7 @@ table#t01 th	{
 								<input id="reprovar" name="reprovar" type="submit" value="Reprovar">
 							</div>
 						</div>
-					</form>
+					</div>
 
 					<div class="form-help">
 						<h2>Lista de Grades Horarias</h2>

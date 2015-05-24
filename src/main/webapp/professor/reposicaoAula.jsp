@@ -117,8 +117,7 @@ $(document).ready(function() {
 			 	</s:if>
 			
 				<div id="content">
-					<form class="form-left" id="solicitacao" name="solicitacao" action="../reposicaoAula/salvarNovaReposicao" method="POST"
-						enctype="multipart/form-data" novalidate="novalidate">
+					<div class="bloco-left">
 
 						<h1>Solicitação</h1>
 
@@ -150,7 +149,7 @@ $(document).ready(function() {
 						<center>
 							<input id="submit" name="submit" type="submit" value="Salvar">
 						</center>
-					</form>
+					</div>
 
 					<div class="form-help">
 						<h2>Instruções</h2>

@@ -268,7 +268,7 @@ table#t01 th	{
 		<div class="white-grid-layout">
 			<div id="content-box">
 				<div id="content">
-					<form class="form-left" >
+					<div class="bloco-left">
 
 						<h1>Selecione as Disciplinas</h1>
 
@@ -331,7 +331,7 @@ table#t01 th	{
 							<input id="submit" name="submit" type="submit" value="Enviar Grade">
 						</center>
 						
-					</form>
+					</div>
 
 					<div class="form-help">
 						<h2>Dúvidas</h2>

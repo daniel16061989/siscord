@@ -285,6 +285,7 @@ table#t01 th	{
 					<li><a href="<s:url value="/disciplinas"/>"><i class="fa-star fa"></i>Disciplinas</a></li>
 					<li><a href="<s:url value="/usuarios"/>"><i class="fa-info-circle fa"></i> Usuários</a></li>
 					<li><a href="<s:url value="/visualizarSimulacaoAjusteMatricula"/>"><i class="fa-file fa"></i>Grades Horarias</a></li>
+					<li><a href="<s:url value="/fileUpload"/>"><i class="fa-info-circle fa"></i> Upload</a></li>
 				</ul>
 			</nav>
 		</div>
@@ -353,7 +354,7 @@ table#t01 th	{
 				<div id="mensagem-sucesso" style="width: 100%; height:50px; background-color: #AFEEEE;"> </div>
 				
 				<div id="content">
-					<form class="form-left" id="solicitacao" name="solicitacao">
+					<div class="bloco-left">
 
 						<h1>Bem Vindo</h1>
 	
@@ -379,7 +380,7 @@ table#t01 th	{
 					            </s:iterator>
 							</table>
 						</div>
-					</form>
+					</div>
 
 					<div class="form-help">
 						<h2>Adicionar ou Atualizar Disciplina</h2>
