@@ -12,4 +12,6 @@ public interface AlunoDAO extends JpaRepository<Aluno, Integer> {
 	Aluno findByUsuario(Usuario usuario);
 	
 	List<Aluno> findBySimulacaoAjuste(Boolean gradeEnviada);
+	
+	List<Aluno> findByMatricula(String matricula);
 }

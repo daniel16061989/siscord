@@ -11,4 +11,6 @@ public interface AlunoService extends GenericService<Aluno> {
 	Aluno findByUsuario(Usuario usuario) throws SiscordGenericException;
 	
 	List<Aluno> findBySimulacaoAjuste(Boolean gradeEnviada) throws SiscordGenericException;
+	
+	List<Aluno> findByMatricula(String matricula) throws SiscordGenericException;
 }

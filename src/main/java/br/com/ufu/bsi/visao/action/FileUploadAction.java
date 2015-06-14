@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.InterceptorRef;
@@ -12,7 +13,9 @@ import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 
+import br.com.ufu.bsi.dao.excecoes.SiscordGenericException;
 import br.com.ufu.bsi.dto.Aluno;
+import br.com.ufu.bsi.dto.Professor;
 import br.com.ufu.bsi.dto.Usuario;
 
 // http://www.mkyong.com/struts2/struts-2-file-upload-example/
@@ -68,7 +71,20 @@ public class FileUploadAction extends GenericAction {
 	        		String[] celulas = linha.split(",");
 	        		
 	        		if(!celulas[0].trim().equals("COD_CURSO")) {
-		        		Usuario usuario = new Usuario();
+//	        		if(!celulas[0].trim().equals("NOME")) {
+	        			
+	        			Usuario usuario = new Usuario();
+	        			Aluno aluno = new Aluno();
+	        			
+	        			List<Aluno> alunos = alunoService.findByMatricula(celulas[3]);
+	        			if(alunos.size() > 1) {
+	        				System.out.println("Erro: Matrácula "+celulas[3]+" está duplicada");
+	        			}
+	        			
+	        			if(alunos.size() == 1) {
+	        				aluno.setIdAluno(alunos.get(0).getIdAluno());
+	        				usuario.setIdUsuario(aluno.getUsuario().getIdUsuario());
+	        			}
 		        		
 		        		usuario.setDtAtivacao(new Date());
 		        		usuario.setDtCadastro(new Date());
@@ -78,8 +94,6 @@ public class FileUploadAction extends GenericAction {
 		        		usuario.setTipoUsuario('A');
 		        		
 		        		usuario = usuarioService.save(usuario);
-		        		
-		        		Aluno aluno = new Aluno();
 		        		
 		        		aluno.setEmail(celulas[16]);
 		        		aluno.setMatricula(celulas[3]);
@@ -106,4 +120,32 @@ public class FileUploadAction extends GenericAction {
 	public String display() {
 		return NONE;
 	}
+	
+	@SuppressWarnings("unused")
+	private void adicionarProfessores(String[] celulas) throws SiscordGenericException {
+		Professor professor = new Professor();
+		Usuario usuario = new Usuario();
+		
+		usuario.setDtAtivacao(new Date());
+		usuario.setDtCadastro(new Date());
+		usuario.setLogin(celulas[3]);
+		usuario.setSenha("123456");
+		usuario.setStatus('A');
+		usuario.setTipoUsuario('P');
+		
+		usuario = usuarioService.save(usuario);
+		
+		professor.setCodigo(celulas[3]);
+		if(celulas[1] == null) {
+			professor.setEmail(celulas[2]);
+		}else {
+			professor.setEmail(celulas[1]);
+		}
+		professor.setNomeProfessor(celulas[0]);
+		professor.setTipoProfessor('N');
+		professor.setUsuario(usuario);
+		
+		professorService.save(professor);
+	}
+
 }

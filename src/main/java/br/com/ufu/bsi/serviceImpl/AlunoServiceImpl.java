@@ -39,6 +39,14 @@ public class AlunoServiceImpl extends GenericServiceImpl<Aluno> implements Aluno
 		}
 	}
 	
+	public List<Aluno> findByMatricula(String matricula) throws SiscordGenericException {
+		try {
+			return alunoDAO.findByMatricula(matricula);
+		} catch (Exception e) {
+			throw new SiscordGenericException(e.getMessage(), e);
+		}
+	}
+	
 	public void setAlunoDAO(AlunoDAO alunoDAO) {
 		this.alunoDAO = alunoDAO;
 	}
