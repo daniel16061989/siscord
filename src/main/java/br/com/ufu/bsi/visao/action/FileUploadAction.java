@@ -18,8 +18,6 @@ import br.com.ufu.bsi.dto.Aluno;
 import br.com.ufu.bsi.dto.Professor;
 import br.com.ufu.bsi.dto.Usuario;
 
-// http://www.mkyong.com/struts2/struts-2-file-upload-example/
-
 @ParentPackage("default")
 @InterceptorRef("coordenacao")
 @Namespace(value="/fileUpload")
